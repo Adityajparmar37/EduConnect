@@ -1,6 +1,9 @@
+import { Link } from "react-router-dom";
+
 export default function DefaultPage() {
+  document.body.style.overflow = "hidden";
   return (
-    <div className="bg-backgroundPhoto flex h-screen w-auto items-center justify-center overflow-hidden pt-20">
+    <div className="flex h-screen w-auto items-center justify-center overflow-hidden bg-backgroundPhoto pt-20">
       <div className="relative bottom-44 flex flex-col items-center justify-center">
         <h1 className="text-4xl font-semibold text-gray-800">
           Linking Teachers and Students for Effortless Educational Journeys...
@@ -11,9 +14,12 @@ export default function DefaultPage() {
             attendance, exams, and collaborative discussions—an efficient,
             secure platform fostering improved teacher-student collaboration
           </h1>
-          <button className="mt-9 rounded-lg bg-gray-800 p-3 text-white delay-100 hover:rounded-full hover:bg-gray-500">
-            Sign Up
-          </button>
+          <Link
+            to="/signup"
+            className="mt-9 rounded-lg bg-gray-800 p-3 text-white delay-100 hover:rounded-full hover:bg-gray-500"
+          >
+            Sign up
+          </Link>
         </div>
       </div>
     </div>

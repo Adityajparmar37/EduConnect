@@ -4,13 +4,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#146C94",
-        secondary: "#19A7CE",
-        tertiary: "#F6F1F1",
-        fourth: "#000000",
+        primary: "#3bb19b",
+        secondary: "#f5f5f5",
+        darkPrimary:'#22675b',
       },
       backgroundImage: {
-        "backgroundPhoto": 'url("./public/background-image-2.jpg")',
+        backgroundPhoto: 'url("./public/background-image-2.jpg")',
       },
     },
   },
