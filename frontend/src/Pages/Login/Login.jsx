@@ -2,6 +2,7 @@ import { useState } from "react";
 import { MdOutlineMail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdPersonOutline } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -9,6 +10,19 @@ export default function Login() {
     password: "",
     userType: "",
   });
+
+  const handleInputData = (e) => {
+    setForm((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    console.log("Login form ==> ", form);
+  };
 
   document.body.style.overflow = "hidden";
   return (
@@ -21,18 +35,21 @@ export default function Login() {
                 <div className="flex h-[100%] w-full flex-col ">
                   <div className="flex items-center justify-center">
                     <h1 className="text-4xl font-semibold text-black">
-                      Login to your account
+                      Login your account
                     </h1>
                   </div>
 
-                  <div className="mt-10">
+                  <div className="mt-14">
                     <div className="flex flex-row items-center text-white">
                       <label className="mr-3 text-2xl text-black">
                         <MdOutlineMail />
                       </label>
                       <input
+                        required
+                        onChange={handleInputData}
                         type="email"
-                        className="w-[25rem] rounded-md border-2 border-gray-400 px-3 py-2 shadow-md hover:shadow-inner"
+                        className="w-[25rem] rounded-md border-2 border-gray-400 px-3 py-2 text-black shadow-md hover:shadow-inner"
+                        name="email"
                         placeholder="Enter Your Email"
                       />
                     </div>
@@ -42,8 +59,12 @@ export default function Login() {
                           <RiLockPasswordLine />
                         </label>
                         <input
+                          required
+                          onChange={handleInputData}
                           type="password"
-                          className="w-[25rem] rounded-md border-2 border-gray-400 px-3 py-2 shadow-md hover:shadow-inner  focus:shadow-none"
+                          className="w-[25rem] rounded-md border-2 border-gray-400 px-3 py-2 text-black shadow-md  hover:shadow-inner
+                          focus:shadow-none"
+                          name="password"
                           placeholder="Enter Your Password"
                         />
                       </div>
@@ -56,21 +77,43 @@ export default function Login() {
                           </span>
                           You are ?
                         </label>
-                        <div className="mt-2 flex w-96 flex-row gap-3 text-lg ml-9">
-                          <input type="radio" name="userType" value="student" />
+                        <div className="ml-9 mt-2 flex w-96 flex-row gap-3 text-lg text-black">
+                          <input
+                            type="radio"
+                            onChange={handleInputData}
+                            name="userType"
+                            value="student"
+                            required
+                          />
                           <label>Student</label>
 
-                          <input type="radio" name="userType" value="teacher" />
+                          <input
+                            type="radio"
+                            onChange={handleInputData}
+                            name="userType"
+                            value="teacher"
+                            required
+                          />
                           <label>Teacher</label>
 
-                          <input type="radio" name="userType" value="Admin" />
+                          <input
+                            type="radio"
+                            onChange={handleInputData}
+                            name="userType"
+                            value="Admin"
+                            required
+                          />
                           <label>Admin</label>
                         </div>
                       </div>
                     </div>
                     <div className="mt-10 flex items-center justify-center">
                       <div className="flex flex-row text-white">
-                        <button className="h-12 w-36 rounded-xl bg-primary text-xl font-semibold text-white delay-100 hover:rounded-3xl hover:bg-darkPrimary">
+                        <button
+                          type="submit"
+                          onClick={handleSubmit}
+                          className="h-12 w-36 rounded-xl bg-primary text-xl font-semibold text-white delay-100 hover:rounded-3xl hover:bg-darkPrimary mt-1"
+                        >
                           Login
                         </button>
                       </div>
@@ -82,9 +125,11 @@ export default function Login() {
             <div className="flex h-[100%] w-1/3 flex-col items-center justify-center rounded-r-xl bg-primary">
               <div className="text-4xl font-bold text-white">New Here ?</div>
               <div className="mt-16 flex flex-row text-white">
-                <button className="h-12 w-36 rounded-xl bg-white text-xl font-semibold text-black delay-100 hover:rounded-3xl hover:bg-gray-100">
-                  Sign up
-                </button>
+                <Link to="/signup">
+                  <button className="h-12 w-36 rounded-xl bg-white text-xl font-semibold text-black delay-100 hover:rounded-3xl hover:bg-gray-100">
+                    Sign up
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
