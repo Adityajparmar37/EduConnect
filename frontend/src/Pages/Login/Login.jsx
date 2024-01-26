@@ -1,10 +1,21 @@
+import { useState } from "react";
+import { MdOutlineMail } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { MdPersonOutline } from "react-icons/md";
+
 export default function Login() {
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    userType: "",
+  });
+
   document.body.style.overflow = "hidden";
   return (
     <>
       <div className=" relative flex h-screen items-center justify-center bg-gray-50">
         <div className="absolute top-36 flex items-center justify-center rounded-xl shadow-xl">
-          <div className="flex h-[30rem] w-[70rem] flex-row">
+          <div className="flex h-[30rem] w-[70rem] flex-row ">
             <div className="flex h-[100%] w-2/3 items-center justify-center rounded-l-xl bg-white">
               <form>
                 <div className="flex h-[100%] w-full flex-col ">
@@ -15,28 +26,37 @@ export default function Login() {
                   </div>
 
                   <div className="mt-10">
-                    <div className="flex flex-row text-white">
+                    <div className="flex flex-row items-center text-white">
+                      <label className="mr-3 text-2xl text-black">
+                        <MdOutlineMail />
+                      </label>
                       <input
-                        type="text"
+                        type="email"
                         className="w-[25rem] rounded-md border-2 border-gray-400 px-3 py-2 shadow-md hover:shadow-inner"
-                        placeholder="Name"
+                        placeholder="Enter Your Email"
                       />
                     </div>
                     <div className="mt-8">
-                      <div className="flex flex-row text-white">
+                      <div className="flex flex-row items-center text-white">
+                        <label className="mr-3 text-2xl text-black">
+                          <RiLockPasswordLine />
+                        </label>
                         <input
                           type="password"
                           className="w-[25rem] rounded-md border-2 border-gray-400 px-3 py-2 shadow-md hover:shadow-inner  focus:shadow-none"
-                          placeholder="Password"
+                          placeholder="Enter Your Password"
                         />
                       </div>
                     </div>
-                    <div className="flex justify-between">
-                      <div className="m-2 mt-5 flex flex-col">
-                        <label className="text-lg font-semibold">
+                    <div className="mt-8 flex justify-between">
+                      <div className="flex flex-col">
+                        <label className="flex flex-row items-center text-lg font-semibold">
+                          <span className="mr-3 text-2xl">
+                            <MdPersonOutline />
+                          </span>
                           You are ?
                         </label>
-                        <div className="mt-2 flex w-96 flex-row gap-3 text-lg">
+                        <div className="mt-2 flex w-96 flex-row gap-3 text-lg ml-9">
                           <input type="radio" name="userType" value="student" />
                           <label>Student</label>
 
@@ -50,7 +70,7 @@ export default function Login() {
                     </div>
                     <div className="mt-10 flex items-center justify-center">
                       <div className="flex flex-row text-white">
-                        <button className="hover:bg-darkPrimary h-12 w-36 rounded-xl bg-primary text-xl font-semibold text-white delay-100 hover:rounded-3xl">
+                        <button className="h-12 w-36 rounded-xl bg-primary text-xl font-semibold text-white delay-100 hover:rounded-3xl hover:bg-darkPrimary">
                           Login
                         </button>
                       </div>
