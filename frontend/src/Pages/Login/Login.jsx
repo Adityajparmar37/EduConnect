@@ -30,7 +30,8 @@ export default function Login() {
       <div className=" relative flex h-screen items-center justify-center bg-gray-50">
         <div className="absolute top-36 flex items-center justify-center rounded-xl shadow-xl">
           <div className="flex h-[30rem] w-[70rem] flex-row ">
-            <div className="flex h-[100%] w-2/3 items-center justify-center rounded-l-xl bg-white">
+            {/* form for login */}
+            <div className="flex h-[100%] w-3/4 items-center justify-center rounded-l-xl bg-white">
               <form>
                 <div className="flex h-[100%] w-full flex-col ">
                   <div className="flex items-center justify-center">
@@ -100,7 +101,7 @@ export default function Login() {
                             type="radio"
                             onChange={handleInputData}
                             name="userType"
-                            value="Admin"
+                            value="admin"
                             required
                           />
                           <label>Admin</label>
@@ -112,7 +113,7 @@ export default function Login() {
                         <button
                           type="submit"
                           onClick={handleSubmit}
-                          className="h-12 w-36 rounded-xl bg-primary text-xl font-semibold text-white delay-100 hover:rounded-3xl hover:bg-darkPrimary mt-1"
+                          className="mt-1 h-12 w-36 rounded-xl bg-primary text-xl font-semibold text-white delay-100 hover:rounded-3xl hover:bg-darkPrimary"
                         >
                           Login
                         </button>
@@ -122,9 +123,9 @@ export default function Login() {
                 </div>
               </form>
             </div>
-            <div className="flex h-[100%] w-1/3 flex-col items-center justify-center rounded-r-xl bg-primary">
-              <div className="text-4xl font-bold text-white">New Here ?</div>
-              <div className="mt-16 flex flex-row text-white">
+            <div className="flex h-[100%] w-1/4 flex-col items-center justify-center rounded-r-xl bg-primary">
+              <div className="text-3xl font-bold text-white">New Here ?</div>
+              <div className="mt-10 flex flex-row text-white">
                 <Link to="/signup">
                   <button className="h-12 w-36 rounded-xl bg-white text-xl font-semibold text-black delay-100 hover:rounded-3xl hover:bg-gray-100">
                     Sign up

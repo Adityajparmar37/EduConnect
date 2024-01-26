@@ -17,7 +17,7 @@ export default function Header() {
           <div className="flex items-center lg:order-2">
             <Link
               to="/login"
-              className="mr-2 rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-800  delay-100 hover:rounded-full focus:outline-none focus:ring-4 focus:ring-gray-300 lg:px-5 lg:py-2.5 dark:text-white dark:hover:bg-gray-500"
+              className="mr-2 rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-800  delay-100 hover:rounded-full focus:outline-none focus:ring-2 focus:ring-slate-400 lg:px-5 lg:py-2.5 dark:text-white dark:hover:bg-gray-500"
             >
               Log in
             </Link>
