@@ -6,10 +6,11 @@ export default {
       colors: {
         primary: "#3bb19b",
         secondary: "#f5f5f5",
-        darkPrimary:'#22675b',
+        mintPrimary: "#28747a",
+        darkPrimary: "#22675b",
       },
       backgroundImage: {
-        backgroundPhoto: 'url("./public/background-image-2.jpg")',
+        backgroundPhoto: 'url("/background-image-2.jpg")',
       },
     },
   },

@@ -8,8 +8,8 @@ export default function Header() {
           <Link to="/">
             <div className="flex items-center">
               <img
-                src="../../../public/logo2-removebg-preview.png"
-                className="mr-3 h-9 sm:h-9"
+                src="/logo2-removebg-preview.png"
+                className="mr-3 h-9 sm:h-9 focus:outline-none"
                 alt="Flowbite Logo"
               />
             </div>
