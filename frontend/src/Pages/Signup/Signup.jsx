@@ -1,20 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineMail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { MdPersonOutline } from "react-icons/md";
 import { MdPerson } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { LuBook } from "react-icons/lu";
 import { MdOutlinePersonAddAlt } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useAuth } from "../../Hooks/useAuth";
 
 export default function Signup() {
+  const [params] = useSearchParams();
+  const returnUrl = params.get("returnUrl");
+  const navigate = useNavigate();
+  const { user, signup } = useAuth();
   const [form, setForm] = useState({
     email: "",
     password: "",
     userType: "",
     name: "",
+    confirmPassword: "",
     semester: "semester 1",
+  });
+
+  useEffect(() => {
+    if (!user) return;
+
+    returnUrl ? navigate(returnUrl) : navigate("/admin");
   });
 
   const handleInputData = (e) => {
@@ -24,14 +35,16 @@ export default function Signup() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log("Signup form ==> ", form);
+    try {
+      const SignupResponse = await signup(form);
+      console.log("login =>> ", SignupResponse);
+    } catch (error) {
+      toast.error("Some Error Occured !");
+      console.log("Login Page Frontend Error", error);
+    }
   };
-
-  const { userType } = form;
-
   document.body.style.overflow = "hidden";
   return (
     <>
@@ -155,12 +168,12 @@ export default function Signup() {
                           type="password"
                           className="w-[25rem] rounded-md border-2 border-gray-400 px-3 py-2 text-black shadow-md  hover:shadow-inner
                           focus:shadow-none"
-                          name="password"
+                          name="confirmPassword"
                           placeholder="Confirm Your Password"
                         />
                       </div>
                     </div>
-                    {userType === "student" && (
+                    {form.userType === "student" && (
                       <div className="mt-8 flex items-center">
                         <label className="mr-3 text-2xl text-black">
                           <LuBook />

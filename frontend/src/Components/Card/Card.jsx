@@ -6,7 +6,7 @@ import { GoTriangleRight } from "react-icons/go";
 const Card = ({ icon, title, text, link }) => {
   return (
     <div
-      className={`relative flex h-[15rem] w-[25rem] flex-col rounded-md border-l-8 border-gray-800  bg-white p-5 shadow-lg duration-300 hover:shadow-xl`}
+      className={`relative flex h-[15rem] w-[25rem] flex-col rounded-md border-l-8 border-primary  bg-white p-5 shadow-lg duration-300 hover:shadow-xl`}
     >
       <div className="p-3 text-4xl">{icon}</div>
       <div>

@@ -1,14 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineMail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdPersonOutline } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAuth } from "../../Hooks/useAuth";
 
 export default function Login() {
+  const [params] = useSearchParams();
+  const returnUrl = params.get("returnUrl");
+  const navigate = useNavigate();
+  const { user, login } = useAuth();
   const [form, setForm] = useState({
     email: "",
     password: "",
     userType: "",
+  });
+
+  useEffect(() => {
+    if (!user) return;
+
+    returnUrl ? navigate(returnUrl) : navigate("/admin");
   });
 
   const handleInputData = (e) => {
@@ -18,10 +30,15 @@ export default function Login() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log("Login form ==> ", form);
+    try {
+      const LoginResponse = await login(form);
+      console.log("login =>> ", LoginResponse);
+    } catch (error) {
+      toast.error("Some Error Occured !");
+      console.log("Login Page Frontend Error", error);
+    }
   };
 
   document.body.style.overflow = "hidden";
@@ -84,6 +101,7 @@ export default function Login() {
                             onChange={handleInputData}
                             name="userType"
                             value="student"
+                            defaultChecked
                             required
                           />
                           <label>Student</label>

@@ -43,6 +43,7 @@ router.post(
           _id: FindAdmin._id,
           name: FindAdmin.name,
           email: FindAdmin.email,
+          userType: "Admin",
           token: generateToken(
             FindAdmin._id,
             FindAdmin.name,
@@ -107,6 +108,7 @@ router.post(
           _id: CreateAdmin._id,
           name: CreateAdmin.name,
           email: CreateAdmin.email,
+          userType: "Admin",
           token: generateToken(
             CreateAdmin._id,
             CreateAdmin.name,
