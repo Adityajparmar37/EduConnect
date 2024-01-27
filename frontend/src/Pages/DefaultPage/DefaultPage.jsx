@@ -12,6 +12,8 @@ export default function DefaultPage() {
         navigate("/admin");
       } else if (user.userType === "student") {
         navigate("/student");
+      } else if (user.userType === "teacher") {
+        navigate("/teacher");
       } else {
         navigate("/");
       }

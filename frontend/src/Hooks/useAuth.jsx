@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import * as adminServices from "../Services/adminServices.js";
 import * as studentServices from "../Services/studentServices.js";
+import * as teacherServices from "../Services/teacherServices.js";
 
 const AuthContext = createContext(null);
 
@@ -40,6 +41,22 @@ export const AuthProvider = ({ children }) => {
           localStorage.setItem("UserInfo", JSON.stringify(user));
           toast.success("Successfully Login !");
           navigate("/student");
+        } else {
+          if (user.success === false) {
+            toast.error(user.message);
+          }
+        }
+      }
+
+      //teacher
+      else if (loginData.userType === "teacher") {
+        const user = await teacherServices.login(loginData);
+        console.log(user);
+        if (user.success === true) {
+          setUser(user);
+          localStorage.setItem("UserInfo", JSON.stringify(user));
+          toast.success("Successfully Login !");
+          navigate("/teacher");
         } else {
           if (user.success === false) {
             toast.error(user.message);
