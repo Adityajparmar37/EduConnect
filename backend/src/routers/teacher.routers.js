@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const errorHandler = require("../middleware/errorMiddleware.js");
-const Admin = require("../models/adminModel.js");
+const Teacher = require("../models/teacherModel.js");
 const router = express.Router();
 const handler = require("express-async-handler");
 dotenv.config();
@@ -26,28 +26,30 @@ router.post(
         );
       }
 
-      const FindAdmin = await Admin.findOne({
+      const FindTeacher = await Teacher.findOne({
         email,
       });
 
-      if (!FindAdmin)
+      if (!FindTeacher)
         return next(
           errorHandler(404, "User not found")
         );
 
       if (
-        FindAdmin &&
-        (await FindAdmin.matchPassword(password))
+        FindTeacher &&
+        (await FindTeacher.matchPassword(
+          password
+        ))
       ) {
         res.json({
-          _id: FindAdmin._id,
-          name: FindAdmin.name,
-          email: FindAdmin.email,
-          userType: "admin",
+          _id: FindTeacher._id,
+          name: FindTeacher.name,
+          email: FindTeacher.email,
+          userType: "teacher",
           token: generateToken(
-            FindAdmin._id,
-            FindAdmin.name,
-            FindAdmin.email
+            FindTeacher._id,
+            FindTeacher.name,
+            FindTeacher.email
           ),
           success: true,
         });
@@ -70,15 +72,19 @@ router.post(
       const {
         name,
         email,
+        phone,
         password,
         confirmPassword,
+        semester,
       } = req.body;
 
       if (
         !name ||
         !email ||
+        !phone ||
         !password ||
-        !confirmPassword
+        !confirmPassword ||
+        !semester
       ) {
         next(
           errorHandler(
@@ -88,32 +94,35 @@ router.post(
         );
       }
 
-      const adminExists = await Admin.findOne({
-        email,
-      });
-      if (adminExists) {
+      const teacherExists = await Teacher.findOne(
+        {
+          email,
+        }
+      );
+      if (teacherExists) {
         next(
           errorHandler(400, "User Already exist")
         );
       }
 
-      const CreateAdmin = await Admin.create({
+      const CreateTeacher = await Teacher.create({
         name,
         email,
+        phone,
         password,
+        semester,
       });
 
-      if (CreateAdmin) {
+      if (CreateTeacher) {
         res.status(201).json({
-          _id: CreateAdmin._id,
-          name: CreateAdmin.name,
-          email: CreateAdmin.email,
-          userType: "admin",
+          _id: CreateTeacher._id,
+          name: CreateTeacher.name,
+          email: CreateTeacher.email,
+          userType: "student",
           token: generateToken(
-            CreateAdmin._id,
-            CreateAdmin.name,
-            CreateAdmin.email,
-            CreateAdmin.InsitutionName
+            CreateTeacher._id,
+            CreateTeacher.name,
+            CreateTeacher.email
           ),
           success: true,
         });

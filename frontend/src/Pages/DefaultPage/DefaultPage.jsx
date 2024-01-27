@@ -1,6 +1,23 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../Hooks/useAuth";
 
 export default function DefaultPage() {
+  const { user } = useAuth();
+  console.log(user);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      if (user.userType === "admin") {
+        navigate("/admin");
+      } else if (user.userType === "student") {
+        navigate("/student");
+      } else {
+        navigate("/");
+      }
+    }
+  }, [user, navigate]);
+
   document.body.style.overflow = "hidden";
   return (
     <div className="flex h-screen w-auto items-center justify-center overflow-hidden bg-backgroundPhoto pt-20">

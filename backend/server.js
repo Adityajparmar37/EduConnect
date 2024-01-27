@@ -4,6 +4,7 @@ const cors = require("cors");
 const dbconnect = require("./config/database.config");
 const adminRoutes = require("./src/routers/admin.routers.js");
 const studentRoutes = require("./src/routers/student.routers.js");
+const teacherRoutes = require("./src/routers/teacher.routers.js");
 
 dotenv.config();
 const app = express();
@@ -22,6 +23,8 @@ app.use(
 //routing api handling
 app.use("/api/admin", adminRoutes);
 app.use("/api/student", studentRoutes);
+app.use("/api/teacher", teacherRoutes);
+
 
 // Internal Error Handling
 app.use((err, req, res, next) => {

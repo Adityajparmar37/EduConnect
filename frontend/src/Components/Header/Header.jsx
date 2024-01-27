@@ -5,7 +5,6 @@ import { useAuth } from "../../Hooks/useAuth";
 export default function Header() {
   const { user, logout } = useAuth();
 
-
   const handleLogout = () => {
     try {
       logout();
