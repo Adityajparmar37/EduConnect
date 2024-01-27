@@ -14,7 +14,7 @@ export default function Login() {
   const [form, setForm] = useState({
     email: "",
     password: "",
-    userType: "",
+    userType: "student",
   });
 
   useEffect(() => {
@@ -33,6 +33,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(form);
       const LoginResponse = await login(form);
       console.log("login =>> ", LoginResponse);
     } catch (error) {

@@ -5,6 +5,7 @@ import Login from "../../Pages/Login/Login";
 import Signup from "../../Pages/Signup/Signup";
 import AuthRoute from "../AuthRoutes/AuthRoutes";
 import { Toaster } from "react-hot-toast";
+import StudentHomePage from "../../Pages/StudentHomePage/StudentHomePage";
 
 export default function AppRoutes() {
   return (
@@ -16,12 +17,22 @@ export default function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* Home Page user type */}
+        {/* admin pages */}
         <Route
           path="/admin"
           element={
             <AuthRoute>
               <AdminHomePage />
+            </AuthRoute>
+          }
+        />
+
+        {/* student pages */}
+        <Route
+          path="/student"
+          element={
+            <AuthRoute>
+              <StudentHomePage />
             </AuthRoute>
           }
         />
