@@ -15,15 +15,23 @@ export default function Header() {
   };
   return (
     <header>
-      <nav className="border-b-2 border-black bg-white px-4 py-2.5 shadow-md lg:px-6 dark:bg-white ">
+      <nav className="border-b-2 border-black bg-gray-800 px-4 py-2.5 shadow-md lg:px-6 dark:bg-gray-800 ">
         <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between">
           <Link to="/">
-            <div className="flex items-center">
-              <img
-                src="/logo2-removebg-preview.png"
-                className="mr-3 h-9 focus:outline-none sm:h-9"
-                alt="Flowbite Logo"
-              />
+            <div className="flex flex-row items-center">
+              <h1 className="text-[1.6rem] font-semibold text-white duration-200 hover:text-primary">
+                Edu
+                <span>
+                  <img
+                    src="/infinity-logo.png"
+                    className="inline h-10 focus:outline-none"
+                    alt="Flowbite Logo"
+                  />
+                </span>
+                <span className="text-white duration-200 hover:text-primary">
+                  onnect
+                </span>
+              </h1>
             </div>
           </Link>
           <div className="flex items-center lg:order-2">
@@ -32,7 +40,7 @@ export default function Header() {
                 {" "}
                 <Link
                   onClick={handleLogout}
-                  className="mr-2 rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-800  delay-100 hover:rounded-full focus:outline-none focus:ring-2 focus:ring-slate-400 lg:px-5 lg:py-2.5 dark:text-white dark:hover:bg-gray-500"
+                  className="mr-2 rounded-lg bg-white px-4 py-2 text-sm font-medium text-white  delay-100 duration-300 hover:rounded-full focus:outline-none focus:ring-2 focus:ring-slate-400 lg:px-5 lg:py-2.5 dark:text-black dark:hover:bg-zinc-200"
                 >
                   Log out
                 </Link>
@@ -41,7 +49,7 @@ export default function Header() {
               <>
                 <Link
                   to="/login"
-                  className="mr-2 rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-800  delay-100 hover:rounded-full focus:outline-none focus:ring-2 focus:ring-slate-400 lg:px-5 lg:py-2.5 dark:text-white dark:hover:bg-gray-500"
+                  className="mr-2 rounded-lg bg-white px-4 py-2 text-sm font-medium text-white  delay-100 duration-300 hover:rounded-full focus:outline-none focus:ring-2 focus:ring-slate-400 lg:px-5 lg:py-2.5 dark:text-black dark:hover:bg-gray-500"
                 >
                   Log in
                 </Link>
