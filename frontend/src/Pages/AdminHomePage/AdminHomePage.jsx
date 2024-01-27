@@ -14,20 +14,20 @@ export default function AdminHomePage() {
       <div className="z-10 flex h-auto w-5/6 px-3 pt-20">
         <div className="grid grid-cols-3 gap-24">
           <Card
-            to="/"
+            link="/"
             icon={<FaChalkboardTeacher />}
             title="Teacher Dashboard"
             text={["Manage Teacher", "Add New Teacher"]}
           />
           <Card
-            to="/"
+            link="/"
             icon={<PiStudentFill />}
             title="Student Dashboard"
             text={["Manage Student", "Update Student Details"]}
           />
 
           <Card
-            to="/"
+            link="/"
             icon={<LuBookCopy />}
             title="Subject Dashboard"
             text={["Manage Subject", "Update or add new subject"]}
