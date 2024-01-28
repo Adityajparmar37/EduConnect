@@ -3,7 +3,11 @@ const bcrypt = require("bcryptjs");
 
 const teacherSchema = mongoose.Schema(
   {
-    name: {
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
       type: String,
       required: true,
     },
@@ -33,10 +37,22 @@ const teacherSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    semester: {
-      type: String,
-      required: true,
-    },
+    subjects: [
+      {
+        subjectName: {
+          type: String,
+          default: "",
+        },
+        subjectNumber: {
+          type: String,
+          default: "",
+        },
+        semester: {
+          type: String,
+          default: "",
+        },
+      },
+    ],
   },
   {
     timestamps: true,

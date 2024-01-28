@@ -70,59 +70,59 @@ router.post(
   handler(async (req, res, next) => {
     try {
       const {
-        name,
+        firstName,
+        lastName,
         email,
         phone,
         password,
-        confirmPassword,
-        semester,
+        subjects,
       } = req.body;
 
       if (
-        !name ||
+        !firstName ||
+        !lastName ||
         !email ||
         !phone ||
         !password ||
-        !confirmPassword ||
-        !semester
+        !subjects ||
+        subjects.length === 0
       ) {
         next(
           errorHandler(
             401,
-            "Please fill the fields"
+            "Please fill all the required fields"
           )
         );
       }
 
       const teacherExists = await Teacher.findOne(
-        {
-          email,
-        }
+        { email }
       );
       if (teacherExists) {
         next(
-          errorHandler(400, "User Already exist")
+          errorHandler(400, "User Already Exists")
         );
       }
 
-      const CreateTeacher = await Teacher.create({
-        name,
+      const createTeacher = await Teacher.create({
+        firstName,
+        lastName,
         email,
         phone,
         password,
-        semester,
+        subjects,
       });
 
-      if (CreateTeacher) {
+      if (createTeacher) {
         res.status(201).json({
-          _id: CreateTeacher._id,
-          name: CreateTeacher.name,
-          email: CreateTeacher.email,
-          userType: "student",
+          _id: createTeacher._id,
+          name: createTeacher.name,
+          email: createTeacher.email,
+          userType: "teacher",
           token: generateToken(
-            CreateTeacher._id,
-            CreateTeacher.name,
-            CreateTeacher.email
+            createTeacher._id,
+            createTeacher.name,
+            createTeacher.email
           ),
           success: true,
         });
@@ -140,5 +140,6 @@ router.post(
     }
   })
 );
+
 
 module.exports = router;
