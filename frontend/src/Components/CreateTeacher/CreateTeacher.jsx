@@ -75,7 +75,7 @@ export default function CreateTeacher() {
                     </h6>
                     <button
                       onClick={handleSubmit}
-                      className="text-md rounded bg-red-500 px-4 py-2 font-bold uppercase text-white shadow outline-none transition-all  duration-200 ease-linear hover:rounded-full hover:bg-red-300 hover:text-black hover:shadow-md focus:outline-none active:bg-red-600"
+                      className="text-md rounded bg-primary px-4 py-2 font-bold uppercase text-white shadow outline-none transition-all  duration-200 ease-linear hover:rounded-full hover:bg-mintPrimary hover:text-black hover:shadow-md focus:outline-none active:bg-red-600"
                       type="submit"
                     >
                       Create
@@ -300,7 +300,7 @@ export default function CreateTeacher() {
                     <div className="mb-4">
                       <button
                         onClick={handleAddSubject}
-                        className="rounded bg-red-500 px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all  duration-200 ease-linear hover:rounded-full hover:bg-red-300  hover:text-black hover:shadow-md focus:outline-none active:bg-red-600"
+                        className="rounded bg-primary px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all  duration-200 ease-linear hover:rounded-full hover:bg-mintPrimary  hover:text-black hover:shadow-md focus:outline-none active:bg-red-600"
                         type="button"
                       >
                         ADD
