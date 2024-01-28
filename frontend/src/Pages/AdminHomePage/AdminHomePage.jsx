@@ -32,7 +32,7 @@ export default function AdminHomePage() {
           />
 
           <Card
-            link="/"
+            link="/subjectDashboard"
             bgColor="primary"
             icon={<LuBookCopy />}
             icon2={<IoArrowForwardSharp />}

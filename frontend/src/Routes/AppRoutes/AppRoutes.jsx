@@ -9,6 +9,8 @@ import StudentHomePage from "../../Pages/StudentHomePage/StudentHomePage";
 import TeacherHomePage from "../../Pages/TeacherHomePage/TeacherHomePage";
 import TeacherDashboard from "../../Pages/TeacherDashboard/TeacherDashboard";
 import CreateTeacher from "../../Components/CreateTeacher/CreateTeacher";
+import SubjectDashboard from "../../Pages/SubjectDashboard/SubjectDashboard";
+import CreateSubject from "../../Components/CreateSubject/CreateSubject";
 
 export default function AppRoutes() {
   return (
@@ -45,9 +47,22 @@ export default function AppRoutes() {
             </AuthRoute>
           }
         />
-
-        
-
+        <Route
+          path="/subjectDashboard"
+          element={
+            <AuthRoute>
+              <SubjectDashboard />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/createSubject"
+          element={
+            <AuthRoute>
+              <CreateSubject/>
+            </AuthRoute>
+          }
+        />
 
         {/* student pages */}
         <Route

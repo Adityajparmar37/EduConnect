@@ -19,7 +19,7 @@ export default function Signup() {
     userType: "",
     name: "",
     confirmPassword: "",
-    semester: "semester 1",
+    semester: "1",
   });
 
   useEffect(() => {
@@ -183,13 +183,14 @@ export default function Signup() {
                           className="w-full rounded-md border-2 border-gray-400 px-1 py-2"
                           name="semester"
                         >
-                          <option>-- select semester --</option>
-                          <option>semester 1</option>
-                          <option>semester 2</option>
-                          <option>semester 3</option>
-                          <option>semester 4</option>
-                          <option>semester 5</option>
-                          <option>semester 6</option>
+                          <option value="" disabled>
+                            Choose Semester
+                          </option>
+                          {[1, 2, 3, 4, 5, 6].map((semester) => (
+                            <option key={semester} value={semester}>
+                              Semester {semester}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     )}

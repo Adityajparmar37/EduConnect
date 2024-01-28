@@ -21,7 +21,7 @@ export default function TeacherDashboard() {
             text={["Add New Teacher", "Create New Teacher Credentials"]}
           />
           <Card
-            link="/teacherDashboard"
+            link="/manageTeacher"
             bgColor="mintPrimary"
             icon={<PiAddressBook />}
             icon2={<IoArrowForwardSharp />}

@@ -48,7 +48,7 @@ const teacherSchema = mongoose.Schema(
           default: "",
         },
         semester: {
-          type: String,
+          type: Number,
           default: "",
         },
       },
