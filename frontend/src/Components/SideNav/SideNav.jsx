@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 export default function SideNav() {
   return (
     <div className="fixed left-0 top-0 mt-[3.8rem] flex h-full w-64 flex-col border-r-2 border-black bg-gray-800 shadow-md">
-      <div className="flex-grow overflow-y-auto overflow-x-hidden">
+      <div className="overflow-y flex-grow overflow-x-hidden">
         <ul className="flex flex-col space-y-6 py-4">
           <li className="px-5">
             <div className="flex h-8 flex-row items-center">
@@ -20,7 +20,7 @@ export default function SideNav() {
           </li>
           <li>
             <Link
-              to="#"
+              to="/admin"
               className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
             >
               <span className="ml-4 inline-flex items-center justify-center text-2xl">
@@ -33,8 +33,8 @@ export default function SideNav() {
           </li>
           <li>
             <Link
-              to="#"
-              className="duration-300 focus:outline-none relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white hover:border-primary hover:bg-gray-50 hover:text-gray-800"
+              to="/teacherDashboard"
+              className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
             >
               <span className="ml-4 inline-flex items-center justify-center text-2xl">
                 <FaChalkboardTeacher />
@@ -63,7 +63,7 @@ export default function SideNav() {
           <li>
             <Link
               to="#"
-              className="duration-300 focus:outline-none relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white hover:border-primary hover:bg-gray-50 hover:text-gray-800"
+              className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
             >
               <span className="ml-4 inline-flex items-center justify-center text-2xl">
                 <LuBookCopy />
@@ -97,7 +97,7 @@ export default function SideNav() {
           <li>
             <Link
               to="#"
-              className="duration-300 focus:outline-none relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white hover:border-primary hover:bg-gray-50 hover:text-gray-800"
+              className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
             >
               <span className="ml-4 inline-flex items-center justify-center text-2xl">
                 <RiLogoutBoxRLine />

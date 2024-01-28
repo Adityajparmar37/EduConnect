@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { IoArrowForwardSharp } from "react-icons/io5";
 import { GoTriangleRight } from "react-icons/go";
 
-const Card = ({ icon, title, text, link }) => {
+const Card = ({ bgColor, icon, title, text, link, icon2 }) => {
   return (
     <div
-      className={`relative flex h-[15rem] w-[25rem] flex-col rounded-md border-l-8 border-primary  bg-white p-5 shadow-lg duration-300 hover:shadow-xl`}
+      className={`relative flex h-[15rem] w-[25rem] flex-col rounded-md border-l-8 border-${bgColor}  bg-white p-5 shadow-lg duration-300 hover:shadow-xl`}
     >
       <div className="p-3 text-4xl">{icon}</div>
       <div>
@@ -22,9 +22,11 @@ const Card = ({ icon, title, text, link }) => {
           </p>
         ))}
       </div>
-      <div className="absolute bottom-10 left-80 flex justify-end text-3xl text-darkPrimary duration-200 hover:translate-x-3">
+      <div
+        className={`absolute bottom-10 left-80 flex justify-end text-3xl text-${bgColor} duration-200 hover:translate-x-3`}
+      >
         <Link to={link} className={`cursor-pointer text-gray-800`}>
-          <IoArrowForwardSharp />
+          {icon2}
         </Link>
       </div>
     </div>

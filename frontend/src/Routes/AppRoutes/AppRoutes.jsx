@@ -7,6 +7,8 @@ import AuthRoute from "../AuthRoutes/AuthRoutes";
 import { Toaster } from "react-hot-toast";
 import StudentHomePage from "../../Pages/StudentHomePage/StudentHomePage";
 import TeacherHomePage from "../../Pages/TeacherHomePage/TeacherHomePage";
+import TeacherDashboard from "../../Pages/TeacherDashboard/TeacherDashboard";
+import CreateTeacher from "../../Components/CreateTeacher/CreateTeacher";
 
 export default function AppRoutes() {
   return (
@@ -27,6 +29,25 @@ export default function AppRoutes() {
             </AuthRoute>
           }
         />
+        <Route
+          path="/teacherDashboard"
+          element={
+            <AuthRoute>
+              <TeacherDashboard />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/createTeacher"
+          element={
+            <AuthRoute>
+              <CreateTeacher />
+            </AuthRoute>
+          }
+        />
+
+        
+
 
         {/* student pages */}
         <Route

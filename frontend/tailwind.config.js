@@ -6,7 +6,7 @@ export default {
       colors: {
         primary: "#3bb19b",
         secondary: "#f5f5f5",
-        mintPrimary: "#28747a",
+        mintPrimary: "#89d0c3",
         darkPrimary: "#22675b",
       },
       backgroundImage: {
