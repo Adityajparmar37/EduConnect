@@ -3,7 +3,6 @@ import { PiStudentFill } from "react-icons/pi";
 import { LuBookCopy } from "react-icons/lu";
 import { LuHome } from "react-icons/lu";
 import { MdPersonOutline } from "react-icons/md";
-import { RiLogoutBoxRLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
 export default function SideNav() {
@@ -48,8 +47,8 @@ export default function SideNav() {
             </Link>
           </li>
           <li>
-            <a
-              to="#"
+            <Link
+              to="/studentDashboard"
               className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
             >
               <span className="ml-4 inline-flex items-center justify-center text-2xl">
@@ -58,11 +57,11 @@ export default function SideNav() {
               <span className="text-md ml-2 truncate tracking-wide">
                 Student
               </span>
-            </a>
+            </Link>
           </li>
           <li>
             <Link
-              to="#"
+              to="/subjectDashboard"
               className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
             >
               <span className="ml-4 inline-flex items-center justify-center text-2xl">
@@ -91,19 +90,6 @@ export default function SideNav() {
               </span>
               <span className="text-md ml-2 truncate tracking-wide">
                 Profile
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="#"
-              className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
-            >
-              <span className="ml-4 inline-flex items-center justify-center text-2xl">
-                <RiLogoutBoxRLine />
-              </span>
-              <span className="text-md ml-2 truncate tracking-wide">
-                Logout
               </span>
             </Link>
           </li>
