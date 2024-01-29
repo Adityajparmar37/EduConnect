@@ -2,6 +2,9 @@ const express = require("express");
 const dotenv = require("dotenv");
 const errorHandler = require("../middleware/errorMiddleware.js");
 const Teacher = require("../models/teacherModel.js");
+const {
+  sendMail,
+} = require("../utils/sendMail.js");
 const router = express.Router();
 const handler = require("express-async-handler");
 dotenv.config();
@@ -113,6 +116,29 @@ router.post(
         subjects,
       });
 
+      console.log(process.env.FROMPHONE);
+      if (createTeacher) {
+        const mailData = {
+          name: createTeacher.name,
+          intro:
+            "Your Credentials to login in platform",
+          table: {
+            data: [
+              {
+                Email: createTeacher.email,
+                Password: password,
+              },
+            ],
+          },
+          outro: "Thank you 🫱🏻‍🫲🏾",
+        };
+
+        await sendMail(
+          createTeacher.email,
+          "Teacher Credentials",
+          mailData
+        );
+      }
       if (createTeacher) {
         res.status(201).json({
           _id: createTeacher._id,
@@ -124,6 +150,7 @@ router.post(
             createTeacher.name,
             createTeacher.email
           ),
+          mail: "Email sent successfully",
           success: true,
         });
       } else {
@@ -140,6 +167,5 @@ router.post(
     }
   })
 );
-
 
 module.exports = router;

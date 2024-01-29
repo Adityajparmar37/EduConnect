@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IoArrowForwardSharp } from "react-icons/io5";
 import { GoTriangleRight } from "react-icons/go";
 
 const Card = ({ bgColor, icon, title, text, link, icon2 }) => {
