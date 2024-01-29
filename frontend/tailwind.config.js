@@ -8,6 +8,7 @@ export default {
         secondary: "#f5f5f5",
         mintPrimary: "#89d0c3",
         darkPrimary: "#22675b",
+        loadingCol: "#e90c59",
       },
       backgroundImage: {
         backgroundPhoto: 'url("/background-image-2.jpg")',

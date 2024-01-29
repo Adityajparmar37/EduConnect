@@ -6,11 +6,14 @@ import "./Interceptors/authInterceptors.js";
 import "./index.css";
 import "./axios.Config.js";
 import { AuthProvider } from "./Hooks/useAuth.jsx";
+import { LoadingProvider } from "./Hooks/useLoading.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <LoadingProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </LoadingProvider>
   </BrowserRouter>,
 );

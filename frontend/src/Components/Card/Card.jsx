@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { GoTriangleRight } from "react-icons/go";
 
 const Card = ({ bgColor, icon, title, text, link, icon2 }) => {
+  console.log(bgColor);
   return (
     <div
       className={`relative flex h-[15rem] w-[25rem] flex-col rounded-md border-l-8 border-${bgColor}  bg-white p-5 shadow-lg duration-300 hover:shadow-xl`}
