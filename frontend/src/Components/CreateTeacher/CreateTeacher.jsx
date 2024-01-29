@@ -63,7 +63,7 @@ export default function CreateTeacher() {
       <div className="lg:w-1/6">
         <SideNav />
       </div>
-      <div className="z-10 mt-5 flex w-full flex-col px-3 pt-10 lg:w-5/6 lg:flex-row">
+      <div className="z-10 mt-5 flex w-full flex-col overflow-auto px-3 pt-10 lg:w-5/6  lg:flex-row">
         <div className="mx-auto w-full lg:w-3/4 xl:w-full">
           <section className="w-full py-1">
             <div className="mx-auto w-full px-4 lg:w-full">
