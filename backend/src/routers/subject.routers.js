@@ -4,7 +4,11 @@ const errorHandler = require("../middleware/errorMiddleware.js");
 const Semester = require("../models/semesterModel.js");
 const router = express.Router();
 const handler = require("express-async-handler");
+const auth = require("../middleware/authMiddleware.js");
 dotenv.config();
+
+//authorization
+router.use(auth);
 
 router.post(
   "/addSubject",

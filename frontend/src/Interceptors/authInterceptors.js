@@ -2,7 +2,7 @@ import axios from "axios";
 
 axios.interceptors.request.use(
   (req) => {
-    const User = localStorage.getItem("userInfo");
+    const User = localStorage.getItem("UserInfo");
     const token = User && JSON.parse(User).token;
     // console.log("token => " , token)
 
