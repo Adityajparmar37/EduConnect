@@ -39,7 +39,7 @@ export default function Header() {
               <>
                 <Link
                   onClick={handleLogout}
-                  className="mr-2 rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-white  delay-100 duration-300 hover:rounded-full focus:outline-none focus:ring-2 focus:ring-slate-400 lg:px-5 lg:py-2.5 dark:text-black dark:hover:bg-zinc-300"
+                  className="mr-2 rounded-lg bg-gray-50 px-4 py-2 text-sm font-medium text-white  delay-100 duration-300 hover:rounded-full focus:outline-none focus:ring-2 focus:ring-slate-400 lg:px-5 lg:py-2.5 dark:text-black dark:hover:bg-zinc-300"
                 >
                   Log out
                 </Link>
@@ -48,7 +48,7 @@ export default function Header() {
               <>
                 <Link
                   to="/login"
-                  className="mr-2 rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-white  delay-100 duration-300 hover:rounded-full focus:outline-none focus:ring-2 focus:ring-slate-400 lg:px-5 lg:py-2.5 dark:text-black dark:hover:bg-zinc-300"
+                  className="mr-2 rounded-lg bg-gray-50 px-4 py-2 text-sm font-medium text-white  delay-100 duration-300 hover:rounded-full focus:outline-none focus:ring-2 focus:ring-slate-400 lg:px-5 lg:py-2.5 dark:text-black dark:hover:bg-zinc-300"
                 >
                   Log in
                 </Link>

@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const errorHandler = require("../middleware/errorMiddleware.js");
 const Teacher = require("../models/teacherModel.js");
+const authMid = require("../middleware/authMiddleware.js");
 const {
   sendMail,
 } = require("../utils/sendMail.js");
@@ -70,6 +71,7 @@ router.post(
 //signUp API
 router.post(
   "/signup",
+  authMid,
   handler(async (req, res, next) => {
     try {
       const {
@@ -164,6 +166,28 @@ router.post(
     } catch (error) {
       console.error("SignUp error", error);
       next(error);
+    }
+  })
+);
+
+router.get(
+  "/getAllTeacher",
+  handler(async (req, res, next) => {
+    try {
+      const getAllTeacher = await Teacher.find(
+        {}
+      );
+
+      if (getAllTeacher) {
+        res.status(201).json(getAllTeacher);
+      } else {
+        next(
+          errorHandler(404, "No teacher found !")
+        );
+      }
+    } catch (error) {
+      next(error);
+      console.log("All teacher fetching error");
     }
   })
 );

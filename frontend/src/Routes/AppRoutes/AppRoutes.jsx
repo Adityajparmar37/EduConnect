@@ -11,6 +11,8 @@ import TeacherDashboard from "../../Pages/TeacherDashboard/TeacherDashboard";
 import CreateTeacher from "../../Components/CreateTeacher/CreateTeacher";
 import SubjectDashboard from "../../Pages/SubjectDashboard/SubjectDashboard";
 import CreateSubject from "../../Components/CreateSubject/CreateSubject";
+import ManageTeacher from "../../Pages/ManageSubject/ManageTeacher";
+
 
 export default function AppRoutes() {
   return (
@@ -59,7 +61,15 @@ export default function AppRoutes() {
           path="/createSubject"
           element={
             <AuthRoute>
-              <CreateSubject/>
+              <CreateSubject />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/manageTeacher"
+          element={
+            <AuthRoute>
+              <ManageTeacher/>
             </AuthRoute>
           }
         />

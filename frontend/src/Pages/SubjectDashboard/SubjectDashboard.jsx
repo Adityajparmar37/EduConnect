@@ -22,7 +22,7 @@ export default function SubjectDashboard() {
               text={["Add New Subject", "Add Subject Details"]}
             />
             <Card
-              link="/teacherDashboard"
+              link="/manageSubject"
               bgColor="mintPrimary"
               icon={<RiBookletLine />}
               icon2={<IoArrowForwardSharp />}
