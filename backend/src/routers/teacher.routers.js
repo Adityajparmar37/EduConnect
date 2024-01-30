@@ -240,6 +240,7 @@ router.get(
 );
 
 //upadte teacher detials by admin
+// Update teacher details by admin
 router.put(
   "/update/:id",
   authMid,
@@ -247,7 +248,9 @@ router.put(
     try {
       const { id } = req.params;
       const updateFormData = req.body;
-      console.log(updateFormData);
+      const newPassword = updateFormData.password;
+      console.log(newPassword);
+      // console.log(updateFormData);
       console.log(id);
 
       if (updateFormData.password) {
@@ -257,26 +260,69 @@ router.put(
             updateFormData.password,
             salt
           );
-      }
 
-      const updatedTeacher =
-        await Teacher.findByIdAndUpdate(
-          id,
-          updateFormData,
-          { new: true }
-        );
+        // Fetch the existing teacher data before the update
+        const existingTeacher =
+          await Teacher.findById(id);
 
-      if (!updatedTeacher) {
-        return res.status(404).json({
-          success: false,
-          error: "Teacher not found",
-        });
+        const updatedTeacher =
+          await Teacher.findByIdAndUpdate(
+            id,
+            updateFormData,
+            { new: true }
+          );
+
+        if (!updatedTeacher) {
+          return res.status(404).json({
+            success: false,
+            error: "Teacher not found",
+          });
+        }
+
+        // Check if the password is changed and send email
+        if (
+          existingTeacher.password !==
+          updatedTeacher.password
+        ) {
+          const mailData = {
+            name: updatedTeacher.name,
+            intro: "Your Updated Credentials",
+            table: {
+              data: [
+                {
+                  Email: updatedTeacher.email,
+                  Password: newPassword,
+                },
+              ],
+            },
+            outro: "Thank you 🫱🏻‍🫲🏾",
+          };
+
+          await sendMail(
+            updatedTeacher.email,
+            "Teacher Credentials",
+            mailData
+          );
+        }
+      } else {
+        const updatedTeacher =
+          await Teacher.findByIdAndUpdate(
+            id,
+            updateFormData,
+            { new: true }
+          );
+
+        if (!updatedTeacher) {
+          return res.status(404).json({
+            success: false,
+            error: "Teacher not found",
+          });
+        }
       }
 
       res.json({
         success: true,
         message: "Teacher updated successfully",
-        data: updatedTeacher,
       });
     } catch (error) {
       console.error(
