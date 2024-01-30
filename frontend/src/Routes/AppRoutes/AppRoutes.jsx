@@ -8,9 +8,9 @@ import { Toaster } from "react-hot-toast";
 import StudentHomePage from "../../Pages/StudentHomePage/StudentHomePage";
 import TeacherHomePage from "../../Pages/TeacherHomePage/TeacherHomePage";
 import TeacherDashboard from "../../Pages/TeacherDashboard/TeacherDashboard";
-import CreateTeacher from "../../Components/CreateTeacher/CreateTeacher";
+import CreateTeacher from "../../Pages/CreateTeacher/CreateTeacher";
 import SubjectDashboard from "../../Pages/SubjectDashboard/SubjectDashboard";
-import CreateSubject from "../../Components/CreateSubject/CreateSubject";
+import CreateSubject from "../../Pages/CreateSubject/CreateSubject";
 import ManageTeacher from "../../Pages/ManageTeacher/ManageTeacher";
 
 

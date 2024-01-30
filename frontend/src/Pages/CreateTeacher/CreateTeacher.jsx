@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { signup } from "../../Services/teacherServices";
-import SideNav from "../SideNav/SideNav";
+import SideNav from "../../Components/SideNav/SideNav";
 
 export default function CreateTeacher() {
   const [teacherData, setTeacherData] = useState({
