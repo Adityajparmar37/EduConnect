@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { MdDelete } from "react-icons/md";
 
-
 const TableCard = ({ teacher, index, DeleteTeacher }) => {
   return (
     <tr
@@ -23,7 +22,7 @@ const TableCard = ({ teacher, index, DeleteTeacher }) => {
       </td>
       <td className={`px-6 py-4`}>
         <div className="flex space-x-5">
-          <Link to={``}>
+          <Link to={`/updateTeacher/${teacher._id}`}>
             <button
               className={`p-2 text-2xl font-semibold duration-200 hover:rounded-full hover:bg-blue-400 hover:text-white dark:text-blue-500`}
             >

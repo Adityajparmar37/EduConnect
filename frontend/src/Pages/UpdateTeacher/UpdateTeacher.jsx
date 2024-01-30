@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import { signup } from "../../Services/teacherServices";
+import { useNavigate, useParams } from "react-router-dom";
 import SideNav from "../../Components/SideNav/SideNav";
-import { useNavigate } from "react-router-dom";
+import { getATeacher, updateATeacher } from "../../Services/teacherServices";
 
-export default function CreateTeacher() {
+export default function UpdateTeacher() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [teacherData, setTeacherData] = useState({
     firstName: "",
@@ -42,18 +44,31 @@ export default function CreateTeacher() {
     e.preventDefault();
     console.log("Form data:", teacherData);
     try {
-      if (teacherData.password !== teacherData.confirmPassword) {
-        toast.error("Password must match");
-      } else {
-        const responseTeacher = await signup(teacherData);
-        console.log(responseTeacher);
 
-        if (responseTeacher.success === true) {
-          toast.success("Teacher added successfully");
-          navigate("/manageTeacher");
-        } else {
-          toast.error(responseTeacher.message);
-        }
+         const isPasswordUpdated = teacherData.password.trim().length > 0;
+
+         if (
+           isPasswordUpdated &&
+           teacherData.password !== teacherData.confirmPassword
+         ) {
+           toast.error("Password must match");
+           return;
+         }
+
+         ///password change thayu hoi toj send karu nakar nhi
+         const updatePayload = isPasswordUpdated
+           ? { ...teacherData, password: teacherData.password }
+           : { ...teacherData, password: undefined };
+      
+      
+      
+      const updatedTeacher = await updateATeacher(id, updatePayload);
+      console.log("Update teacher", updatedTeacher);
+
+      if (updatedTeacher.success === true) {
+        toast.success(updatedTeacher.message);
+      } else {
+        toast.error(updatedTeacher.message);
       }
     } catch (error) {
       toast.error("Please try again");
@@ -61,9 +76,33 @@ export default function CreateTeacher() {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responseTeacher = await getATeacher(id);
+        console.log("A teacher ==> ", responseTeacher);
+        setTeacherData({
+          firstName: responseTeacher.firstName || "",
+          lastName: responseTeacher.lastName || "",
+          email: responseTeacher.email || "",
+          phone: responseTeacher.phone || "",
+          password: "",
+          confirmPassword: "",
+          subjects: responseTeacher.subjects || [
+            { subjectName: "", subjectNumber: "", semester: "" },
+          ],
+        });
+      } catch (error) {
+        toast.error("Some error occured ! , please try again!");
+        console.log("Get a Teacher error ", error);
+      }
+    };
+    fetchData();
+  }, [id]);
+
   return (
-    <div className="flex min-h-screen flex-col lg:flex-row">
-      <div className="lg:w-1/6">
+    <div className="flex h-screen">
+      <div className="w-1/6">
         <SideNav />
       </div>
       <div className="z-10 mt-5 flex w-full flex-col overflow-auto px-3 pt-10 lg:w-5/6  lg:flex-row">
@@ -74,14 +113,14 @@ export default function CreateTeacher() {
                 <div className="mb-5 rounded-t border-b-2 border-gray-500 bg-gray-50 px-5 py-3 md:mb-6">
                   <div className="flex items-center justify-between text-center">
                     <h6 className="text-blueGray-700 text-xl font-bold">
-                      👩🏻‍🏫 Create Teacher
+                      👩🏻‍🏫 Update Teacher
                     </h6>
                     <button
                       onClick={handleSubmit}
-                      className="text-md rounded bg-primary px-4 py-2 font-bold uppercase text-white shadow outline-none transition-all  duration-200 ease-linear hover:rounded-full hover:bg-mintPrimary hover:text-black hover:shadow-md focus:outline-none active:bg-red-600"
+                      className="text-md rounded bg-red-500 px-4 py-2 font-bold uppercase text-white shadow outline-none transition-all  duration-200 ease-linear hover:rounded-full hover:bg-red-100 hover:text-black hover:shadow-md focus:outline-none active:bg-red-600"
                       type="submit"
                     >
-                      Create
+                      Update
                     </button>
                   </div>
                 </div>
@@ -303,7 +342,7 @@ export default function CreateTeacher() {
                     <div className="mb-4">
                       <button
                         onClick={handleAddSubject}
-                        className="rounded bg-primary px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all  duration-200 ease-linear hover:rounded-full hover:bg-mintPrimary  hover:text-black hover:shadow-md focus:outline-none active:bg-red-600"
+                        className="rounded bg-red-500 px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all  duration-200 ease-linear hover:rounded-full hover:bg-red-100  hover:text-black hover:shadow-md focus:outline-none active:bg-red-600"
                         type="button"
                       >
                         ADD

@@ -12,7 +12,7 @@ import CreateTeacher from "../../Pages/CreateTeacher/CreateTeacher";
 import SubjectDashboard from "../../Pages/SubjectDashboard/SubjectDashboard";
 import CreateSubject from "../../Pages/CreateSubject/CreateSubject";
 import ManageTeacher from "../../Pages/ManageTeacher/ManageTeacher";
-
+import UpdateTeacher from "../../Pages/UpdateTeacher/UpdateTeacher";
 
 export default function AppRoutes() {
   return (
@@ -69,10 +69,20 @@ export default function AppRoutes() {
           path="/manageTeacher"
           element={
             <AuthRoute>
-              <ManageTeacher/>
+              <ManageTeacher />
             </AuthRoute>
           }
         />
+        <Route
+          path="/updateTeacher/:id"
+          element={
+            <AuthRoute>
+              <UpdateTeacher />
+            </AuthRoute>
+          }
+        />
+
+        
 
         {/* student pages */}
         <Route

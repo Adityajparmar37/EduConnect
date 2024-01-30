@@ -42,6 +42,29 @@ export const deleteTeacher = async (id) => {
   }
 };
 
+export const getATeacher = async (id) => {
+  try {
+    console.log(id);
+    const { data } = await axios.get(`api/teacher/manageTeacher/${id}`);
+    console.log("Teacher teacher ==> ", data);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const updateATeacher = async (id, teacherData) => {
+  try {
+    console.log(id);
+    console.log(teacherData);
+    const { data } = await axios.put(`api/teacher/update/${id}`, teacherData);
+    console.log("Teacher teacher ==> ", data);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export const getUser = () =>
   localStorage.getItem("UserInfo")
     ? JSON.parse(localStorage.getItem("UserInfo"))

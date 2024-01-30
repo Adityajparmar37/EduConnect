@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const bcrypt = require("bcryptjs");
 const errorHandler = require("../middleware/errorMiddleware.js");
 const Teacher = require("../models/teacherModel.js");
 const authMid = require("../middleware/authMiddleware.js");
@@ -172,6 +173,7 @@ router.post(
 
 router.get(
   "/getAllTeacher",
+  authMid,
   handler(async (req, res, next) => {
     try {
       const getAllTeacher = await Teacher.find(
@@ -194,6 +196,7 @@ router.get(
 
 router.delete(
   "/delete/:id",
+  authMid,
   handler(async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -213,6 +216,78 @@ router.delete(
     } catch (error) {
       console.log(error);
       next(error);
+    }
+  })
+);
+
+///find individual teacher
+router.get(
+  "/manageTeacher/:id",
+  authMid,
+  handler(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const teacherData = await Teacher.findById(
+        id
+      );
+      res.send(teacherData);
+    } catch (error) {
+      next(
+        errorHandler(404, "No Such Project Found")
+      );
+    }
+  })
+);
+
+//upadte teacher detials by admin
+router.put(
+  "/update/:id",
+  authMid,
+  handler(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const updateFormData = req.body;
+      console.log(updateFormData);
+      console.log(id);
+
+      if (updateFormData.password) {
+        const salt = await bcrypt.genSalt(10);
+        updateFormData.password =
+          await bcrypt.hash(
+            updateFormData.password,
+            salt
+          );
+      }
+
+      const updatedTeacher =
+        await Teacher.findByIdAndUpdate(
+          id,
+          updateFormData,
+          { new: true }
+        );
+
+      if (!updatedTeacher) {
+        return res.status(404).json({
+          success: false,
+          error: "Teacher not found",
+        });
+      }
+
+      res.json({
+        success: true,
+        message: "Teacher updated successfully",
+        data: updatedTeacher,
+      });
+    } catch (error) {
+      console.error(
+        "Error updating Teacher",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        error: "Internal Server Error",
+      });
     }
   })
 );
