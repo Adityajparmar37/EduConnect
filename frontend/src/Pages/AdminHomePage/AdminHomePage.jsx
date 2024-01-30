@@ -16,7 +16,7 @@ export default function AdminHomePage() {
         <div className="grid grid-cols-3 gap-24">
           <Card
             link="/teacherDashboard"
-            bgColor="primary"
+            bgColor="darkPrimary"
             icon={<FaChalkboardTeacher />}
             icon2={<IoArrowForwardSharp />}
             title="Teacher Dashboard"
@@ -24,7 +24,7 @@ export default function AdminHomePage() {
           />
           <Card
             link="/"
-            bgColor="primary"
+            bgColor="darkPrimary"
             icon={<PiStudentFill />}
             icon2={<IoArrowForwardSharp />}
             title="Student Dashboard"
@@ -33,7 +33,7 @@ export default function AdminHomePage() {
 
           <Card
             link="/subjectDashboard"
-            bgColor="primary"
+            bgColor="darkPrimary"
             icon={<LuBookCopy />}
             icon2={<IoArrowForwardSharp />}
             title="Subject Dashboard"

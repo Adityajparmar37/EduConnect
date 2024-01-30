@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { addSubject } from "../../Services/subjectServices";
-import { signup } from "../../Services/teacherServices";
 import SideNav from "../SideNav/SideNav";
 
 export default function CreateSubject() {
