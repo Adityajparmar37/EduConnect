@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import SideNav from "../../Components/SideNav/SideNav";
 import TableCard from "../../Components/TableCard/TableCard";
 import { getAllTeacher } from "../../Services/teacherServices";
+import { deleteTeacher } from "../../Services/teacherServices";
 
 export default function ManageTeacher() {
   const [allTeacher, setAllTeacher] = useState();
@@ -22,6 +23,24 @@ export default function ManageTeacher() {
 
     fetchData();
   }, []);
+
+  const DeleteTeacher = async (id) => {
+    try {
+      console.log(id);
+      const responseData = await deleteTeacher(id);
+      if (responseData.success === true) {
+        toast.success(responseData.message);
+        setAllTeacher((prevTeachers) =>
+          prevTeachers.filter((teacher) => teacher._id !== id),
+        );
+      } else if (responseData.success === false) {
+        toast.error(responseData.message);
+      }
+    } catch (error) {
+      toast.error("Please try again!");
+    }
+  };
+
   return (
     <div className="flex h-screen">
       <div className="w-1/6">
@@ -30,7 +49,7 @@ export default function ManageTeacher() {
       <div className="z-10 flex h-auto w-5/6 justify-center px-3 pt-20">
         {allTeacher && allTeacher.length > 0 ? (
           <>
-            <div className="flex flex-col w-full">
+            <div className="flex w-full flex-col">
               <table className="w-full text-left  rtl:text-right">
                 <thead className="border-b-4 border-white  text-[1rem] font-bold uppercase text-white dark:bg-primary">
                   <tr>
@@ -62,6 +81,7 @@ export default function ManageTeacher() {
                         key={teacher._id}
                         teacher={teacher}
                         index={index}
+                        DeleteTeacher={DeleteTeacher}
                       />
                     ))}
                 </tbody>
@@ -69,13 +89,11 @@ export default function ManageTeacher() {
             </div>
           </>
         ) : (
-          <div className="flex h-screen w-screen items-center justify-center">
-            <Link to="/teacherDashboard">
-              <h1 className=" rounded-md bg-gray-600 p-2 text-lg text-white">
-                No Task Found! Click to go back
-              </h1>
-            </Link>
-          </div>
+          <Link to="/teacherDashboard">
+            <h1 className=" items-center justify-center rounded-md bg-gray-600 p-2 text-lg text-white">
+              No Teacher Found! Click to go back
+            </h1>
+          </Link>
         )}
       </div>
     </div>

@@ -31,6 +31,17 @@ export const getAllTeacher = async () => {
   }
 };
 
+export const deleteTeacher = async (id) => {
+  try {
+    console.log(id);
+    const { data } = await axios.delete(`api/teacher/delete/${id} `);
+    console.log("Teacher teacher ==> ", data);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export const getUser = () =>
   localStorage.getItem("UserInfo")
     ? JSON.parse(localStorage.getItem("UserInfo"))

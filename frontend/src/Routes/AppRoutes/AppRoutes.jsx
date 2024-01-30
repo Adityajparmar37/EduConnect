@@ -11,7 +11,7 @@ import TeacherDashboard from "../../Pages/TeacherDashboard/TeacherDashboard";
 import CreateTeacher from "../../Components/CreateTeacher/CreateTeacher";
 import SubjectDashboard from "../../Pages/SubjectDashboard/SubjectDashboard";
 import CreateSubject from "../../Components/CreateSubject/CreateSubject";
-import ManageTeacher from "../../Pages/ManageSubject/ManageTeacher";
+import ManageTeacher from "../../Pages/ManageTeacher/ManageTeacher";
 
 
 export default function AppRoutes() {
