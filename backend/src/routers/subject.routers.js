@@ -72,4 +72,27 @@ router.post(
   })
 );
 
+router.get(
+  "/getAllSubject",
+  handler(async (req, res, next) => {
+    try {
+      const allSubject = await Semester.find({});
+
+      if (allSubject && allSubject.length > 0) {
+        res.status(200).send(allSubject);
+      } else {
+        next(
+          errorHandler(404, "No subject found")
+        );
+      }
+    } catch (error) {
+      console.log(
+        "Getting all subject error",
+        error
+      );
+      next(error);
+    }
+  })
+);
+
 module.exports = router;
