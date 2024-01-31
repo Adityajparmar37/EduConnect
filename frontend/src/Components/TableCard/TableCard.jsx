@@ -66,7 +66,7 @@ const TableCard = ({ teacher, index, DeleteTeacher, Subject }) => {
                     <button
                       className={`p-2 text-2xl font-semibold duration-200 hover:rounded-full hover:bg-blue-400 hover:text-white dark:text-blue-500`}
                     >
-                      <LiaUserEditSolid />
+                      <TbBookUpload />
                     </button>
                   </Link>
                   {/* Add delete functionality */}
