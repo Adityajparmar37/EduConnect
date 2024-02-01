@@ -16,25 +16,33 @@ const subjectSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+const Subject = mongoose.model(
+  "Subject",
+  subjectSchema
+);
 
-// Define the Semester Schema with an array of subjects
 const semesterSchema = mongoose.Schema(
   {
     semesterName: {
       type: Number,
       required: true,
     },
-    subjects: [subjectSchema],
+    subjects: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Subject",
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
 
-// Create a model based on the semester schema
+
 const Semester = mongoose.model(
   "Semester",
   semesterSchema
 );
 
-module.exports = Semester;
+module.exports = { Subject, Semester };

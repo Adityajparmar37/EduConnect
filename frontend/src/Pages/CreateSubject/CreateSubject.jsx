@@ -7,7 +7,7 @@ export default function CreateSubject() {
   const [subjectData, setSubjectData] = useState({
     subjectName: "",
     subjectNumber: "",
-    semesterName: "",
+    semesterName: "1",
   });
   const handleInputChange = (key, value) => {
     setSubjectData((prevData) => ({ ...prevData, [key]: value }));

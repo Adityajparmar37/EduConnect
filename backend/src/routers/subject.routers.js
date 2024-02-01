@@ -1,7 +1,10 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const errorHandler = require("../middleware/errorMiddleware.js");
-const Semester = require("../models/semesterModel.js");
+const {
+  Subject,
+  Semester,
+} = require("../models/semesterModel.js");
 const router = express.Router();
 const handler = require("express-async-handler");
 const authMid = require("../middleware/authMiddleware.js");
@@ -25,13 +28,20 @@ router.post(
         !subjectNumber ||
         !semesterName
       ) {
-        next(
+        return next(
           errorHandler(
-            404,
+            400,
             "Please fill all details"
           )
         );
       }
+
+      const subject = new Subject({
+        subjectName: subjectName,
+        subjectNumber: subjectNumber,
+      });
+
+      const savedSubject = await subject.save();
 
       let semester = await Semester.findOne({
         semesterName: semesterName,
@@ -40,21 +50,13 @@ router.post(
       if (!semester) {
         semester = new Semester({
           semesterName: semesterName,
-          subjects: [
-            {
-              subjectName: subjectName,
-              subjectNumber: subjectNumber,
-            },
-          ],
+          subjects: [savedSubject._id],
         });
       } else {
-        // joh semester agar phela thi hoi toh
-        semester.subjects.push({
-          subjectName: subjectName,
-          subjectNumber: subjectNumber,
-        });
+        semester.subjects.push(savedSubject._id);
       }
 
+      // Save the semester
       await semester.save();
 
       res.status(201).json({
@@ -76,20 +78,54 @@ router.get(
   "/getAllSubject",
   handler(async (req, res, next) => {
     try {
-      const allSubject = await Semester.find({});
+      const allSubjects = await Semester.find(
+        {}
+      ).populate("subjects");
 
-      if (allSubject && allSubject.length > 0) {
-        res.status(200).send(allSubject);
+      if (allSubjects && allSubjects.length > 0) {
+        res.status(200).json(allSubjects);
       } else {
         next(
-          errorHandler(404, "No subject found")
+          errorHandler(404, "No subjects found")
         );
       }
     } catch (error) {
       console.log(
-        "Getting all subject error",
+        "Getting all subjects error",
         error
       );
+      next(error);
+    }
+  })
+);
+router.delete(
+  "/delete/:subid",
+  handler(async (req, res, next) => {
+    try {
+      const { subid } = req.params;
+
+      // Delete subject from the Subject database
+      const deletedSubject =
+        await Subject.findByIdAndDelete(subid);
+      if (!deletedSubject) {
+        return res
+          .status(404)
+          .json({ error: "Subject not found" });
+      }
+
+      // Remove the subject reference from the Semesters
+      const sem = await Semester.updateMany(
+        { subjects: subid },
+        { $pull: { subjects: subid } }
+      );
+
+      console.log(sem);
+
+      res.status(200).json({
+        message: "Subject deleted successfully",
+      });
+    } catch (error) {
+      console.error(error);
       next(error);
     }
   })
