@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { TbBookUpload } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
+import { IoMdArrowDropright } from "react-icons/io";
 
 const TableCard = ({ teacher, index, DeleteTeacher, Subject }) => {
   return (
@@ -50,7 +51,9 @@ const TableCard = ({ teacher, index, DeleteTeacher, Subject }) => {
               className={`text-dark border-b-2 bg-white font-semibold hover:bg-gray-50`}
             >
               <td className={`w-4 p-4`}>
-                <div className="flex items-center">{index + 1}</div>
+                <div className="flex items-center">
+                  <IoMdArrowDropright />
+                </div>
               </td>
               <td
                 className={`whitespace-nowrap px-6 py-4 text-lg font-bold text-darkPrimary`}
