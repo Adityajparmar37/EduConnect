@@ -20,10 +20,35 @@ export const getAllSubject = async () => {
   }
 };
 
+export const getASubject = async (id) => {
+  try {
+    console.log(id);
+    const { data } = await axios.get(`api/subject/manageSubject/${id}`);
+    console.log("Subject  ==> ", data);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export const deleteSubject = async (id) => {
   try {
     console.log(id);
     const { data } = await axios.delete(`api/subject/delete/${id} `);
+    console.log("Subject delete ==> ", data);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const updateSubject = async (id, NewSubjectData) => {
+  try {
+    console.log(id);
+    const { data } = await axios.put(
+      `api/subject/update/${id} `,
+      NewSubjectData,
+    );
     console.log("Subject delete ==> ", data);
     return data;
   } catch (error) {

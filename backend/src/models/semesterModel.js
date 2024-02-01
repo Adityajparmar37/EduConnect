@@ -11,6 +11,10 @@ const subjectSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    semesterName: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true,
@@ -38,7 +42,6 @@ const semesterSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-
 
 const Semester = mongoose.model(
   "Semester",

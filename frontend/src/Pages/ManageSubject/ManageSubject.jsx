@@ -7,7 +7,7 @@ import TableCard from "../../Components/TableCard/TableCard";
 import { deleteSubject, getAllSubject } from "../../Services/subjectServices";
 
 export default function ManageSubject() {
-  const [allSubject, setAllSubject] = useState();
+  const [allSubject, setAllSubject] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -47,7 +47,7 @@ export default function ManageSubject() {
    }
  };
 
-
+console.log(allSubject.length);
   return (
     <div className="flex h-screen">
       <div className="w-1/6">
@@ -62,8 +62,8 @@ export default function ManageSubject() {
                   <tr>
                     <th scope="col" className="p-4">
                       <div className="flex items-center">
-                        <label className="text-lg font-bold text-white">
-                          👩🏻‍🏫
+                        <label className="text-xl font-bold text-white">
+                          📕
                         </label>
                       </div>
                     </th>

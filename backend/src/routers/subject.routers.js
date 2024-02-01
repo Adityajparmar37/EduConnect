@@ -39,6 +39,7 @@ router.post(
       const subject = new Subject({
         subjectName: subjectName,
         subjectNumber: subjectNumber,
+        semesterName: semesterName,
       });
 
       const savedSubject = await subject.save();
@@ -98,6 +99,72 @@ router.get(
     }
   })
 );
+
+router.get(
+  "/manageSubject/:id",
+  handler(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const subjectData = await Subject.findById(
+        id
+      );
+
+      if (!subjectData) {
+        next(
+          errorHandler(404, "No Subject found !")
+        );
+      }
+
+      if (subjectData) {
+        res.status(200).json(subjectData);
+      }
+    } catch (error) {
+      console.log("subject ==> ", data);
+      next(error);
+    }
+  })
+);
+
+router.put(
+  "/update/:id",
+  handler(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const updateSubject = req.body;
+
+      console.log(req.body.semesterName);
+
+      console.log(id, " ", updateSubject);
+      const updatedSubjectData =
+        await Subject.findByIdAndUpdate(
+          id,
+          updateSubject,
+          { new: true }
+        );
+
+      if (!updatedSubjectData) {
+        next(
+          errorHandler(404, "No Subject found !")
+        );
+      }
+
+      if (updatedSubjectData) {
+        res.json({
+          success: true,
+          message: "Subject updated successfully",
+        });
+      } else {
+        next(
+          errorHandler(400, "Please try again")
+        );
+      }
+    } catch (error) {
+      console.log("subject ==> ", error);
+      next(error);
+    }
+  })
+);
+
 router.delete(
   "/delete/:id",
   handler(async (req, res, next) => {
