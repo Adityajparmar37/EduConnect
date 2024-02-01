@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import SideNav from "../../Components/SideNav/SideNav";
 import TableCard from "../../Components/TableCard/TableCard";
-import { getAllSubject } from "../../Services/subjectServices";
+import { deleteSubject, getAllSubject } from "../../Services/subjectServices";
 
 export default function ManageSubject() {
   const [allSubject, setAllSubject] = useState();
@@ -22,22 +23,30 @@ export default function ManageSubject() {
     fetchData();
   }, []);
 
-  const DeleteTeacher = async (id) => {
-    try {
-      console.log(id);
-      const responseData = await deleteTeacher(id);
-      if (responseData.success === true) {
-        toast.success(responseData.message);
-        setAllTeacher((prevTeachers) =>
-          prevTeachers.filter((teacher) => teacher._id !== id),
-        );
-      } else if (responseData.success === false) {
-        toast.error(responseData.message);
-      }
-    } catch (error) {
-      toast.error("Please try again!");
-    }
-  };
+ const DeleteSubject = async (id) => {
+   try {
+     console.log(id);
+     const responseData = await deleteSubject(id);
+     if (responseData.success === true) {
+       toast.success(responseData.message);
+       setAllSubject((prevSubject) =>
+         prevSubject.map((semester) => {
+           return {
+             ...semester,
+             subjects: semester.subjects.filter(
+               (subject) => subject._id !== id,
+             ),
+           };
+         }),
+       );
+     } else if (responseData.success === false) {
+       toast.error(responseData.message);
+     }
+   } catch (error) {
+     toast.error("Please try again!");
+   }
+ };
+
 
   return (
     <div className="flex h-screen">
@@ -79,7 +88,7 @@ export default function ManageSubject() {
                         key={Subject._id}
                         Subject={Subject}
                         index={index}
-                        DeleteTeacher={DeleteTeacher}
+                        DeleteSubject={DeleteSubject}
                       />
                     ))}
                 </tbody>

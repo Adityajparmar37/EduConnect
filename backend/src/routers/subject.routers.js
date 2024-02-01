@@ -99,14 +99,14 @@ router.get(
   })
 );
 router.delete(
-  "/delete/:subid",
+  "/delete/:id",
   handler(async (req, res, next) => {
     try {
-      const { subid } = req.params;
+      const { id } = req.params;
 
       // Delete subject from the Subject database
       const deletedSubject =
-        await Subject.findByIdAndDelete(subid);
+        await Subject.findByIdAndDelete(id);
       if (!deletedSubject) {
         return res
           .status(404)
@@ -115,13 +115,14 @@ router.delete(
 
       // Remove the subject reference from the Semesters
       const sem = await Semester.updateMany(
-        { subjects: subid },
-        { $pull: { subjects: subid } }
+        { subjects: id },
+        { $pull: { subjects: id } }
       );
 
       console.log(sem);
 
       res.status(200).json({
+        success: true,
         message: "Subject deleted successfully",
       });
     } catch (error) {

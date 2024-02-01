@@ -19,3 +19,14 @@ export const getAllSubject = async () => {
     return error.response.data;
   }
 };
+
+export const deleteSubject = async (id) => {
+  try {
+    console.log(id);
+    const { data } = await axios.delete(`api/subject/delete/${id} `);
+    console.log("Subject delete ==> ", data);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

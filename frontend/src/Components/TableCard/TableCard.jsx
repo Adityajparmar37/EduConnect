@@ -4,7 +4,13 @@ import { TbBookUpload } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
 import { IoMdArrowDropright } from "react-icons/io";
 
-const TableCard = ({ teacher, index, DeleteTeacher, Subject }) => {
+const TableCard = ({
+  teacher,
+  index,
+  DeleteTeacher,
+  Subject,
+  DeleteSubject,
+}) => {
   return (
     <>
       {teacher && (
@@ -72,12 +78,10 @@ const TableCard = ({ teacher, index, DeleteTeacher, Subject }) => {
                       <TbBookUpload />
                     </button>
                   </Link>
-                  {/* Add delete functionality */}
                   <button
-                    // Add your delete functionality here, e.g., onClick={() => handleDeleteSubject(subject._id)}
                     className={`p-2 text-2xl font-semibold duration-200 hover:rounded-full hover:bg-red-500 hover:text-white dark:text-red-500`}
                   >
-                    <MdDelete />
+                    <MdDelete onClick={() => DeleteSubject(subject._id)} />
                   </button>
                 </div>
               </td>
