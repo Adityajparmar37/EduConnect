@@ -63,7 +63,7 @@ export default function UpdateStudent() {
                 <div className="mb-5 rounded-t border-b-2 border-gray-500 bg-gray-50 px-5 py-3 md:mb-6">
                   <div className="flex items-center justify-between text-center">
                     <h6 className="text-blueGray-700 text-xl font-bold">
-                      🧑🏻‍🎓 Create Student
+                      🧑🏻‍🎓  Update Student
                     </h6>
                     <button
                       onClick={handleSubmit}
