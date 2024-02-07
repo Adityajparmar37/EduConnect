@@ -17,6 +17,7 @@ import UpdateSubject from "../../Pages/UpdateSubject/UpdateSubject";
 import ManageStudent from "../../Pages/ManageStudent/ManageStudent";
 import StudentDashboard from "../../Pages/StudentDashboard/StudentDashboard";
 import StudentHomePage from "../../Pages/StudentHomePage/StudentHomePage";
+import CreateStudent from "../../Pages/CreateStudent/CreateStudent";
 
 export default function AppRoutes() {
   return (
@@ -114,6 +115,14 @@ export default function AppRoutes() {
           element={
             <AuthRoute>
               <ManageStudent />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/createStudent/"
+          element={
+            <AuthRoute>
+              <CreateStudent/>
             </AuthRoute>
           }
         />

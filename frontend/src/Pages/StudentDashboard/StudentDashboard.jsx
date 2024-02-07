@@ -13,7 +13,7 @@ export default function StudentDashboard() {
        <div className="z-10 flex h-auto w-5/6 px-3 pt-20">
          <div className="grid grid-cols-2 gap-32">
            <Card
-             link="/createSubject"
+             link="/createStudent"
              bgColor="mintPrimary"
              icon={<GoPersonAdd />}
              icon2={<IoArrowForwardSharp />}
