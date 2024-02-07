@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const errorHandler = require("../middleware/errorMiddleware.js");
 const Student = require("../models/studentModel.js");
+const authMid = require("../middleware/authMiddleware.js");
 const router = express.Router();
 const handler = require("express-async-handler");
 dotenv.config();
@@ -134,6 +135,24 @@ router.post(
       }
     } catch (error) {
       console.error("SignUp error", error);
+      next(error);
+    }
+  })
+);
+
+router.get(
+  "/allstudent",
+  authMid,
+  handler(async (req, res, next) => {
+    try {
+      const allStudent = await Student.find({});
+
+      if (allStudent) {
+        console.log("Student ==> ", allStudent);
+        res.send(allStudent);
+      }
+    } catch (error) {
+      console.log("all student error", error);
       next(error);
     }
   })
