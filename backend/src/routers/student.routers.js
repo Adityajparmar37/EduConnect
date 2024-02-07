@@ -186,4 +186,23 @@ router.delete(
   })
 );
 
+///find individual student
+router.get(
+  "/manageStudent/:id",
+  authMid,
+  handler(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const studentData = await Student.findById(
+        id
+      );
+      res.send(studentData);
+    } catch (error) {
+      next(
+        errorHandler(404, "No Such Project Found")
+      );
+    }
+  })
+);
+
 module.exports = router;
