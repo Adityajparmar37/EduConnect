@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import SideNav from "../../Components/SideNav/SideNav";
-import { getAStudent } from "../../Services/studentServices";
+import { getAStudent, updateAStudent } from "../../Services/studentServices";
 
 export default function UpdateStudent() {
   const { id } = useParams();
@@ -17,17 +17,6 @@ export default function UpdateStudent() {
 
   const handleInputChange = (key, value) => {
     setStudentData((prevData) => ({ ...prevData, [key]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const SignupResponse = await signup(studentData);
-      console.log("login =>> ", SignupResponse);
-    } catch (error) {
-      toast.error("Some Error Occured !");
-      console.log("Login Page Frontend Error", error);
-    }
   };
 
   useEffect(() => {
@@ -50,6 +39,39 @@ export default function UpdateStudent() {
     fetchData();
   }, [id]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Form data:", studentData);
+    try {
+      const isPasswordUpdated = studentData.password.trim().length > 0;
+
+      if (
+        isPasswordUpdated &&
+        studentData.password !== studentData.confirmPassword
+      ) {
+        toast.error("Password must match");
+        return;
+      }
+
+      ///password change thayu hoi toj send karu nakar nhi
+      const updatePayload = isPasswordUpdated
+        ? { ...studentData, password: studentData.password }
+        : { ...studentData, password: undefined };
+
+      const updatedStudent = await updateAStudent(id, updatePayload);
+      console.log("Update teacher", updatedStudent);
+
+      if (updatedStudent.success === true) {
+        toast.success(updatedStudent.message);
+      } else {
+        toast.error(updatedStudent.message);
+      }
+    } catch (error) {
+      toast.error("Please try again");
+      console.log("Teacher create error frontend", error);
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
       <div className="lg:w-1/6">
@@ -63,7 +85,7 @@ export default function UpdateStudent() {
                 <div className="mb-5 rounded-t border-b-2 border-gray-500 bg-gray-50 px-5 py-3 md:mb-6">
                   <div className="flex items-center justify-between text-center">
                     <h6 className="text-blueGray-700 text-xl font-bold">
-                      🧑🏻‍🎓  Update Student
+                      🧑🏻‍🎓 Update Student
                     </h6>
                     <button
                       onClick={handleSubmit}

@@ -52,6 +52,18 @@ export const getAStudent = async (id) => {
   }
 };
 
+export const updateAStudent = async (id, studentData) => {
+  try {
+    console.log(id);
+    console.log(studentData);
+    const { data } = await axios.put(`api/student/update/${id}`, studentData);
+    console.log("Teacher teacher ==> ", data);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export const getUser = () =>
   localStorage.getItem("UserInfo")
     ? JSON.parse(localStorage.getItem("UserInfo"))
