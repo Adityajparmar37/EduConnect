@@ -21,7 +21,7 @@ export const signup = async (signupData) => {
   }
 };
 
-export const allStudent = async (allStudent) => {
+export const getAllStudent = async () => {
   try {
     const { data } = await axios.get("api/student/allStudent");
     console.log("All student api ==> ", data);
