@@ -3,6 +3,10 @@ const dotenv = require("dotenv");
 const errorHandler = require("../middleware/errorMiddleware.js");
 const Student = require("../models/studentModel.js");
 const authMid = require("../middleware/authMiddleware.js");
+const bcrypt = require("bcryptjs");
+const {
+  sendMail,
+} = require("../utils/sendMail.js");
 const router = express.Router();
 const handler = require("express-async-handler");
 dotenv.config();
@@ -205,4 +209,98 @@ router.get(
   })
 );
 
+// Update teacher details by admin
+router.put(
+  "/update/:id",
+  authMid,
+  handler(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const updateFormData = req.body;
+      const newPassword = updateFormData.password;
+      console.log(newPassword);
+      // console.log(updateFormData);
+      console.log(id);
+
+      if (updateFormData.password) {
+        const salt = await bcrypt.genSalt(10);
+        updateFormData.password =
+          await bcrypt.hash(
+            updateFormData.password,
+            salt
+          );
+
+        // Fetch the existing teacher data before the update
+        const existingStudent =
+          await Student.findById(id);
+
+        const updatedStudent =
+          await Student.findByIdAndUpdate(
+            id,
+            updateFormData,
+            { new: true }
+          );
+
+        if (!updatedStudent) {
+          return res.status(404).json({
+            success: false,
+            error: "Teacher not found",
+          });
+        }
+
+        // Check if the password is changed and send email
+        if (
+          existingStudent.password !==
+          updatedStudent.password
+        ) {
+          const mailData = {
+            name: updatedStudent.name,
+            intro: "Your Updated Credentials",
+            table: {
+              data: [
+                {
+                  Email: updatedStudent.email,
+                  Password: newPassword,
+                },
+              ],
+            },
+            outro: "Thank you 🫱🏻‍🫲🏾",
+          };
+
+          await sendMail(
+            updatedStudent.email,
+            "Student Credentials",
+            mailData
+          );
+        }
+      } else {
+        const updatedStudent =
+          await Student.findByIdAndUpdate(
+            id,
+            updateFormData,
+            { new: true }
+          );
+
+        if (!updatedStudent) {
+          return res.status(404).json({
+            success: false,
+            error: "Student not found",
+          });
+        }
+      }
+
+      res.json({
+        success: true,
+        message: "Student updated successfully",
+      });
+    } catch (error) {
+      console.error(
+        "Error updating Student",
+        error
+      );
+
+      next(error);
+    }
+  })
+);
 module.exports = router;
