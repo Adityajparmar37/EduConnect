@@ -23,7 +23,7 @@ export default function AdminHomePage() {
             text={["Manage Teacher", "Add New Teacher"]}
           />
           <Card
-            link="/"
+            link="/studentDashboard"
             bgColor="darkPrimary"
             icon={<PiStudentFill />}
             icon2={<IoArrowForwardSharp />}

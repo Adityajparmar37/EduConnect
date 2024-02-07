@@ -5,7 +5,7 @@ import Login from "../../Pages/Login/Login";
 import Signup from "../../Pages/Signup/Signup";
 import AuthRoute from "../AuthRoutes/AuthRoutes";
 import { Toaster } from "react-hot-toast";
-import StudentHomePage from "../../Pages/StudentHomePage/StudentHomePage";
+import StudentHomePage from "../../Pages/StudentDashboard/StudentDashboard";
 import TeacherHomePage from "../../Pages/TeacherHomePage/TeacherHomePage";
 import TeacherDashboard from "../../Pages/TeacherDashboard/TeacherDashboard";
 import CreateTeacher from "../../Pages/CreateTeacher/CreateTeacher";
@@ -15,6 +15,8 @@ import ManageTeacher from "../../Pages/ManageTeacher/ManageTeacher";
 import UpdateTeacher from "../../Pages/UpdateTeacher/UpdateTeacher";
 import ManageSubject from "../../Pages/ManageSubject/ManageSubject";
 import UpdateSubject from "../../Pages/UpdateSubject/UpdateSubject";
+import ManageStudent from "../../Pages/ManageStudent/ManageStudent";
+import StudentDashboard from "../../Pages/StudentDashboard/StudentDashboard";
 
 export default function AppRoutes() {
   return (
@@ -99,8 +101,22 @@ export default function AppRoutes() {
             </AuthRoute>
           }
         />
-
-
+        <Route
+          path="/studentDashboard"
+          element={
+            <AuthRoute>
+              <StudentDashboard/>
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/manageStudent/"
+          element={
+            <AuthRoute>
+              <ManageStudent />
+            </AuthRoute>
+          }
+        />
 
         {/* student pages */}
         <Route

@@ -21,6 +21,16 @@ export const signup = async (signupData) => {
   }
 };
 
+export const allStudent = async (allStudent) => {
+  try {
+    const { data } = await axios.get("api/student/allStudent");
+    console.log("All student api ==> ", data);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export const getUser = () =>
   localStorage.getItem("UserInfo")
     ? JSON.parse(localStorage.getItem("UserInfo"))
