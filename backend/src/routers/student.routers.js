@@ -140,6 +140,7 @@ router.post(
   })
 );
 
+//get all student
 router.get(
   "/allstudent",
   authMid,
@@ -153,6 +154,33 @@ router.get(
       }
     } catch (error) {
       console.log("all student error", error);
+      next(error);
+    }
+  })
+);
+
+//student nae delete karva
+router.delete(
+  "/delete/:id",
+  authMid,
+  handler(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const StudentToDelete =
+        await Student.findByIdAndDelete(id);
+
+      if (!StudentToDelete) {
+        return next(
+          errorHandler(404, "Student not found")
+        );
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Student deleted successfully",
+      });
+    } catch (error) {
+      console.log(error);
       next(error);
     }
   })

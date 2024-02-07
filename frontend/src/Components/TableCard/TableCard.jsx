@@ -11,6 +11,7 @@ const TableCard = ({
   Subject,
   DeleteSubject,
   Student,
+  DeleteStudent,
 }) => {
   return (
     <>
@@ -69,7 +70,7 @@ const TableCard = ({
           </td>
           <td className={`px-6 py-4`}>
             <div className="flex space-x-5">
-              <Link to={`/updateTeacher/${Student._id}`}>
+              <Link to={`/updateStudent/${Student._id}`}>
                 <button
                   className={`p-2 text-2xl font-semibold duration-200 hover:rounded-full hover:bg-blue-400 hover:text-white dark:text-blue-500`}
                 >
@@ -77,7 +78,7 @@ const TableCard = ({
                 </button>
               </Link>
               <button
-                onClick={() => DeleteTeacher(teacher._id)}
+                onClick={() => DeleteStudent(Student._id)}
                 className={`p-2 text-2xl font-semibold duration-200 hover:rounded-full hover:bg-red-500 hover:text-white dark:text-red-500`}
               >
                 <MdDelete />

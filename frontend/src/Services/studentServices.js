@@ -30,6 +30,16 @@ export const getAllStudent = async () => {
     return error.response.data;
   }
 };
+export const deleteStudent = async (id) => {
+  try {
+    console.log(id);
+    const { data } = await axios.delete(`api/student/delete/${id} `);
+    console.log("Student  ==> ", data);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
 
 export const getUser = () =>
   localStorage.getItem("UserInfo")

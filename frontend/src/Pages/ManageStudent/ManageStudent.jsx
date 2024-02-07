@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import SideNav from "../../Components/SideNav/SideNav";
 import TableCard from "../../Components/TableCard/TableCard";
-import { getAllStudent } from "../../Services/studentServices";
+import { deleteStudent, getAllStudent } from "../../Services/studentServices";
 
 export default function ManageStudent() {
   const [allStudent, setallStudent] = useState();
@@ -20,6 +21,22 @@ export default function ManageStudent() {
 
     fetchData();
   }, []);
+  const DeleteStudent = async (id) => {
+    try {
+      console.log(id);
+      const responseData = await deleteStudent(id);
+      if (responseData.success === true) {
+        toast.success(responseData.message);
+        setallStudent((prevStudent) =>
+          prevStudent.filter((student) => student._id !== id),
+        );
+      } else if (responseData.success === false) {
+        toast.error(responseData.message);
+      }
+    } catch (error) {
+      toast.error("Please try again!");
+    }
+  };
 
   console.log(allStudent);
   return (
@@ -62,7 +79,7 @@ export default function ManageStudent() {
                         key={Student._id}
                         Student={Student}
                         index={index}
-                        // DeleteSubject={DeleteSubject}
+                        DeleteStudent={DeleteStudent}
                       />
                     ))}
                 </tbody>
