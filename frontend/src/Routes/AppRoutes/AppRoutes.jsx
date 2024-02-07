@@ -18,6 +18,7 @@ import ManageStudent from "../../Pages/ManageStudent/ManageStudent";
 import StudentDashboard from "../../Pages/StudentDashboard/StudentDashboard";
 import StudentHomePage from "../../Pages/StudentHomePage/StudentHomePage";
 import CreateStudent from "../../Pages/CreateStudent/CreateStudent";
+import UpdateStudent from "../../Pages/UpdateStudent/UpdateStudent";
 
 export default function AppRoutes() {
   return (
@@ -28,7 +29,6 @@ export default function AppRoutes() {
         <Route path="/" element={<DefaultPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-
         {/* admin pages */}
         <Route
           path="/admin"
@@ -122,11 +122,18 @@ export default function AppRoutes() {
           path="/createStudent/"
           element={
             <AuthRoute>
-              <CreateStudent/>
+              <CreateStudent />
             </AuthRoute>
           }
         />
-
+        <Route
+          path="/updateStudent/:id"
+          element={
+            <AuthRoute>
+              <UpdateStudent />
+            </AuthRoute>
+          }
+        />
         {/* student pages */}
         <Route
           path="/student"
@@ -136,7 +143,6 @@ export default function AppRoutes() {
             </AuthRoute>
           }
         />
-
         {/* teacher pages */}
         <Route
           path="/teacher"

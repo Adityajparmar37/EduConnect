@@ -41,6 +41,17 @@ export const deleteStudent = async (id) => {
   }
 };
 
+export const getAStudent = async (id) => {
+  try {
+    console.log(id);
+    const { data } = await axios.get(`api/student/manageStudent/${id}`);
+    console.log("Student ==> ", data);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export const getUser = () =>
   localStorage.getItem("UserInfo")
     ? JSON.parse(localStorage.getItem("UserInfo"))
