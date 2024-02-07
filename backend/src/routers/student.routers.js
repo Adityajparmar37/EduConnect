@@ -209,7 +209,7 @@ router.get(
   })
 );
 
-// Update teacher details by admin
+// Update student details by admin
 router.put(
   "/update/:id",
   authMid,
