@@ -119,7 +119,16 @@ router.post(
           semesterName: semester,
         }
       );
-      console.log(findsemester);
+      // console.log(findsemester);
+
+      if (!findsemester) {
+        next(
+          errorHandler(
+            404,
+            "Please select a vaild semester"
+          )
+        );
+      }
 
       const CreateStudent = await Student.create({
         name,
