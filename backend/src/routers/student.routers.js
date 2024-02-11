@@ -14,6 +14,12 @@ dotenv.config();
 const {
   generateToken,
 } = require("../utils/generateToken");
+const {
+  findOne,
+} = require("../models/studentModel.js");
+const {
+  Semester,
+} = require("../models/semesterModel.js");
 
 //admin login
 router.post(
@@ -108,11 +114,18 @@ router.post(
         );
       }
 
+      const findsemester = await Semester.findOne(
+        {
+          semesterName: semester,
+        }
+      );
+      console.log(findsemester);
+
       const CreateStudent = await Student.create({
         name,
         email,
         password,
-        semester,
+        semester: findsemester._id,
       });
 
       if (CreateStudent) {

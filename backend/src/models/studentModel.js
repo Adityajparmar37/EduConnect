@@ -21,7 +21,7 @@ const studentSchema = mongoose.Schema(
       required: true,
     },
     semester: {
-      type: Number,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
   },
