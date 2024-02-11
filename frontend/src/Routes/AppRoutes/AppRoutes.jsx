@@ -5,7 +5,7 @@ import Login from "../../Pages/Login/Login";
 import Signup from "../../Pages/Signup/Signup";
 import AuthRoute from "../AuthRoutes/AuthRoutes";
 import { Toaster } from "react-hot-toast";
-import TeacherHomePage from "../../Pages/TeacherHomePage/TeacherHomePage";
+import TeacherHomePage from "../../Pages/Teacher/TeacherHomePage/TeacherHomePage";
 import TeacherDashboard from "../../Pages/TeacherDashboard/TeacherDashboard";
 import CreateTeacher from "../../Pages/CreateTeacher/CreateTeacher";
 import SubjectDashboard from "../../Pages/SubjectDashboard/SubjectDashboard";

@@ -3,8 +3,8 @@ import { IoArrowForwardSharp } from "react-icons/io5";
 import { LiaFileUploadSolid } from "react-icons/lia";
 import { TbHexagonLetterA } from "react-icons/tb";
 import { PiChatsFill } from "react-icons/pi";
-import Card from "../../Components/Card/Card";
-import SideNavTeacher from "../../Components/SideNav/SideNavTeacher";
+import Card from "../../../Components/Card/Card";
+import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
 
 export default function TeacherHomePage() {
   document.body.style.overflow = "hidden";
