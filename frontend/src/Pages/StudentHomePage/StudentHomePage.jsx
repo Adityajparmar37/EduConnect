@@ -1,18 +1,17 @@
 import React from "react";
-import { BsPersonVideo2 } from "react-icons/bs";
 import { IoArrowForwardSharp } from "react-icons/io5";
 import { LiaFileUploadSolid } from "react-icons/lia";
 import { TbHexagonLetterA } from "react-icons/tb";
 import { PiChatsFill } from "react-icons/pi";
 import Card from "../../Components/Card/Card";
-import SideNav from "../../Components/SideNav/SideNav";
+import SideNavStudent from "../../Components/SideNav/SideNavStudent";
 
 export default function StudentHomePage() {
   document.body.style.overflow = "hidden";
   return (
     <div className="flex h-screen">
       <div className="w-1/6">
-        <SideNav />
+        <SideNavStudent />
       </div>
       <div className="z-10 flex h-auto w-5/6 px-3 pt-20">
         <div className="grid grid-cols-3 gap-24">
