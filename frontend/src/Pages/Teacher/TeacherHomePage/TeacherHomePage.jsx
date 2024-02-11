@@ -1,26 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoArrowForwardSharp } from "react-icons/io5";
 import { LiaFileUploadSolid } from "react-icons/lia";
 import { TbHexagonLetterA } from "react-icons/tb";
 import { PiChatsFill } from "react-icons/pi";
 import Card from "../../../Components/Card/Card";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
+import Modal from "react-modal";
 
 export default function TeacherHomePage() {
   document.body.style.overflow = "hidden";
+
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="flex h-screen">
       <div className="w-1/6">
         <SideNavTeacher />
       </div>
-      <div className="z-10 flex h-auto w-5/6 px-3 pt-20">
+      <div className="flex h-auto w-5/6 px-3 pt-20">
         <div className="grid grid-cols-3 gap-24">
           <Card
-            link="/studentDashboard"
+            link="/attendance"
             bgColor="darkPrimary"
             icon={<TbHexagonLetterA />}
             icon2={<IoArrowForwardSharp />}
-            title="Mark Attendance"
+            title="Attendance"
             text={["Mark student attendance"]}
           />
           <Card
