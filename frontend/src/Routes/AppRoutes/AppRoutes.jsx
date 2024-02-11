@@ -19,6 +19,7 @@ import StudentDashboard from "../../Pages/StudentDashboard/StudentDashboard";
 import StudentHomePage from "../../Pages/StudentHomePage/StudentHomePage";
 import CreateStudent from "../../Pages/CreateStudent/CreateStudent";
 import UpdateStudent from "../../Pages/UpdateStudent/UpdateStudent";
+import UploadFiles from "../../Pages/UploadFiles/UploadFiles";
 
 export default function AppRoutes() {
   return (
@@ -143,6 +144,16 @@ export default function AppRoutes() {
             </AuthRoute>
           }
         />
+        <Route
+          path="/uploadFiles"
+          element={
+            <AuthRoute>
+              <UploadFiles />
+            </AuthRoute>
+          }
+        />
+
+
         {/* teacher pages */}
         <Route
           path="/teacher"

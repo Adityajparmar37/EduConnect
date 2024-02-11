@@ -17,7 +17,7 @@ export default function StudentHomePage() {
       <div className="z-10 flex h-auto w-5/6 px-3 pt-20">
         <div className="grid grid-cols-3 gap-24">
           <Card
-            link="/teacherDashboard"
+            link="/uploadFiles"
             bgColor="darkPrimary"
             icon={<LiaFileUploadSolid />}
             icon2={<IoArrowForwardSharp />}
@@ -29,7 +29,7 @@ export default function StudentHomePage() {
             bgColor="darkPrimary"
             icon={<TbHexagonLetterA />}
             icon2={<IoArrowForwardSharp />}
-            title="Student Dashboard"
+            title="View Attendance"
             text={["View your attendance"]}
           />
 

@@ -114,27 +114,12 @@ router.post(
         );
       }
 
-      const findsemester = await Semester.findOne(
-        {
-          semesterName: semester,
-        }
-      );
-      // console.log(findsemester);
-
-      if (!findsemester) {
-        next(
-          errorHandler(
-            404,
-            "Please select a vaild semester"
-          )
-        );
-      }
 
       const CreateStudent = await Student.create({
         name,
         email,
         password,
-        semester: findsemester._id,
+        semester,
       });
 
       if (CreateStudent) {
