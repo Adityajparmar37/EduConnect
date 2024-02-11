@@ -72,8 +72,12 @@ const Card = ({ bgColor, icon, title, text, link, icon2 }) => {
       >
         <div className="flex w-full flex-col items-center justify-center">
           <div className="flex w-full">
-            <h1 className="text-xl font-semibold items-center">Select Semester</h1>
-            <button onClick={closeModal}>Close Modal</button>
+            <h1 className="items-start text-xl font-semibold">
+              Select Semester
+            </h1>
+            <button onClick={closeModal} className="items-end">
+              Close Modal
+            </button>
           </div>
           <div>
             <select>
