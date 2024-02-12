@@ -148,7 +148,7 @@ export default function UpdateStudent() {
                           <option value="" disabled>
                             Choose Semester
                           </option>
-                          {[1, 2, 3, 4, 5, 6].map((semester) => (
+                          {[1, 2, 3, 4, 5, 6,7,8].map((semester) => (
                             <option key={semester} value={semester}>
                               Semester {semester}
                             </option>

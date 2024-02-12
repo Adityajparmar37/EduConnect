@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { GoTriangleRight } from "react-icons/go";
-import Modal from "react-modal";
+import CustomModal from "../CustomModal/CustomModal";
+
 
 const Card = ({ bgColor, icon, title, text, link, icon2 }) => {
   // State to manage modal visibility
@@ -15,6 +16,8 @@ const Card = ({ bgColor, icon, title, text, link, icon2 }) => {
   const closeModal = () => {
     setModalIsOpen(false);
   };
+
+  const handleChange = () => {};
 
   return (
     <>
@@ -41,58 +44,29 @@ const Card = ({ bgColor, icon, title, text, link, icon2 }) => {
           style={{ zIndex: 2 }} // Ensure link has higher z-index
         >
           <Link
-            onClick={(event) => openModal(event)}
+            onClick={(event) =>
+              link === "/attendance" ? openModal(event) : undefined
+            }
             to={link}
-            className={`cursor-pointer text-gray-800`}
+            className="cursor-pointer text-gray-800"
           >
             {icon2}
           </Link>
         </div>
       </div>
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Select Semester Modal"
-        style={{
-          overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            zIndex: 1000,
-          },
-          content: {
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            zIndex: 1001,
-            maxWidth: "30%",
-            maxHeight: "30%",
-            overflow: "auto",
-          },
-        }}
-      >
-        <div className="flex w-full flex-col items-center justify-center">
-          <div className="flex w-full">
-            <h1 className="items-start text-xl font-semibold">
-              Select Semester
-            </h1>
-            <button onClick={closeModal} className="items-end">
-              Close Modal
-            </button>
-          </div>
-          <div>
-            <select>
-              <option value="" disabled>
-                Choose Semester
-              </option>
-              {[1, 2, 3, 4, 5, 6].map((semester) => (
-                <option key={semester} value={semester}>
-                  Semester {semester}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </Modal>
+      <CustomModal isOpen={modalIsOpen} onRequestClose={closeModal}>
+        <h1 className="text-xl text-gray-800 font-semibold">Select Semester</h1>
+        <select
+          onChange={handleChange}
+          className="absolute left-0 top-16 w-full border-2 border-black p-2"
+        >
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((semester) => (
+            <option key={semester} value={semester}>
+              Semester {semester}
+            </option>
+          ))}
+        </select>
+      </CustomModal>
     </>
   );
 };

@@ -19,7 +19,6 @@ import StudentDashboard from "../../Pages/StudentDashboard/StudentDashboard";
 import StudentHomePage from "../../Pages/StudentHomePage/StudentHomePage";
 import CreateStudent from "../../Pages/CreateStudent/CreateStudent";
 import UpdateStudent from "../../Pages/UpdateStudent/UpdateStudent";
-import UploadFiles from "../../Pages/UploadFiles/UploadFiles";
 import Attendance from "../../Pages/Teacher/Attendance/Attendance";
 
 export default function AppRoutes() {
@@ -142,14 +141,6 @@ export default function AppRoutes() {
           element={
             <AuthRoute>
               <StudentHomePage />
-            </AuthRoute>
-          }
-        />
-        <Route
-          path="/uploadFiles"
-          element={
-            <AuthRoute>
-              <UploadFiles />
             </AuthRoute>
           }
         />
