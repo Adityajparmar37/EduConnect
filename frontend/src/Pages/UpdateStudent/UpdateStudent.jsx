@@ -12,12 +12,20 @@ export default function UpdateStudent() {
     userType: "student",
     name: "",
     confirmPassword: "",
-    semester: "1",
+    CurrentSemester: 1,
   });
 
-  const handleInputChange = (key, value) => {
-    setStudentData((prevData) => ({ ...prevData, [key]: value }));
-  };
+ const handleInputChange = (key, value) => {
+   if (key === "semesterNumber") {
+     setStudentData((prevData) => ({
+       ...prevData,
+       CurrentSemester: parseInt(value), // Convert value to number
+     }));
+   } else {
+     setStudentData((prevData) => ({ ...prevData, [key]: value }));
+   }
+ };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,7 +35,7 @@ export default function UpdateStudent() {
         setStudentData({
           name: responseStudent.name || "",
           email: responseStudent.email || "",
-          semester: responseStudent.semester || "",
+          semesterNumber: responseStudent.CurrentSemester.semesterNumber || "",
           password: "",
           confirmPassword: "",
         });
@@ -140,15 +148,19 @@ export default function UpdateStudent() {
                         </label>
                         <select
                           className="w-full rounded border-0 bg-white px-3 py-3 text-sm shadow focus:outline-none focus:ring"
-                          value={studentData.semester}
-                          onChange={(e) =>
-                            handleInputChange("semester", e.target.value)
+                          value={studentData.CurrentSemester} // Correct state key here
+                          onChange={
+                            (e) =>
+                              handleInputChange(
+                                "semesterNumber",
+                                e.target.value,
+                              ) // Correct key here
                           }
                         >
                           <option value="" disabled>
                             Choose Semester
                           </option>
-                          {[1, 2, 3, 4, 5, 6,7,8].map((semester) => (
+                          {[1, 2, 3, 4, 5, 6, 7, 8].map((semester) => (
                             <option key={semester} value={semester}>
                               Semester {semester}
                             </option>

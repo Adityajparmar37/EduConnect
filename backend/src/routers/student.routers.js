@@ -119,17 +119,14 @@ router.post(
         );
       }
 
-      const semId = await Semester.findOne({
+      let semId = await Semester.findOne({
         semesterNumber: CurrentSemester,
       });
 
       if (!semId) {
-        return next(
-          errorHandler(
-            404,
-            "Please select a proper semester"
-          )
-        );
+        semId = await Semester.create({
+          semesterNumber: CurrentSemester,
+        });
       }
 
       const CreateStudent = await Student.create({
@@ -144,8 +141,6 @@ router.post(
           studentId: CreateStudent._id,
           semesterId: semId._id,
         });
-      
-
 
       if (CreateStudent) {
         res.status(201).json({
@@ -179,13 +174,17 @@ router.post(
   })
 );
 
-//get all student
 router.get(
   "/allstudent",
   authMid,
   handler(async (req, res, next) => {
     try {
-      const allStudent = await Student.find({});
+      const allStudent = await Student.find(
+        {}
+      ).populate(
+        "CurrentSemester",
+        "semesterNumber"
+      );
 
       if (allStudent) {
         console.log("Student ==> ", allStudent);
@@ -234,6 +233,9 @@ router.get(
       const { id } = req.params;
       const studentData = await Student.findById(
         id
+      ).populate(
+        "CurrentSemester",
+        "semesterNumber"
       );
       res.send(studentData);
     } catch (error) {
@@ -253,9 +255,54 @@ router.put(
       const { id } = req.params;
       const updateFormData = req.body;
       const newPassword = updateFormData.password;
-      console.log(newPassword);
-      // console.log(updateFormData);
-      console.log(id);
+      // console.log(newPassword);
+      console.log(updateFormData);
+
+      // Fetch the existing student data before the update
+      const existingStudent =
+        await Student.findById(id).populate(
+          "CurrentSemester",
+          "semesterNumber"
+        );
+
+      console.log(
+        "existingStudent",
+        existingStudent
+      );
+
+      if (!existingStudent) {
+        return res.status(404).json({
+          success: false,
+          error: "Student not found",
+        });
+      }
+
+      if (
+        updateFormData.CurrentSemester &&
+        updateFormData.CurrentSemester !==
+          existingStudent.CurrentSemester
+            .semesterNumber
+      ) {
+        // Find the semester by semesterNumber from the database
+        const targetSemester =
+          await Semester.findOne({
+            semesterNumber:
+              updateFormData.CurrentSemester,
+          });
+
+        console.log(targetSemester);
+
+        if (!targetSemester) {
+          return res.status(404).json({
+            success: false,
+            error: "Target semester not found",
+          });
+        }
+
+        // Update the student's CurrentSemester with the new semester ID
+        updateFormData.CurrentSemester =
+          targetSemester._id;
+      }
 
       if (updateFormData.password) {
         const salt = await bcrypt.genSalt(10);
@@ -264,64 +311,52 @@ router.put(
             updateFormData.password,
             salt
           );
+      }
 
-        // Fetch the existing teacher data before the update
-        const existingStudent =
-          await Student.findById(id);
+      const updatedStudent =
+        await Student.findByIdAndUpdate(
+          id,
+          updateFormData,
+          { new: true }
+        );
 
-        const updatedStudent =
-          await Student.findByIdAndUpdate(
-            id,
-            updateFormData,
-            { new: true }
-          );
+      console.log(
+        "Updated Student ==> ",
+        updatedStudent
+      );
 
-        if (!updatedStudent) {
-          return res.status(404).json({
-            success: false,
-            error: "Teacher not found",
-          });
-        }
+      if (!updatedStudent) {
+        return res.status(404).json({
+          success: false,
+          error: "Student not found",
+        });
+      }
 
-        // Check if the password is changed and send email
-        if (
-          existingStudent.password !==
+      // Check if the password is changed and send email
+      if (
+        newPassword &&
+        existingStudent.password !==
           updatedStudent.password
-        ) {
-          const mailData = {
-            name: updatedStudent.name,
-            intro: "Your Updated Credentials",
-            table: {
-              data: [
-                {
-                  Email: updatedStudent.email,
-                  Password: newPassword,
-                },
-              ],
-            },
-            outro: "Thank you 🫱🏻‍🫲🏾",
-          };
+      ) {
+        const mailData = {
+          name: updatedStudent.name,
+          intro: "Your Updated Credentials",
+          table: {
+            data: [
+              {
+                Email: updatedStudent.email,
+                Password: newPassword,
+              },
+            ],
+          },
+          outro: "Thank you 🫱🏻‍🫲🏾",
+        };
 
-          await sendMail(
-            updatedStudent.email,
-            "Student Credentials",
-            mailData
-          );
-        }
-      } else {
-        const updatedStudent =
-          await Student.findByIdAndUpdate(
-            id,
-            updateFormData,
-            { new: true }
-          );
-
-        if (!updatedStudent) {
-          return res.status(404).json({
-            success: false,
-            error: "Student not found",
-          });
-        }
+        await sendMail(
+          updatedStudent.email,
+          "Student Credentials",
+          mailData
+        );
       }
 
       res.json({
@@ -333,9 +368,9 @@ router.put(
         "Error updating Student",
         error
       );
-
       next(error);
     }
   })
 );
+
 module.exports = router;

@@ -13,8 +13,7 @@ const TableCard = ({
   Student,
   DeleteStudent,
 }) => {
-
-  console.log(allSubject)
+  console.log(Student);
   return (
     <>
       {teacher && (
@@ -68,7 +67,9 @@ const TableCard = ({
           </th>
           <td className={`px-6 py-4 text-lg`}>{Student.email}</td>
           <td className={`px-6 py-4 text-lg`}>
-            <h1 className={`rounded-lg p-1 text-lg`}>{Student.semester}</h1>
+            <h1 className={`rounded-lg p-1 text-lg`}>
+              {Student.CurrentSemester.semesterNumber}
+            </h1>
           </td>
           <td className={`px-6 py-4`}>
             <div className="flex space-x-5">

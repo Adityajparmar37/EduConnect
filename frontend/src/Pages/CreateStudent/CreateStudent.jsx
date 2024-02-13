@@ -11,7 +11,7 @@ export default function CreateTeacher() {
     userType: "student",
     name: "",
     confirmPassword: "",
-    semester: "1",
+    CurrentSemester: "1",
   });
 
   const handleInputChange = (key, value) => {
@@ -69,7 +69,7 @@ export default function CreateTeacher() {
                           onChange={(e) =>
                             handleInputChange("name", e.target.value)
                           }
-                          placeholder="Enter Teacher's First Name"
+                          placeholder="Enter Student's Name"
                           className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-gray-800 shadow focus:outline-none focus:ring"
                         />
                       </div>
@@ -87,7 +87,7 @@ export default function CreateTeacher() {
                           onChange={(e) =>
                             handleInputChange("email", e.target.value)
                           }
-                          placeholder="teacher@gmail.com"
+                          placeholder="student@gmail.com"
                           className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-gray-800 shadow focus:outline-none focus:ring"
                         />
                       </div>
@@ -99,13 +99,13 @@ export default function CreateTeacher() {
                           className="w-full rounded border-0 bg-white px-3 py-3 text-sm shadow focus:outline-none focus:ring"
                           value={studentData.semester}
                           onChange={(e) =>
-                            handleInputChange("semester", e.target.value)
+                            handleInputChange("CurrentSemester", e.target.value)
                           }
                         >
                           <option value="" disabled>
                             Choose Semester
                           </option>
-                          {[1, 2, 3, 4, 5, 6,7,8].map((semester) => (
+                          {[1, 2, 3, 4, 5, 6, 7, 8].map((semester) => (
                             <option key={semester} value={semester}>
                               Semester {semester}
                             </option>
