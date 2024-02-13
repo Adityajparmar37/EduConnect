@@ -35,7 +35,7 @@ export default function UpdateStudent() {
         setStudentData({
           name: responseStudent.name || "",
           email: responseStudent.email || "",
-          semesterNumber: responseStudent.CurrentSemester.semesterNumber || "",
+          CurrentSemester: responseStudent.CurrentSemester.semesterNumber || "",
           password: "",
           confirmPassword: "",
         });
@@ -148,7 +148,7 @@ export default function UpdateStudent() {
                         </label>
                         <select
                           className="w-full rounded border-0 bg-white px-3 py-3 text-sm shadow focus:outline-none focus:ring"
-                          value={studentData.CurrentSemester} // Correct state key here
+                          value={studentData.CurrentSemester}
                           onChange={
                             (e) =>
                               handleInputChange(
