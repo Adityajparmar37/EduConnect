@@ -22,7 +22,6 @@ export const getAllSubject = async (semNo) => {
   }
 };
 
-
 export const getASubject = async (id) => {
   try {
     console.log(id);
@@ -55,6 +54,20 @@ export const updateSubject = async (id, NewSubjectData) => {
     console.log("Subject delete ==> ", data);
     return data;
   } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const SemesterSubject = async (semNo) => {
+  try {
+    const semesterNumber = Number(semNo);
+    console.log(semesterNumber);
+    const { data } = await axios.get("api/subject/SemSub", {
+      params: { semesterNumber },
+    });
+    return data;
+  } catch (error) {
+    console.log("Semester Subject listing error ", error);
     return error.response.data;
   }
 };

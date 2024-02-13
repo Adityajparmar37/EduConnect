@@ -282,7 +282,6 @@ router.delete(
     }
   })
 );
-
 router.get(
   "/SemSub",
   handler(async (req, res, next) => {
@@ -304,7 +303,17 @@ router.get(
           )
         );
       }
+
       console.log(findSubjectList);
+
+      if (findSubjectList.subjects.length === 0) {
+        return next(
+          errorHandler(
+            404,
+            "No subject found for this semester"
+          )
+        );
+      }
 
       res.status(200).json({
         success: true,
@@ -320,5 +329,6 @@ router.get(
     }
   })
 );
+
 
 module.exports = router;

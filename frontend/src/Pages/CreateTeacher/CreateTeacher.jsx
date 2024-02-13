@@ -4,10 +4,12 @@ import { signup } from "../../Services/teacherServices";
 import SideNav from "../../Components/SideNav/SideNav";
 import { useNavigate } from "react-router-dom";
 import CustomModal from "../../Components/CustomModal/CustomModal";
+import { SemesterSubject } from "../../Services/subjectServices";
 
 export default function CreateTeacher() {
   const navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [subList, setSubList] = useState([]);
 
   const openModal = (event) => {
     event.preventDefault();
@@ -50,8 +52,22 @@ export default function CreateTeacher() {
     setTeacherData((prevData) => ({ ...prevData, [key]: value }));
   };
 
-  const handleChange = (e) => {
-    console.log(e.target.value);
+  const handleSemesterNo = async (event) => {
+    // console.log(event.target.value);
+    try {
+      const subList = await SemesterSubject(event.target.value);
+      console.log(subList);
+
+      if (subList.success === true) {
+        openModal(event);
+        setSubList(subList.SemesterSubjects);
+      } else {
+        toast.error("No subject for this semester !");
+      }
+    } catch (error) {
+      toast.error("Please choose the semester again !");
+      console.log("Semester subject listing error ", error);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -249,8 +265,7 @@ export default function CreateTeacher() {
                             <select
                               id={`semester-${index}`}
                               className="w-full rounded border-0 bg-white px-3 py-3 text-sm shadow focus:outline-none focus:ring"
-                              value={subject.semester}
-                              onChange={(event) => openModal(event)}
+                              onChange={(event) => handleSemesterNo(event)}
                             >
                               <option value="" disabled>
                                 Choose Semester
@@ -286,12 +301,12 @@ export default function CreateTeacher() {
       <CustomModal isOpen={modalIsOpen} onRequestClose={closeModal}>
         <h1 className="text-xl font-semibold text-gray-800">Select Semester</h1>
         <select
-          onChange={(e) => handleChange(e)}
+          // onChange={(e) => handleChange(e)}
           className="absolute left-0 top-16 w-full border-2 border-black p-2"
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((semester) => (
-            <option key={semester} value={semester}>
-              Semester {semester}
+          {subList.map((subject, index) => (
+            <option key={index} value={subject._id}>
+              {subject.subjectName}
             </option>
           ))}
         </select>

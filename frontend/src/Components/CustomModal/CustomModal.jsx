@@ -27,7 +27,7 @@ const CustomModal = ({ isOpen, onRequestClose, children }) => {
     >
       <div className="relative flex w-full flex-col items-center justify-center">
         <div className="flex w-full">
-          <button onClick={onRequestClose} className="absolute right-5">
+          <button onClick={onRequestClose} className="absolute right-1">
             <IoCloseSharp className="text-2xl" />
           </button>
         </div>
