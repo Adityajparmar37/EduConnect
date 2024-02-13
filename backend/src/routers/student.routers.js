@@ -302,6 +302,12 @@ router.put(
         // Update the student's CurrentSemester with the new semester ID
         updateFormData.CurrentSemester =
           targetSemester._id;
+
+        const studentHist =
+          await StudentHist.create({
+            studentId: existingStudent._id,
+            semesterId: targetSemester._id,
+          });
       }
 
       if (updateFormData.password) {
