@@ -287,7 +287,7 @@ router.get(
   "/SemSub",
   handler(async (req, res, next) => {
     try {
-      const { semesterNumber } = req.body;
+      const { semesterNumber } = req.query;
 
       console.log(semesterNumber);
 
