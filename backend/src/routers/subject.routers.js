@@ -96,7 +96,6 @@ router.post(
   })
 );
 
-
 router.get(
   "/getAllSubject",
   handler(async (req, res, next) => {
@@ -124,7 +123,7 @@ router.get(
       } else {
         const allSubjects = await Subject.find(
           {}
-        )
+        );
         if (
           allSubjects &&
           allSubjects.length > 0
@@ -181,9 +180,51 @@ router.put(
       const { id } = req.params;
       const updateSubject = req.body;
 
-      console.log(req.body.semesterName);
+      const existingSubject =
+        await Subject.findById(id);
 
-      console.log(id, " ", updateSubject);
+      if (!existingSubject) {
+        return res.status(404).json({
+          success: false,
+          error: "Subject not found",
+        });
+      }
+
+      // Check if the semester number is being updated
+      if (
+        existingSubject.semesterNumber !==
+        updateSubject.semesterNumber
+      ) {
+        const targetSemester =
+          await Semester.findOne({
+            semesterNumber:
+              updateSubject.semesterNumber,
+          });
+
+        if (!targetSemester) {
+          return res.status(404).json({
+            success: false,
+            error: "Target semester not found",
+          });
+        }
+
+        // Remove the subject from the old semester
+        const oldSemester =
+          await Semester.findOneAndUpdate(
+            { subjects: id },
+            { $pull: { subjects: id } },
+            { new: true }
+          );
+
+        // Add the subject to the new semester
+        await Semester.findByIdAndUpdate(
+          targetSemester._id,
+          { $push: { subjects: id } },
+          { new: true }
+        );
+      }
+
+      // Update the subject
       const updatedSubjectData =
         await Subject.findByIdAndUpdate(
           id,
@@ -192,21 +233,15 @@ router.put(
         );
 
       if (!updatedSubjectData) {
-        next(
+        return next(
           errorHandler(404, "No Subject found !")
         );
       }
 
-      if (updatedSubjectData) {
-        res.json({
-          success: true,
-          message: "Subject updated successfully",
-        });
-      } else {
-        next(
-          errorHandler(400, "Please try again")
-        );
-      }
+      res.json({
+        success: true,
+        message: "Subject updated successfully",
+      });
     } catch (error) {
       console.log("subject ==> ", error);
       next(error);
