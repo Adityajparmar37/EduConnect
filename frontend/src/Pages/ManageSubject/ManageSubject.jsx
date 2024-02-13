@@ -23,21 +23,16 @@ export default function ManageSubject() {
     fetchData();
   }, []);
 
+  console.log(allSubject);
+
   const DeleteSubject = async (id) => {
     try {
       console.log(id);
       const responseData = await deleteSubject(id);
       if (responseData.success === true) {
         toast.success(responseData.message);
-        setAllSubject((prevSubject) =>
-          prevSubject.map((semester) => {
-            return {
-              ...semester,
-              subjects: semester.subjects.filter(
-                (subject) => subject._id !== id,
-              ),
-            };
-          }),
+        setAllSubject((prevSubjects) =>
+          prevSubjects.filter((subject) => subject._id !== id),
         );
       } else if (responseData.success === false) {
         toast.error(responseData.message);
@@ -47,7 +42,7 @@ export default function ManageSubject() {
     }
   };
 
-  console.log(allSubject.length);
+  // console.log(allSubject.length);
   return (
     <div className="flex h-screen">
       <div className="w-1/6">
@@ -82,15 +77,12 @@ export default function ManageSubject() {
                   </tr>
                 </thead>
                 <tbody>
-                  {allSubject &&
-                    allSubject.map((Subject, index) => (
-                      <TableCard
-                        key={Subject._id}
-                        Subject={Subject}
-                        index={index}
-                        DeleteSubject={DeleteSubject}
-                      />
-                    ))}
+                  {allSubject && (
+                    <TableCard
+                      allSubject={allSubject}
+                      DeleteSubject={DeleteSubject}
+                    />
+                  )}
                 </tbody>
               </table>
             </div>

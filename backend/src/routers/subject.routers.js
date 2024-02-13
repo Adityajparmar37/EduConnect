@@ -49,6 +49,7 @@ router.post(
       const subject = new Subject({
         subjectName: subjectName,
         subjectNumber: subjectNumber,
+        semesterNumber,
       });
 
       const savedSubject = await subject.save();
@@ -121,9 +122,9 @@ router.get(
           );
         }
       } else {
-        const allSubjects = await Semester.find(
+        const allSubjects = await Subject.find(
           {}
-        ).populate("subjects");
+        )
         if (
           allSubjects &&
           allSubjects.length > 0

@@ -8,11 +8,13 @@ const TableCard = ({
   teacher,
   index,
   DeleteTeacher,
-  Subject,
+  allSubject,
   DeleteSubject,
   Student,
   DeleteStudent,
 }) => {
+
+  console.log(allSubject)
   return (
     <>
       {teacher && (
@@ -87,9 +89,9 @@ const TableCard = ({
           </td>
         </tr>
       )}
-      {Subject && (
+      {allSubject && (
         <>
-          {Subject.subjects.map((subject, index) => (
+          {allSubject.map((subject, index) => (
             <tr
               key={subject._id}
               className={`text-dark border-b-2 bg-white font-semibold hover:bg-gray-50`}
@@ -105,7 +107,7 @@ const TableCard = ({
                 {subject.subjectName}
               </td>
               <td className={`px-6 py-4 text-lg`}>{subject.subjectNumber}</td>
-              <td className={`px-6 py-4 text-lg`}>{Subject.semesterName}</td>
+              <td className={`px-6 py-4 text-lg`}>{subject.semesterNumber}</td>
               <td className={`px-6 py-4`}>
                 <div className="flex space-x-5">
                   {/* Add your actions or links here if needed */}

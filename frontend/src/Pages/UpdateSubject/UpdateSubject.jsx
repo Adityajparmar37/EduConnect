@@ -11,7 +11,7 @@ export default function UpdateSubject() {
   const [subjectData, setSubjectData] = useState({
     subjectName: "",
     subjectNumber: "",
-    semesterName: "",
+    semesterNumber: "",
   });
   const handleInputChange = (key, value) => {
     setSubjectData((prevData) => ({ ...prevData, [key]: value }));
@@ -42,7 +42,7 @@ export default function UpdateSubject() {
         setSubjectData({
           subjectName: responseSubject.subjectName || "",
           subjectNumber: responseSubject.subjectNumber || "",
-          semesterName: responseSubject.semesterName || "",
+          semesterNumber: responseSubject.semesterNumber || "",
         });
       } catch (error) {
         toast.error("Some error occured ! , please try again!");
@@ -52,7 +52,7 @@ export default function UpdateSubject() {
     fetchData();
   }, [id]);
 
-  console.log(subjectData.semesterName);
+  console.log(subjectData.semesterNumber);
 
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
@@ -115,15 +115,15 @@ export default function UpdateSubject() {
                         </label>
                         <select
                           className="w-full rounded border-0 bg-white px-3 py-3 text-sm shadow focus:outline-none focus:ring"
-                          value={subjectData.semesterName}
+                          value={subjectData.semesterNumber}
                           onChange={(e) =>
-                            handleInputChange("semesterName", e.target.value)
+                            handleInputChange("semesterNumber", e.target.value)
                           }
                         >
                           <option value="" disabled>
                             Choose Semester
                           </option>
-                          {[1, 2, 3, 4, 5, 6,7,8].map((semester) => (
+                          {[1, 2, 3, 4, 5, 6, 7, 8].map((semester) => (
                             <option key={semester} value={semester}>
                               Semester {semester}
                             </option>
