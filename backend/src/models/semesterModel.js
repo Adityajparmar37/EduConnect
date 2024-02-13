@@ -1,33 +1,8 @@
 const mongoose = require("mongoose");
 
-// Define the Subject Schema
-const subjectSchema = mongoose.Schema(
-  {
-    subjectName: {
-      type: String,
-      required: true,
-    },
-    subjectNumber: {
-      type: String,
-      required: true,
-    },
-    semesterName: {
-      type: Number,
-      required: true,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
-const Subject = mongoose.model(
-  "Subject",
-  subjectSchema
-);
-
 const semesterSchema = mongoose.Schema(
   {
-    semesterName: {
+    semesterNumber: {
       type: Number,
       required: true,
     },
@@ -48,4 +23,4 @@ const Semester = mongoose.model(
   semesterSchema
 );
 
-module.exports = { Subject, Semester };
+module.exports = Semester;

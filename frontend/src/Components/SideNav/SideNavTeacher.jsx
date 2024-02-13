@@ -4,22 +4,8 @@ import { TbHexagonLetterA } from "react-icons/tb";
 import { PiChatsFill } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import { MdPersonOutline } from "react-icons/md";
-import { useState } from "react";
-import CustomModal from "../CustomModal/CustomModal";
 
 export default function SideNavTeacher() {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  const openModal = (event) => {
-    event.preventDefault();
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
-  const handleChange = () => {};
   return (
     <>
       <div className="fixed left-0 top-0 mt-[3.8rem] flex h-full w-64 flex-col border-r-2 border-black bg-gray-800 shadow-md">
@@ -47,7 +33,6 @@ export default function SideNavTeacher() {
             </li>
             <li>
               <Link
-                onClick={(event) => openModal(event)}
                 to="/attendance"
                 className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
               >
@@ -109,19 +94,6 @@ export default function SideNavTeacher() {
           </ul>
         </div>
       </div>
-      <CustomModal isOpen={modalIsOpen} onRequestClose={closeModal}>
-        <h1 className="text-xl font-semibold text-gray-800">Select Semester</h1>
-        <select
-          onChange={handleChange}
-          className="absolute left-0 top-16 w-full border-2 border-black p-2"
-        >
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((semester) => (
-            <option key={semester} value={semester}>
-              Semester {semester}
-            </option>
-          ))}
-        </select>
-      </CustomModal>
     </>
   );
 }

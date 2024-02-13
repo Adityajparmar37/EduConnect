@@ -14,6 +14,9 @@ dotenv.config();
 const {
   generateToken,
 } = require("../utils/generateToken");
+const {
+  Subject,
+} = require("../models/semesterModel.js");
 
 //admin login
 router.post(
@@ -69,7 +72,6 @@ router.post(
   })
 );
 
-//signUp API
 router.post(
   "/signup",
   authMid,
@@ -81,31 +83,31 @@ router.post(
         email,
         phone,
         password,
-        subjects,
       } = req.body;
+
+      console.log(req.body);
 
       if (
         !firstName ||
         !lastName ||
         !email ||
         !phone ||
-        !password ||
-        !subjects ||
-        subjects.length === 0
+        !password
       ) {
-        next(
-          errorHandler(
-            401,
-            "Please fill all the required fields"
-          )
-        );
+        {
+          return next(
+            errorHandler(
+              401,
+              "Please fill all the required fields"
+            )
+          );
+        }
       }
-
       const teacherExists = await Teacher.findOne(
         { email }
       );
       if (teacherExists) {
-        next(
+        return next(
           errorHandler(400, "User Already Exists")
         );
       }
@@ -116,10 +118,9 @@ router.post(
         email,
         phone,
         password,
-        subjects,
       });
+      
 
-      console.log(process.env.FROMPHONE);
       if (createTeacher) {
         const mailData = {
           name: createTeacher.name,
@@ -141,9 +142,8 @@ router.post(
           "Teacher Credentials",
           mailData
         );
-      }
-      if (createTeacher) {
-        res.status(201).json({
+
+        return res.status(201).json({
           _id: createTeacher._id,
           name: createTeacher.name,
           email: createTeacher.email,
@@ -157,7 +157,7 @@ router.post(
           success: true,
         });
       } else {
-        next(
+        return next(
           errorHandler(
             400,
             "Something Went Wrong"
@@ -165,8 +165,8 @@ router.post(
         );
       }
     } catch (error) {
-      console.error("SignUp error", error);
-      next(error);
+      console.log("SignUp error", error);
+      return next(error);
     }
   })
 );

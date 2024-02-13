@@ -20,6 +20,7 @@ import StudentHomePage from "../../Pages/StudentHomePage/StudentHomePage";
 import CreateStudent from "../../Pages/CreateStudent/CreateStudent";
 import UpdateStudent from "../../Pages/UpdateStudent/UpdateStudent";
 import Attendance from "../../Pages/Teacher/Attendance/Attendance";
+import MarkSheet from "../../Pages/Teacher/Marks/MarksSheet";
 
 export default function AppRoutes() {
   return (
@@ -159,6 +160,14 @@ export default function AppRoutes() {
           element={
             <AuthRoute>
               <Attendance />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/markSheet"
+          element={
+            <AuthRoute>
+              <MarkSheet />
             </AuthRoute>
           }
         />

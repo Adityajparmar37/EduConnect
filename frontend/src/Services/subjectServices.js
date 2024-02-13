@@ -10,15 +10,18 @@ export const addSubject = async (subjectData) => {
   }
 };
 
-export const getAllSubject = async () => {
+export const getAllSubject = async (semNo) => {
   try {
-    const { data } = await axios.get("api/subject/getAllSubject");
+    const { data } = await axios.get(
+      `api/subject/getAllSubject?semNo=${semNo}`,
+    );
     console.log("All Subject Frontend API Hit ==> ", data);
     return data;
   } catch (error) {
     return error.response.data;
   }
 };
+
 
 export const getASubject = async (id) => {
   try {

@@ -1,7 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const errorHandler = require("../middleware/errorMiddleware.js");
-const Student = require("../models/studentModel.js");
 const authMid = require("../middleware/authMiddleware.js");
 const bcrypt = require("bcryptjs");
 const {
@@ -14,12 +13,9 @@ dotenv.config();
 const {
   generateToken,
 } = require("../utils/generateToken");
-const {
-  findOne,
-} = require("../models/studentModel.js");
-const {
-  Semester,
-} = require("../models/semesterModel.js");
+const Student = require("../models/studentModel.js");
+const Semester = require("../models/semesterModel.js");
+const StudentHist = require("../models/StudentHistoryModel.js");
 
 //admin login
 router.post(
@@ -75,7 +71,6 @@ router.post(
   })
 );
 
-//signUp API
 router.post(
   "/signup",
   handler(async (req, res, next) => {
@@ -85,62 +80,95 @@ router.post(
         email,
         password,
         confirmPassword,
-        semester,
+        CurrentSemester,
       } = req.body;
+
+      console.log(req.body);
 
       if (
         !name ||
         !email ||
         !password ||
         !confirmPassword ||
-        !semester
+        !CurrentSemester
       ) {
-        next(
+        return next(
           errorHandler(
-            401,
-            "Please fill the fields"
+            400,
+            "Please fill all fields"
+          )
+        );
+      }
+
+      if (password !== confirmPassword) {
+        return next(
+          errorHandler(
+            400,
+            "Passwords do not match"
           )
         );
       }
 
       const studentExists = await Student.findOne(
-        {
-          email,
-        }
+        { email }
       );
+
       if (studentExists) {
-        next(
-          errorHandler(400, "User Already exist")
+        return next(
+          errorHandler(409, "User already exists")
         );
       }
 
+      const semId = await Semester.findOne({
+        semesterNumber: CurrentSemester,
+      });
+
+      if (!semId) {
+        return next(
+          errorHandler(
+            404,
+            "Please select a proper semester"
+          )
+        );
+      }
 
       const CreateStudent = await Student.create({
         name,
         email,
         password,
-        semester,
+        CurrentSemester: semId._id,
       });
+
+      const studentHist =
+        await StudentHist.create({
+          studentId: CreateStudent._id,
+          semesterId: semId._id,
+        });
+      
+
 
       if (CreateStudent) {
         res.status(201).json({
           _id: CreateStudent._id,
           name: CreateStudent.name,
           email: CreateStudent.email,
+          CurrentSemester:
+            CreateStudent.CurrentSemester,
           userType: "student",
           token: generateToken(
             CreateStudent._id,
             CreateStudent.name,
             CreateStudent.email,
-            CreateStudent.InsitutionName
+            CreateStudent.InstitutionName,
+            CreateStudent.CurrentSemester
           ),
           success: true,
         });
       } else {
-        next(
+        return next(
           errorHandler(
-            400,
-            "Something Went Wrong"
+            500,
+            "Something went wrong"
           )
         );
       }

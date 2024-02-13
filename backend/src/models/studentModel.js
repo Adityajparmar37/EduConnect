@@ -20,9 +20,9 @@ const studentSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    semester: {
-      type: Number,
-      required: true,
+    CurrentSemester: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Student",
     },
   },
   {

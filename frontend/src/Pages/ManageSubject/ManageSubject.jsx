@@ -12,8 +12,8 @@ export default function ManageSubject() {
     const fetchData = async () => {
       try {
         const responseAllSubject = await getAllSubject([]);
-        console.log(responseAllSubject);
-        setAllSubject(responseAllSubject);
+        console.log(responseAllSubject.subjects);
+        setAllSubject(responseAllSubject.subjects);
       } catch (error) {
         console.log("Get all teacher frontend error", error);
         toast.error("Some error occurred, please try again!");
@@ -23,31 +23,31 @@ export default function ManageSubject() {
     fetchData();
   }, []);
 
- const DeleteSubject = async (id) => {
-   try {
-     console.log(id);
-     const responseData = await deleteSubject(id);
-     if (responseData.success === true) {
-       toast.success(responseData.message);
-       setAllSubject((prevSubject) =>
-         prevSubject.map((semester) => {
-           return {
-             ...semester,
-             subjects: semester.subjects.filter(
-               (subject) => subject._id !== id,
-             ),
-           };
-         }),
-       );
-     } else if (responseData.success === false) {
-       toast.error(responseData.message);
-     }
-   } catch (error) {
-     toast.error("Please try again!");
-   }
- };
+  const DeleteSubject = async (id) => {
+    try {
+      console.log(id);
+      const responseData = await deleteSubject(id);
+      if (responseData.success === true) {
+        toast.success(responseData.message);
+        setAllSubject((prevSubject) =>
+          prevSubject.map((semester) => {
+            return {
+              ...semester,
+              subjects: semester.subjects.filter(
+                (subject) => subject._id !== id,
+              ),
+            };
+          }),
+        );
+      } else if (responseData.success === false) {
+        toast.error(responseData.message);
+      }
+    } catch (error) {
+      toast.error("Please try again!");
+    }
+  };
 
-console.log(allSubject.length);
+  console.log(allSubject.length);
   return (
     <div className="flex h-screen">
       <div className="w-1/6">
@@ -96,9 +96,9 @@ console.log(allSubject.length);
             </div>
           </>
         ) : (
-          <Link to="/teacherDashboard">
+          <Link to="/subjectDashboard">
             <h1 className=" items-center justify-center rounded-md bg-gray-600 p-2 text-lg text-white">
-              No Teacher Found! Click to go back
+              No Subject Found! Click to go back
             </h1>
           </Link>
         )}

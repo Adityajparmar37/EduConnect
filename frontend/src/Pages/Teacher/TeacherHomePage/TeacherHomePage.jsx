@@ -10,11 +10,6 @@ import Modal from "react-modal";
 export default function TeacherHomePage() {
   document.body.style.overflow = "hidden";
 
-  // Function to close the modal
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <div className="flex h-screen">
       <div className="w-1/6">

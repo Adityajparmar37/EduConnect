@@ -1,13 +1,11 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const errorHandler = require("../middleware/errorMiddleware.js");
-const {
-  Subject,
-  Semester,
-} = require("../models/semesterModel.js");
 const router = express.Router();
 const handler = require("express-async-handler");
 const authMid = require("../middleware/authMiddleware.js");
+const Subject = require("../models/subjectModel.js");
+const Semester = require("../models/semesterModel.js");
 dotenv.config();
 
 //authorization
@@ -20,13 +18,13 @@ router.post(
       const {
         subjectName,
         subjectNumber,
-        semesterName,
+        semesterNumber,
       } = req.body;
 
       if (
         !subjectName ||
         !subjectNumber ||
-        !semesterName
+        !semesterNumber
       ) {
         return next(
           errorHandler(
@@ -36,28 +34,50 @@ router.post(
         );
       }
 
+      const existingSubject =
+        await Subject.findOne({ subjectName });
+
+      if (existingSubject) {
+        return next(
+          errorHandler(
+            409,
+            "Subject already exists"
+          )
+        );
+      }
+
       const subject = new Subject({
         subjectName: subjectName,
         subjectNumber: subjectNumber,
-        semesterName: semesterName,
       });
 
       const savedSubject = await subject.save();
 
+      if (!savedSubject) {
+        return next(
+          errorHandler(
+            500,
+            "Failed to create subject"
+          )
+        );
+      }
+
+      // Create or update the semester
       let semester = await Semester.findOne({
-        semesterName: semesterName,
+        semesterNumber,
       });
 
       if (!semester) {
+        // Create a new semester if it doesn't exist
         semester = new Semester({
-          semesterName: semesterName,
-          subjects: [savedSubject._id],
+          semesterNumber: semesterNumber,
+          subjects: [savedSubject._id], // Associate the subject with the semester
         });
       } else {
+        // Update the existing semester by adding the subject
         semester.subjects.push(savedSubject._id);
       }
 
-      // Save the semester
       await semester.save();
 
       res.status(201).json({
@@ -75,20 +95,48 @@ router.post(
   })
 );
 
+
 router.get(
   "/getAllSubject",
   handler(async (req, res, next) => {
     try {
-      const allSubjects = await Semester.find(
-        {}
-      ).populate("subjects");
+      const semNo = req.query.semNo; // Use req.query to get the value of semNo from the query string
+      console.log(semNo);
 
-      if (allSubjects && allSubjects.length > 0) {
-        res.status(200).json(allSubjects);
+      if (semNo) {
+        const semester = await Semester.findOne({
+          semesterName: semNo,
+        }).populate("subjects");
+        if (semester) {
+          res.status(200).json({
+            success: true,
+            subjects: semester.subjects,
+          });
+        } else {
+          next(
+            errorHandler(
+              404,
+              "Semester not found"
+            )
+          );
+        }
       } else {
-        next(
-          errorHandler(404, "No subjects found")
-        );
+        const allSubjects = await Semester.find(
+          {}
+        ).populate("subjects");
+        if (
+          allSubjects &&
+          allSubjects.length > 0
+        ) {
+          res.status(200).json({
+            success: true,
+            subjects: allSubjects,
+          });
+        } else {
+          next(
+            errorHandler(404, "No subjects found")
+          );
+        }
       }
     } catch (error) {
       console.log(

@@ -37,22 +37,6 @@ const teacherSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    subjects: [
-      {
-        subjectName: {
-          type: String,
-          default: "",
-        },
-        subjectNumber: {
-          type: String,
-          default: "",
-        },
-        semester: {
-          type: Number,
-          default: "",
-        },
-      },
-    ],
   },
   {
     timestamps: true,
