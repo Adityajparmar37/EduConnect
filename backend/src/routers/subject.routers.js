@@ -283,4 +283,42 @@ router.delete(
   })
 );
 
+router.get(
+  "/SemSub",
+  handler(async (req, res, next) => {
+    try {
+      const { semesterNumber } = req.body;
+
+      console.log(semesterNumber);
+
+      const findSubjectList =
+        await Semester.findOne({
+          semesterNumber,
+        }).populate("subjects", "subjectName");
+
+      if (!findSubjectList) {
+        return next(
+          errorHandler(
+            404,
+            "No subjects found for this semester"
+          )
+        );
+      }
+      console.log(findSubjectList);
+
+      res.status(200).json({
+        success: true,
+        SemesterSubjects:
+          findSubjectList.subjects,
+      });
+    } catch (error) {
+      console.log(
+        "All subjects of a semester error",
+        error
+      );
+      next(error);
+    }
+  })
+);
+
 module.exports = router;
