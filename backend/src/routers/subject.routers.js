@@ -208,7 +208,7 @@ router.put(
           });
         }
 
-        // Remove the subject from the old semester
+        // pull thi ae subject ae data entry mathi nikari jase
         const oldSemester =
           await Semester.findOneAndUpdate(
             { subjects: id },
@@ -216,7 +216,7 @@ router.put(
             { new: true }
           );
 
-        // Add the subject to the new semester
+        //push thi ae subject beja data ma entry kari dease
         await Semester.findByIdAndUpdate(
           targetSemester._id,
           { $push: { subjects: id } },
