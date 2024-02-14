@@ -41,13 +41,13 @@ export default function CreateTeacher() {
     }));
   };
 
-  const handleSubjectChange = (index, key, value) => {
-    setTeacherData((prevData) => {
-      const updatedSubjects = [...prevData.subjects];
-      updatedSubjects[index][key] = value;
-      return { ...prevData, subjects: updatedSubjects };
-    });
-  };
+  // const handleSubjectChange = (index, key, value) => {
+  //   setTeacherData((prevData) => {
+  //     const updatedSubjects = [...prevData.subjects];
+  //     updatedSubjects[index][key] = value;
+  //     return { ...prevData, subjects: updatedSubjects };
+  //   });
+  // };
 
   const handleInputChange = (key, value) => {
     setTeacherData((prevData) => ({ ...prevData, [key]: value }));
@@ -100,6 +100,8 @@ export default function CreateTeacher() {
       console.log("Teacher create error frontend", error);
     }
   };
+
+  console.log(selectedSubjects);
 
   return (
     <>
