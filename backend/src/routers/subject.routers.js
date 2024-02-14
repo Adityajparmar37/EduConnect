@@ -304,7 +304,7 @@ router.get(
         );
       }
 
-      console.log(findSubjectList);
+      // console.log(findSubjectList);
 
       if (findSubjectList.subjects.length === 0) {
         return next(

@@ -83,9 +83,14 @@ router.post(
         email,
         phone,
         password,
+        subjects,
       } = req.body;
 
-      console.log(req.body);
+      console.log(
+        "-----------" +
+          subjects +
+          "-----------------"
+      );
 
       if (
         !firstName ||
@@ -119,7 +124,6 @@ router.post(
         phone,
         password,
       });
-      
 
       if (createTeacher) {
         const mailData = {

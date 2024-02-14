@@ -277,6 +277,11 @@ router.put(
         });
       }
 
+      console.log(
+        "hello",
+        updateFormData.CurrentSemester
+      );
+
       if (
         updateFormData.CurrentSemester &&
         updateFormData.CurrentSemester !==

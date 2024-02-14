@@ -71,7 +71,8 @@ export default function UpdateSubject() {
                     </h6>
                     <button
                       onClick={handleSubmit}
-                      className="text-md rounded bg-primary px-4 py-2 font-bold uppercase text-white shadow outline-none transition-all  duration-200 ease-linear hover:rounded-full hover:bg-mintPrimary hover:text-black hover:shadow-md focus:outline-none active:bg-red-600"
+                      className="text-md rounded  bg-red-500 px-4 py-2 font-bold uppercase text-white shadow outline-none  transition-all duration-200 ease-linear hover:rounded-full  hover:bg-red-100 hover:text-black 
+                      hover:shadow-md focus:outline-none active:bg-red-600 "
                       type="submit"
                     >
                       Update

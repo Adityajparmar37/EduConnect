@@ -29,7 +29,7 @@ export default function Header() {
                   />
                 </span>
                 <span className="text-white duration-200 hover:text-primary">
-                  onnect
+                  nnect
                 </span>
               </h1>
             </div>

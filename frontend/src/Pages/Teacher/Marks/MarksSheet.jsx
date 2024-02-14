@@ -3,16 +3,38 @@ import Spreadsheet from "react-spreadsheet";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
 
 export default function MarkSheet() {
-  const columnLabels = ["Student", "Attendance"];
-  const rowLabels = ["1", "2"];
+  const columnLabels = ["Student", "Mid-1","Mid-2"];
+  const rowLabels = ["1", "2","3","4","5","6"];
   const initialData = [
     [
-      { value: "Vanilla", button: <button>Button</button> },
-      { value: "Chocolate", button: <button>Button</button> },
+      { value: "Aditya", button: <button>Button</button> },
+      { value: "25", button: <button>Button</button> },
+      { value: "25", button: <button>Button</button> },
     ],
     [
-      { value: "Strawberry", button: <button>Button</button> },
-      { value: "Cookies", button: <button>Button</button> },
+      { value: "Parth", button: <button>Button</button> },
+      { value: "30", button: <button>Button</button> },
+      { value: "15", button: <button>Button</button> },
+    ],
+    [
+      { value: "Het", button: <button>Button</button> },
+      { value: "20", button: <button>Button</button> },
+      { value: "22", button: <button>Button</button> },
+    ],
+    [
+      { value: "Aryan", button: <button>Button</button> },
+      { value: "30", button: <button>Button</button> },
+      { value: "30", button: <button>Button</button> },
+    ],
+    [
+      { value: "Brijesh", button: <button>Button</button> },
+      { value: "30", button: <button>Button</button> },
+      { value: "30", button: <button>Button</button> },
+    ],
+    [
+      { value: "Vaidik", button: <button>Button</button> },
+      { value: "29", button: <button>Button</button> },
+      { value: "28", button: <button>Button</button> },
     ],
   ];
   const [data, setData] = useState(initialData);

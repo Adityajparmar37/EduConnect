@@ -41,14 +41,6 @@ export default function CreateTeacher() {
     }));
   };
 
-  // const handleSubjectChange = (index, key, value) => {
-  //   setTeacherData((prevData) => {
-  //     const updatedSubjects = [...prevData.subjects];
-  //     updatedSubjects[index][key] = value;
-  //     return { ...prevData, subjects: updatedSubjects };
-  //   });
-  // };
-
   const handleInputChange = (key, value) => {
     setTeacherData((prevData) => ({ ...prevData, [key]: value }));
   };
@@ -85,7 +77,18 @@ export default function CreateTeacher() {
       if (teacherData.password !== teacherData.confirmPassword) {
         toast.error("Password must match");
       } else {
-        const responseTeacher = await signup(teacherData);
+        // Extract subject IDs from selectedSubjects array
+        const subjectIds = selectedSubjects.map((subject) => subject.id);
+
+        // Create newTeacherData object with subject IDs included
+        const newTeacherData = {
+          ...teacherData,
+          subjects: selectedSubjects, // Send the entire subject object array
+        };
+
+        console.log("-----> ", newTeacherData);
+
+        const responseTeacher = await signup(newTeacherData);
         console.log(responseTeacher);
 
         if (responseTeacher.success === true) {
@@ -277,9 +280,7 @@ export default function CreateTeacher() {
                               className="w-full rounded border-0 bg-white px-3 py-3 text-sm shadow focus:outline-none focus:ring"
                               onChange={(event) => handleSemesterNo(event)}
                             >
-                              <option value="" disabled>
-                                Choose Semester
-                              </option>
+                              <option value="">Choose Semester</option>
                               {[1, 2, 3, 4, 5, 6, 7, 8].map((semester) => (
                                 <option key={semester} value={semester}>
                                   Semester {semester}
@@ -349,6 +350,7 @@ export default function CreateTeacher() {
           onChange={(e) => chooseSubject(e)}
           className="absolute left-0 top-16 w-full border-2 border-black p-2"
         >
+          <option>-- Choose Subject --</option>
           {subList.map((subject, index) => (
             <option key={index} value={subject.subjectName}>
               {subject.subjectName} {""} : {""} {subject.subjectNumber}
