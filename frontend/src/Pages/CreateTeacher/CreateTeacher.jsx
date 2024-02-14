@@ -10,6 +10,7 @@ export default function CreateTeacher() {
   const navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [subList, setSubList] = useState([]);
+  const [selectedSubjects, setSelectedSubjects] = useState([]);
 
   const openModal = (event) => {
     event.preventDefault();
@@ -53,7 +54,6 @@ export default function CreateTeacher() {
   };
 
   const handleSemesterNo = async (event) => {
-    // console.log(event.target.value);
     try {
       const subList = await SemesterSubject(event.target.value);
       console.log(subList);
@@ -68,6 +68,14 @@ export default function CreateTeacher() {
       toast.error("Please choose the semester again !");
       console.log("Semester subject listing error ", error);
     }
+  };
+
+  const chooseSubject = async (e) => {
+    const selectedSubject = subList.find(
+      (subject) => subject.subjectName === e.target.value,
+    );
+    setSelectedSubjects([...selectedSubjects, selectedSubject]);
+    closeModal();
   };
 
   const handleSubmit = async (e) => {
@@ -277,6 +285,41 @@ export default function CreateTeacher() {
                               ))}
                             </select>
                           </div>
+                          <div className="mb-4">
+                            <label
+                              className="text-blueGray-600 mb-2 block text-xs font-bold uppercase"
+                              htmlFor={`subjectName-${index}`}
+                            >
+                              Subject Name
+                            </label>
+                            <input
+                              type="text"
+                              id={`subjectName-${index}`}
+                              placeholder="Choose Subject Name"
+                              className="w-full rounded border-0 bg-white px-3 py-3 text-sm shadow focus:outline-none focus:ring"
+                              value={selectedSubjects[index]?.subjectName || ""}
+                              readOnly // Add readOnly attribute
+                            />
+                          </div>
+
+                          <div className="mb-4">
+                            <label
+                              className="text-blueGray-600 mb-2 block text-xs font-bold uppercase"
+                              htmlFor={`subjectNumber-${index}`}
+                            >
+                              Subject Number
+                            </label>
+                            <input
+                              type="text"
+                              id={`subjectNumber-${index}`}
+                              placeholder="Choose Subject Number"
+                              className="w-full rounded border-0 bg-white px-3 py-3 text-sm shadow focus:outline-none focus:ring"
+                              value={
+                                selectedSubjects[index]?.subjectNumber || ""
+                              }
+                              readOnly // Add readOnly attribute
+                            />
+                          </div>
                         </div>
                       ))}
 
@@ -301,12 +344,12 @@ export default function CreateTeacher() {
       <CustomModal isOpen={modalIsOpen} onRequestClose={closeModal}>
         <h1 className="text-xl font-semibold text-gray-800">Select Semester</h1>
         <select
-          // onChange={(e) => handleChange(e)}
+          onChange={(e) => chooseSubject(e)}
           className="absolute left-0 top-16 w-full border-2 border-black p-2"
         >
           {subList.map((subject, index) => (
-            <option key={index} value={subject._id}>
-              {subject.subjectName}
+            <option key={index} value={subject.subjectName}>
+              {subject.subjectName} {""} : {""} {subject.subjectNumber}
             </option>
           ))}
         </select>

@@ -293,7 +293,7 @@ router.get(
       const findSubjectList =
         await Semester.findOne({
           semesterNumber,
-        }).populate("subjects", "subjectName");
+        }).populate("subjects", "subjectName subjectNumber");
 
       if (!findSubjectList) {
         return next(
@@ -329,6 +329,5 @@ router.get(
     }
   })
 );
-
 
 module.exports = router;

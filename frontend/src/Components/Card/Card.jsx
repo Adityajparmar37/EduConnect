@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { GoTriangleRight } from "react-icons/go";
-import CustomModal from "../CustomModal/CustomModal";
 
 const Card = ({ bgColor, icon, title, text, link, icon2 }) => {
-  const navigate = useNavigate();
-
   return (
     <>
       <div
@@ -30,10 +27,7 @@ const Card = ({ bgColor, icon, title, text, link, icon2 }) => {
           className={`absolute bottom-10 left-80 flex justify-end text-3xl text-${bgColor} duration-200 hover:translate-x-3`}
           style={{ zIndex: 2 }}
         >
-          <Link
-            to={link}
-            className="cursor-pointer text-gray-800"
-          >
+          <Link to={link} className="cursor-pointer text-gray-800">
             {icon2}
           </Link>
         </div>
