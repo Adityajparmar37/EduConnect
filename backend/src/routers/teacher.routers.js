@@ -87,9 +87,8 @@ router.post(
       } = req.body;
 
       console.log(
-        "-----------" +
-          subjects +
-          "-----------------"
+        "Subjects:",
+        JSON.stringify(req.body.subjects)
       );
 
       if (
@@ -97,7 +96,8 @@ router.post(
         !lastName ||
         !email ||
         !phone ||
-        !password
+        !password ||
+        !subjects
       ) {
         {
           return next(

@@ -13,6 +13,7 @@ export const login = async (loginData) => {
 
 export const signup = async (signupData) => {
   try {
+    console.log(signupData);
     const { data } = await axios.post("api/teacher/signup", signupData);
     console.log("Signup Frontend API Hit ==> ", data);
     return data;
