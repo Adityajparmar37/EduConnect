@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const errorHandler = require("../middleware/errorMiddleware.js");
 const Teacher = require("../models/teacherModel.js");
 const authMid = require("../middleware/authMiddleware.js");
+const Semester = require("../models/semesterModel.js");
 const {
   sendMail,
 } = require("../utils/sendMail.js");
@@ -14,9 +15,7 @@ dotenv.config();
 const {
   generateToken,
 } = require("../utils/generateToken");
-const {
-  Subject,
-} = require("../models/semesterModel.js");
+const Subject = require("../models/subjectModel.js");
 
 //admin login
 router.post(
@@ -105,18 +104,18 @@ router.post(
         !password ||
         !subjects
       ) {
-        {
-          return next(
-            errorHandler(
-              401,
-              "Please fill all the required fields"
-            )
-          );
-        }
+        return next(
+          errorHandler(
+            401,
+            "Please fill all the required fields"
+          )
+        );
       }
+
       const teacherExists = await Teacher.findOne(
         { email }
       );
+
       if (teacherExists) {
         return next(
           errorHandler(400, "User Already Exists")
@@ -131,24 +130,51 @@ router.post(
         password,
       });
 
-      subjects.forEach((subject, index) => {
+      for (const subject of subjects) {
         console.log(
-          `Subject ${index + 1}:`,
+          `Subject:`,
           JSON.stringify(subject)
         );
-      });
+
+        try {
+          const subjectDetails =
+            await Subject.findById(subject._id);
+          console.log(
+            "Subject Details:",
+            subjectDetails
+          );
+        } catch (error) {
+          console.error(
+            "Error fetching subject details:",
+            error
+          );
+        }
+      }
 
       console.log(
-        "Semesters:",
-        JSON.stringify(semesters)
+        "----------------****--------------"
       );
 
-      semesters.forEach((semester, index) => {
-        console.log(
-          `Semester ${index + 1}:`,
-          semester
-        );
-      });
+      for (const semester of semesters) {
+        console.log(`Semester:`, semester);
+
+        try {
+          const findSubjectList =
+            await Semester.findOne({
+              semesterNumber: semester,
+            });
+
+          console.log(
+            "Found Semester:",
+            findSubjectList
+          );
+        } catch (error) {
+          console.error(
+            "Error finding semester:",
+            error
+          );
+        }
+      }
 
       if (createTeacher) {
         const mailData = {
