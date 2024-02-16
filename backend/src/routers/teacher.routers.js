@@ -84,11 +84,17 @@ router.post(
         phone,
         password,
         subjects,
+        semesters,
       } = req.body;
 
       console.log(
         "Subjects:",
         JSON.stringify(req.body.subjects)
+      );
+
+      console.log(
+        "Semesters:",
+        JSON.stringify(req.body.semesters)
       );
 
       if (
@@ -123,6 +129,25 @@ router.post(
         email,
         phone,
         password,
+      });
+
+      subjects.forEach((subject, index) => {
+        console.log(
+          `Subject ${index + 1}:`,
+          JSON.stringify(subject)
+        );
+      });
+
+      console.log(
+        "Semesters:",
+        JSON.stringify(semesters)
+      );
+
+      semesters.forEach((semester, index) => {
+        console.log(
+          `Semester ${index + 1}:`,
+          semester
+        );
       });
 
       if (createTeacher) {

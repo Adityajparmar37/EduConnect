@@ -10,6 +10,7 @@ export default function CreateTeacher() {
   const navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [subList, setSubList] = useState([]);
+  const [selectedSemesters, setSelectedSemesters] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
 
   const openModal = (event) => {
@@ -29,6 +30,7 @@ export default function CreateTeacher() {
     password: "",
     confirmPassword: "",
     subjects: [{ subjectName: "", subjectNumber: "", semester: "" }],
+    semesters: [],
   });
 
   const handleAddSubject = () => {
@@ -47,6 +49,7 @@ export default function CreateTeacher() {
 
   const handleSemesterNo = async (event) => {
     try {
+      setSelectedSemesters([...selectedSemesters, event.target.value]);
       const subList = await SemesterSubject(event.target.value);
       console.log(subList);
 
@@ -79,11 +82,13 @@ export default function CreateTeacher() {
       } else {
         // Extract subject IDs from selectedSubjects array
         const subjectIds = selectedSubjects.map((subject) => subject.id);
+        console.log(subjectIds);
 
         // Create newTeacherData object with subject IDs included
         const newTeacherData = {
           ...teacherData,
-          subjects: selectedSubjects, // Send the entire subject object array
+          subjects: selectedSubjects,
+          semesters: selectedSemesters, // Send the entire subject object array
         };
 
         console.log("-----> ", newTeacherData);
@@ -105,6 +110,7 @@ export default function CreateTeacher() {
   };
 
   console.log(selectedSubjects);
+  console.log(selectedSemesters);
 
   return (
     <>
@@ -347,7 +353,7 @@ export default function CreateTeacher() {
       <CustomModal isOpen={modalIsOpen} onRequestClose={closeModal}>
         <h1 className="text-xl font-semibold text-gray-800">Select Semester</h1>
         <select
-          onChange={(e) => chooseSubject(e)}
+          onChange={(e) => chooseSubject(e, modalIsOpen)}
           className="absolute left-0 top-16 w-full border-2 border-black p-2"
         >
           <option>-- Choose Subject --</option>
