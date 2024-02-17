@@ -11,10 +11,10 @@ import SubjectDashboard from "../../Pages/Admin/SubjectDashboard/SubjectDashboar
 import ManageTeacher from "../../Pages/Admin/ManageTeacher/ManageTeacher";
 import ManageSubject from "../../Pages/Admin/ManageSubject/ManageSubject";
 import UpdateSubject from "../../Pages/Admin/UpdateSubject/UpdateSubject";
-import StudentDashboard from "../../Pages/StudentDashboard/StudentDashboard";
+import StudentDashboard from "../../Pages/Admin/StudentDashboard/StudentDashboard";
 import ManageStudent from "../../Pages/Admin/ManageStudent/ManageStudent";
 import UpdateStudent from "../../Pages/Admin/UpdateStudent/UpdateStudent";
-import StudentHomePage from "../../Pages/StudentHomePage/StudentHomePage";
+import StudentHomePage from "../../Pages/Student/StudentHomePage/StudentHomePage";
 import TeacherHomePage from "../../Pages/Teacher/TeacherHomePage/TeacherHomePage";
 import Attendance from "../../Pages/Teacher/Attendance/Attendance";
 import MarkSheet from "../../Pages/Teacher/Marks/MarksSheet";

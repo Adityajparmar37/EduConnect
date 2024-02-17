@@ -1,8 +1,8 @@
 import { IoArrowForwardSharp } from "react-icons/io5";
 import { BsPersonVideo2 } from "react-icons/bs";
 import { GoPersonAdd } from "react-icons/go";
-import Card from "../../Components/Card/Card";
-import SideNav from "../../Components/SideNav/SideNav";
+import Card from "../../../Components/Card/Card";
+import SideNav from "../../../Components/SideNav/SideNav";
 
 export default function StudentDashboard() {
    return (
