@@ -134,26 +134,45 @@ router.post(
           );
 
           try {
-            const subjectDetails =
-              await Subject.findById(subject._id);
+            const findSubjectList =
+              await Semester.findOne({
+                semesterNumber: semester,
+              });
+
             console.log(
-              "Subject Details:",
-              subjectDetails
+              "Found Semester:",
+              findSubjectList
             );
 
-            const assignSubject =
-              await AssignSubject.create({
-                subjectId: subject._id,
-                semesterNumber: semester,
-                teacherId: createTeacher._id,
-              });
-            console.log(
-              `Assigned subject ${subject._id} to semester ${semester}:`,
-              assignSubject
-            );
+            try {
+              const subjectDetails =
+                await Subject.findById(
+                  subject._id
+                );
+              console.log(
+                "Subject Details:",
+                subjectDetails
+              );
+
+              const assignSubject =
+                await AssignSubject.create({
+                  subjectId: subject._id,
+                  semesterId: findSubjectList._id,
+                  teacherId: createTeacher._id,
+                });
+              console.log(
+                `Assigned subject ${subject._id} to semester ${semester}:`,
+                assignSubject
+              );
+            } catch (error) {
+              console.error(
+                "Error fetching subject details:",
+                error
+              );
+            }
           } catch (error) {
             console.error(
-              "Error fetching subject details:",
+              "Error finding semester:",
               error
             );
           }
