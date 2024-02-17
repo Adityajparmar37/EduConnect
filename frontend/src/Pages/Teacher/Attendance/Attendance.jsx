@@ -32,8 +32,8 @@ export default function Attendance() {
       <div className="w-1/6">
         <SideNavTeacher />
       </div>
-      <div className="pt-16 flex flex-col w-5/6">
-        <h1 className="text-center mb-10 text-3xl font-bold ">Your Subject</h1>
+      <div className="flex w-5/6 flex-col pt-16">
+        <h1 className="mb-10 text-center text-3xl font-bold ">Your Subject</h1>
         <SubjectCard semSubject={semSubject} />
       </div>
     </div>

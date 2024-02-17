@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import SideNavStudent from "../../../Components/SideNav/SideNavStudent";
+import SideNav from "../../../Components/SideNav/SideNav";
 import { useAuth } from "../../../Hooks/useAuth";
 
 
@@ -33,7 +33,7 @@ export default function CreateStudent() {
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
       <div className="lg:w-1/6">
-        <SideNavStudent />
+        <SideNav />
       </div>
       <div className="z-10 mt-5 flex w-full flex-col overflow-auto px-3 pt-10 lg:w-5/6  lg:flex-row">
         <div className="mx-auto w-full lg:w-3/4 xl:w-full">
