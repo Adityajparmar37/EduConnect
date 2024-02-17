@@ -16,6 +16,7 @@ const {
   generateToken,
 } = require("../utils/generateToken");
 const Subject = require("../models/subjectModel.js");
+const AssignSubject = require("../models/assignSubject.js");
 
 //admin login
 router.post(
@@ -86,23 +87,14 @@ router.post(
         semesters,
       } = req.body;
 
-      console.log(
-        "Subjects:",
-        JSON.stringify(req.body.subjects)
-      );
-
-      console.log(
-        "Semesters:",
-        JSON.stringify(req.body.semesters)
-      );
-
       if (
         !firstName ||
         !lastName ||
         !email ||
         !phone ||
         !password ||
-        !subjects
+        !subjects ||
+        !semesters
       ) {
         return next(
           errorHandler(
@@ -130,50 +122,44 @@ router.post(
         password,
       });
 
+      let subjectAssigned = false;
+
       for (const subject of subjects) {
-        console.log(
-          `Subject:`,
-          JSON.stringify(subject)
-        );
+        if (subjectAssigned) break; // If subject already assigned, break the loop
 
-        try {
-          const subjectDetails =
-            await Subject.findById(subject._id);
+        for (const semester of semesters) {
           console.log(
-            "Subject Details:",
-            subjectDetails
+            `Subject:`,
+            JSON.stringify(subject)
           );
-        } catch (error) {
-          console.error(
-            "Error fetching subject details:",
-            error
-          );
+
+          try {
+            const subjectDetails =
+              await Subject.findById(subject._id);
+            console.log(
+              "Subject Details:",
+              subjectDetails
+            );
+
+            const assignSubject =
+              await AssignSubject.create({
+                subjectId: subject._id,
+                semesterNumber: semester,
+                teacherId: createTeacher._id,
+              });
+            console.log(
+              `Assigned subject ${subject._id} to semester ${semester}:`,
+              assignSubject
+            );
+          } catch (error) {
+            console.error(
+              "Error fetching subject details:",
+              error
+            );
+          }
         }
-      }
 
-      console.log(
-        "----------------****--------------"
-      );
-
-      for (const semester of semesters) {
-        console.log(`Semester:`, semester);
-
-        try {
-          const findSubjectList =
-            await Semester.findOne({
-              semesterNumber: semester,
-            });
-
-          console.log(
-            "Found Semester:",
-            findSubjectList
-          );
-        } catch (error) {
-          console.error(
-            "Error finding semester:",
-            error
-          );
-        }
+        subjectAssigned = true; // Set the flag to true after assigning the subject
       }
 
       if (createTeacher) {
