@@ -122,63 +122,54 @@ router.post(
         password,
       });
 
-      let subjectAssigned = false;
+      // Combine subjects and semesters into an array of objects containing both details
+      const subjectsWithSemester = subjects.map(
+        (subject, index) => ({
+          ...subject,
+          semester: semesters[index],
+        })
+      );
 
-      for (const subject of subjects) {
-        if (subjectAssigned) break; // If subject already assigned, break the loop
+      for (const subjectWithSemester of subjectsWithSemester) {
+        try {
+          const findSubjectList =
+            await Semester.findOne({
+              semesterNumber:
+                subjectWithSemester.semester,
+            });
 
-        for (const semester of semesters) {
           console.log(
-            `Subject:`,
-            JSON.stringify(subject)
+            `Found Semester:`,
+            findSubjectList
           );
 
-          try {
-            const findSubjectList =
-              await Semester.findOne({
-                semesterNumber: semester,
-              });
-
-            console.log(
-              "Found Semester:",
-              findSubjectList
+          const subjectDetails =
+            await Subject.findById(
+              subjectWithSemester._id
             );
 
-            try {
-              const subjectDetails =
-                await Subject.findById(
-                  subject._id
-                );
-              console.log(
-                "Subject Details:",
-                subjectDetails
-              );
+          console.log(
+            "Subject Details:",
+            subjectDetails
+          );
 
-              const assignSubject =
-                await AssignSubject.create({
-                  subjectId: subject._id,
-                  semesterId: findSubjectList._id,
-                  teacherId: createTeacher._id,
-                });
-              console.log(
-                `Assigned subject ${subject._id} to semester ${semester}:`,
-                assignSubject
-              );
-            } catch (error) {
-              console.error(
-                "Error fetching subject details:",
-                error
-              );
-            }
-          } catch (error) {
-            console.error(
-              "Error finding semester:",
-              error
-            );
-          }
+          const assignSubject =
+            await AssignSubject.create({
+              subjectId: subjectWithSemester._id,
+              semesterId: findSubjectList._id,
+              teacherId: createTeacher._id,
+            });
+
+          console.log(
+            `Assigned subject ${subjectWithSemester._id} to semester ${subjectWithSemester.semester}:`,
+            assignSubject
+          );
+        } catch (error) {
+          console.error(
+            "Error assigning subject to semester:",
+            error
+          );
         }
-
-        subjectAssigned = true; // Set the flag to true after assigning the subject
       }
 
       if (createTeacher) {
@@ -294,6 +285,26 @@ router.get(
     } catch (error) {
       next(
         errorHandler(404, "No Such Project Found")
+      );
+    }
+  })
+);
+
+///find individual Assign Subject
+router.get(
+  "/assignSubjects/:id",
+  authMid,
+  handler(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const teacherData =
+        await AssignSubject.find({
+          teacherId: id
+        }).populate("subjectId" , "subjectName subjectNumber");
+      res.send(teacherData);
+    } catch (error) {
+      next(
+        errorHandler(404, "No Such Teacher Found")
       );
     }
   })
