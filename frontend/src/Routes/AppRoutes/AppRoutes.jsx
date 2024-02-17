@@ -17,12 +17,12 @@ import UpdateStudent from "../../Pages/Admin/UpdateStudent/UpdateStudent";
 import StudentHomePage from "../../Pages/Student/StudentHomePage/StudentHomePage";
 import TeacherHomePage from "../../Pages/Teacher/TeacherHomePage/TeacherHomePage";
 import Attendance from "../../Pages/Teacher/Attendance/Attendance";
-import MarkSheet from "../../Pages/Teacher/Marks/MarksSheet";
+import MarkSheet from "../../Pages/Teacher/Marks/MarkSheet";
 import CreateStudent from "../../Pages/Admin/CreateStudent/CreateStudent";
 import CreateSubject from "../../Pages/Admin/CreateSubject/CreateSubject";
 import UpdateTeacher from "../../Pages/Admin/UpdateTeacher/UpdateTeacher";
-
-
+import Marks from "../../Pages/Teacher/Marks/Marks";
+import AttendanceList from "../../Pages/Teacher/Attendance/AttendanceList";
 
 export default function AppRoutes() {
   return (
@@ -166,7 +166,23 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/markSheet"
+          path="/attendance/:id"
+          element={
+            <AuthRoute>
+              <AttendanceList />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/marks"
+          element={
+            <AuthRoute>
+              <Marks />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/marksSheet"
           element={
             <AuthRoute>
               <MarkSheet />

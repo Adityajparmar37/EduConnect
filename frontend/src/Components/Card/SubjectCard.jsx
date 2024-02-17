@@ -3,16 +3,17 @@ import { Link } from "react-router-dom";
 import { IoMdArrowDropright } from "react-icons/io";
 
 export default function SubjectCard({ semSubject }) {
+  console.log(semSubject);
   return (
     <>
-      <Link>
-        <div className="mr-auto h-auto">
-          {semSubject && (
-            <div className="grid grid-cols-4 gap-14">
-              {semSubject.map((subject, index) => (
+      <div className="mr-auto h-auto">
+        {semSubject && (
+          <div className="grid grid-cols-4 gap-14">
+            {semSubject.map((subject, index) => (
+              <Link to={subject.semesterId}>
                 <div
                   key={index}
-                  className="mb-2 rounded-md bg-zinc-50 border-black p-4 shadow-md duration-300 hover:shadow-xl"
+                  className="mb-2 rounded-md border-black bg-zinc-50 p-4 shadow-md duration-300 hover:shadow-xl"
                 >
                   <h2 className="text-lg font-bold">
                     <div className="flex items-center">
@@ -20,7 +21,9 @@ export default function SubjectCard({ semSubject }) {
                         <IoMdArrowDropright />
                       </span>{" "}
                       <span className="text-slate-500">Subject Name :</span>
-                      <sapn className="ml-2">{subject.subjectName}</sapn>
+                      <sapn className="ml-2">
+                        {subject.subjectId.subjectName}
+                      </sapn>
                     </div>
                   </h2>
                   <h2 className="text-lg font-bold">
@@ -29,15 +32,17 @@ export default function SubjectCard({ semSubject }) {
                         <IoMdArrowDropright />
                       </span>{" "}
                       <span className="text-slate-500">Subject Number :</span>
-                      <sapn className="ml-2">{subject.subjectNumber}</sapn>
+                      <sapn className="ml-2">
+                        {subject.subjectId.subjectNumber}
+                      </sapn>
                     </div>
                   </h2>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </Link>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
     </>
   );
 }

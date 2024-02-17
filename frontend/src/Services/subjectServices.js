@@ -71,3 +71,14 @@ export const SemesterSubject = async (semNo) => {
     return error.response.data;
   }
 };
+
+export const SemesterStudent = async (id) => {
+  try {
+    const { data } = await axios.get(`api/subject/getStudent/${id}`);
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log("Semester Subject listing error ", error);
+    return error.response.data;
+  }
+};

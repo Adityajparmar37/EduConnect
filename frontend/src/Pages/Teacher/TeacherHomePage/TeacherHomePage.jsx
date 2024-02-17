@@ -26,7 +26,7 @@ export default function TeacherHomePage() {
             text={["Mark student attendance"]}
           />
           <Card
-            link="/uploadFiles"
+            link="/marks"
             bgColor="darkPrimary"
             icon={<LiaFileUploadSolid />}
             icon2={<IoArrowForwardSharp />}

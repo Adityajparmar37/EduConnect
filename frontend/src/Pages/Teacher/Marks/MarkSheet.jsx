@@ -3,8 +3,8 @@ import Spreadsheet from "react-spreadsheet";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
 
 export default function MarkSheet() {
-  const columnLabels = ["Student", "Mid-1","Mid-2"];
-  const rowLabels = ["1", "2","3","4","5","6"];
+  const columnLabels = ["Student", "Mid-1", "Mid-2"];
+  const rowLabels = ["1", "2", "3", "4", "5", "6"];
   const initialData = [
     [
       { value: "Aditya", button: <button>Button</button> },
@@ -52,29 +52,40 @@ export default function MarkSheet() {
           <SideNavTeacher />
         </div>
         <div className="w-5/6">
-          <Spreadsheet
-            data={data}
-            columnLabels={columnLabels}
-            rowLabels={rowLabels}
-            onChange={setData}
-            renderComponent={(props) => {
-              const { cell, rowIndex, columnIndex } = props;
-              if (cell.button) {
-                return (
-                  <div>
-                    {cell.value} {cell.button}
-                  </div>
-                );
-              }
-              return cell.value;
-            }}
-            onCellClick={(rowIndex, columnIndex) => {
-              const cell = data[rowIndex][columnIndex];
-              if (cell.button) {
-                handleButtonClick(rowIndex, columnIndex);
-              }
-            }}
-          />
+          <div className="pt-10">
+            <div className="mb-12">
+              <h1 className="mb-5 text-center text-3xl font-bold">
+                📚 Enter Marks
+              </h1>
+            </div>
+            <div className="flex w-full items-center justify-center">
+              <Spreadsheet
+                className="text-xl"
+                style={{ width: "100%", height: "100%" }}
+                data={data}
+                columnLabels={columnLabels}
+                rowLabels={rowLabels}
+                onChange={setData}
+                renderComponent={(props) => {
+                  const { cell, rowIndex, columnIndex } = props;
+                  if (cell.button) {
+                    return (
+                      <div>
+                        {cell.value} {cell.button}
+                      </div>
+                    );
+                  }
+                  return cell.value;
+                }}
+                onCellClick={(rowIndex, columnIndex) => {
+                  const cell = data[rowIndex][columnIndex];
+                  if (cell.button) {
+                    handleButtonClick(rowIndex, columnIndex);
+                  }
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </>

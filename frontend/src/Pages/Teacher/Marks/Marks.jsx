@@ -1,6 +1,6 @@
 import GetSubject from "../GetSubject/GetSubject";
 
-export default function Attendance() {
+export default function Marks() {
   return (
     <>
       <GetSubject />

@@ -6,6 +6,7 @@ const handler = require("express-async-handler");
 const authMid = require("../middleware/authMiddleware.js");
 const Subject = require("../models/subjectModel.js");
 const Semester = require("../models/semesterModel.js");
+const Student = require("../models/studentModel.js");
 dotenv.config();
 
 //authorization
@@ -293,7 +294,10 @@ router.get(
       const findSubjectList =
         await Semester.findOne({
           semesterNumber,
-        }).populate("subjects", "subjectName subjectNumber");
+        }).populate(
+          "subjects",
+          "subjectName subjectNumber"
+        );
 
       if (!findSubjectList) {
         return next(
@@ -323,6 +327,38 @@ router.get(
     } catch (error) {
       console.log(
         "All subjects of a semester error",
+        error
+      );
+      next(error);
+    }
+  })
+);
+
+//getting student list for that semesters
+router.get(
+  "/getStudent/:id",
+  handler(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      console.log("SemesterId --> ", id);
+
+      const getStudent = await Student.find({
+        CurrentSemester: id,
+      }).populate(
+        "CurrentSemester",
+        "semesterNumber"
+      );
+
+      if (getStudent) {
+        res.status(200).send(getStudent);
+      } else {
+        next(
+          errorHandler(404, "No Student Found! ")
+        );
+      }
+    } catch (error) {
+      console.log(
+        "Student for that semester fetching error ",
         error
       );
       next(error);
