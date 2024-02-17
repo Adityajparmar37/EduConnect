@@ -54,6 +54,17 @@ export const getATeacher = async (id) => {
   }
 };
 
+export const getTeacherSubjects = async (id) => {
+  try {
+    console.log(id);
+    const { data } = await axios.get(`api/teacher/assignSubjects/${id}`);
+    console.log("Teacher teacher ==> ", data);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export const updateATeacher = async (id, teacherData) => {
   try {
     console.log(id);
