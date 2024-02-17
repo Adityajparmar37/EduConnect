@@ -1,6 +1,6 @@
 import React from 'react'
-import Card from '../../Components/Card/Card';
-import SideNav from '../../Components/SideNav/SideNav';
+import Card from '../../../Components/Card/Card';
+import SideNav from '../../../Components/SideNav/SideNav';
 import { TbBook2 } from "react-icons/tb";
 import { RiBookletLine } from "react-icons/ri";
 import { IoArrowForwardSharp } from "react-icons/io5";

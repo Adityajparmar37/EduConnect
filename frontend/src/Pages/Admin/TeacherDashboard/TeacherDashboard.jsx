@@ -1,6 +1,6 @@
-import SideNav from "../../Components/SideNav/SideNav";
+import SideNav from "../../../Components/SideNav/SideNav";
 import { IoArrowForwardSharp } from "react-icons/io5";
-import Card from "../../Components/Card/Card";
+import Card from "../../../Components/Card/Card";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import { PiAddressBook } from "react-icons/pi";
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { addSubject } from "../../Services/subjectServices";
-import SideNav from "../../Components/SideNav/SideNav";
+import { addSubject } from "../../../Services/subjectServices";
+import SideNav from "../../../Components/SideNav/SideNav";
 
 export default function CreateSubject() {
   const [subjectData, setSubjectData] = useState({

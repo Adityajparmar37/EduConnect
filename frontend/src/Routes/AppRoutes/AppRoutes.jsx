@@ -1,26 +1,28 @@
 import { Route, Routes } from "react-router-dom";
-import AdminHomePage from "../../Pages/AdminHomePage/AdminHomePage";
 import DefaultPage from "../../Pages/DefaultPage/DefaultPage";
 import Login from "../../Pages/Login/Login";
 import Signup from "../../Pages/Signup/Signup";
 import AuthRoute from "../AuthRoutes/AuthRoutes";
 import { Toaster } from "react-hot-toast";
-import TeacherHomePage from "../../Pages/Teacher/TeacherHomePage/TeacherHomePage";
-import TeacherDashboard from "../../Pages/TeacherDashboard/TeacherDashboard";
-import CreateTeacher from "../../Pages/CreateTeacher/CreateTeacher";
-import SubjectDashboard from "../../Pages/SubjectDashboard/SubjectDashboard";
-import CreateSubject from "../../Pages/CreateSubject/CreateSubject";
-import ManageTeacher from "../../Pages/ManageTeacher/ManageTeacher";
-import UpdateTeacher from "../../Pages/UpdateTeacher/UpdateTeacher";
-import ManageSubject from "../../Pages/ManageSubject/ManageSubject";
-import UpdateSubject from "../../Pages/UpdateSubject/UpdateSubject";
-import ManageStudent from "../../Pages/ManageStudent/ManageStudent";
+import AdminHomePage from "../../Pages/Admin/AdminHomePage/AdminHomePage";
+import TeacherDashboard from "../../Pages/Admin/TeacherDashboard/TeacherDashboard";
+import CreateTeacher from "../../Pages/Admin/CreateTeacher/CreateTeacher";
+import SubjectDashboard from "../../Pages/Admin/SubjectDashboard/SubjectDashboard";
+import ManageTeacher from "../../Pages/Admin/ManageTeacher/ManageTeacher";
+import ManageSubject from "../../Pages/Admin/ManageSubject/ManageSubject";
+import UpdateSubject from "../../Pages/Admin/UpdateSubject/UpdateSubject";
 import StudentDashboard from "../../Pages/StudentDashboard/StudentDashboard";
+import ManageStudent from "../../Pages/Admin/ManageStudent/ManageStudent";
+import UpdateStudent from "../../Pages/Admin/UpdateStudent/UpdateStudent";
 import StudentHomePage from "../../Pages/StudentHomePage/StudentHomePage";
-import CreateStudent from "../../Pages/CreateStudent/CreateStudent";
-import UpdateStudent from "../../Pages/UpdateStudent/UpdateStudent";
+import TeacherHomePage from "../../Pages/Teacher/TeacherHomePage/TeacherHomePage";
 import Attendance from "../../Pages/Teacher/Attendance/Attendance";
 import MarkSheet from "../../Pages/Teacher/Marks/MarksSheet";
+import CreateStudent from "../../Pages/Admin/CreateStudent/CreateStudent";
+import CreateSubject from "../../Pages/Admin/CreateSubject/CreateSubject";
+import UpdateTeacher from "../../Pages/Admin/UpdateTeacher/UpdateTeacher";
+
+
 
 export default function AppRoutes() {
   return (

@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import SideNav from "../../Components/SideNav/SideNav";
-import TableCard from "../../Components/TableCard/TableCard";
-import { deleteSubject, getAllSubject } from "../../Services/subjectServices";
+import SideNav from "../../../Components/SideNav/SideNav";
+import TableCard from "../../../Components/TableCard/TableCard";
+import { getAllTeacher } from "../../../Services/teacherServices";
+import { deleteTeacher } from "../../../Services/teacherServices";
 
-export default function ManageSubject() {
-  const [allSubject, setAllSubject] = useState([]);
+export default function ManageTeacher() {
+  const [allTeacher, setAllTeacher] = useState();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseAllSubject = await getAllSubject([]);
-        console.log(responseAllSubject.subjects);
-        setAllSubject(responseAllSubject.subjects);
+        const responseAllTeacher = await getAllTeacher([]);
+        console.log(responseAllTeacher);
+        setAllTeacher(responseAllTeacher);
       } catch (error) {
         console.log("Get all teacher frontend error", error);
         toast.error("Some error occurred, please try again!");
@@ -23,16 +24,14 @@ export default function ManageSubject() {
     fetchData();
   }, []);
 
-  console.log(allSubject);
-
-  const DeleteSubject = async (id) => {
+  const DeleteTeacher = async (id) => {
     try {
       console.log(id);
-      const responseData = await deleteSubject(id);
+      const responseData = await deleteTeacher(id);
       if (responseData.success === true) {
         toast.success(responseData.message);
-        setAllSubject((prevSubjects) =>
-          prevSubjects.filter((subject) => subject._id !== id),
+        setAllTeacher((prevTeachers) =>
+          prevTeachers.filter((teacher) => teacher._id !== id),
         );
       } else if (responseData.success === false) {
         toast.error(responseData.message);
@@ -42,14 +41,13 @@ export default function ManageSubject() {
     }
   };
 
-  // console.log(allSubject.length);
   return (
     <div className="flex h-screen">
       <div className="w-1/6">
         <SideNav />
       </div>
       <div className="z-10 flex h-auto w-5/6 justify-center px-3 pt-20">
-        {allSubject && allSubject.length > 0 ? (
+        {allTeacher && allTeacher.length > 0 ? (
           <>
             <div className="flex w-full flex-col">
               <table className="w-full text-left  rtl:text-right">
@@ -57,19 +55,19 @@ export default function ManageSubject() {
                   <tr>
                     <th scope="col" className="p-4">
                       <div className="flex items-center">
-                        <label className="text-xl font-bold text-white">
-                          📕
+                        <label className="text-lg font-bold text-white">
+                          👩🏻‍🏫
                         </label>
                       </div>
                     </th>
                     <th scope="col" className="border-l-2 px-6 py-3 ">
-                      Subject Name
+                      Teacher Name
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Subject Number
+                      Teacher Email
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Semester
+                      Teacher Phone
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Action
@@ -77,20 +75,23 @@ export default function ManageSubject() {
                   </tr>
                 </thead>
                 <tbody>
-                  {allSubject && (
-                    <TableCard
-                      allSubject={allSubject}
-                      DeleteSubject={DeleteSubject}
-                    />
-                  )}
+                  {allTeacher &&
+                    allTeacher.map((teacher, index) => (
+                      <TableCard
+                        key={teacher._id}
+                        teacher={teacher}
+                        index={index}
+                        DeleteTeacher={DeleteTeacher}
+                      />
+                    ))}
                 </tbody>
               </table>
             </div>
           </>
         ) : (
-          <Link to="/subjectDashboard">
+          <Link to="/teacherDashboard">
             <h1 className=" items-center justify-center rounded-md bg-gray-600 p-2 text-lg text-white">
-              No Subject Found! Click to go back
+              No Teacher Found! Click to go back
             </h1>
           </Link>
         )}

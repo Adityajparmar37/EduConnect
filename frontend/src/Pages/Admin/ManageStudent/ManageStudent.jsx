@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import SideNav from "../../Components/SideNav/SideNav";
-import TableCard from "../../Components/TableCard/TableCard";
-import { deleteStudent, getAllStudent } from "../../Services/studentServices";
+import SideNav from "../../../Components/SideNav/SideNav";
+import TableCard from "../../../Components/TableCard/TableCard";
+import { deleteStudent, getAllStudent } from "../../../Services/studentServices";
 
 export default function ManageStudent() {
   const [allStudent, setallStudent] = useState();

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { signup } from "../../Services/teacherServices";
-import SideNav from "../../Components/SideNav/SideNav";
+import { signup } from "../../../Services/teacherServices";
+import SideNav from "../../../Components/SideNav/SideNav";
 import { useNavigate } from "react-router-dom";
-import CustomModal from "../../Components/CustomModal/CustomModal";
-import { SemesterSubject } from "../../Services/subjectServices";
+import CustomModal from "../../../Components/CustomModal/CustomModal";
+import { SemesterSubject } from "../../../Services/subjectServices";
 
 export default function CreateTeacher() {
   const navigate = useNavigate();

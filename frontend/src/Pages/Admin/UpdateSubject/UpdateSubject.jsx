@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import SideNav from "../../Components/SideNav/SideNav";
-import { getASubject, updateSubject } from "../../Services/subjectServices";
+import SideNav from "../../../Components/SideNav/SideNav";
+import { getASubject, updateSubject } from "../../../Services/subjectServices";
 
 export default function UpdateSubject() {
   const { id } = useParams();

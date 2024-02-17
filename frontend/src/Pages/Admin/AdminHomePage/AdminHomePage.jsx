@@ -1,5 +1,5 @@
-import SideNav from "../../Components/SideNav/SideNav";
-import Card from "../../Components/Card/Card";
+import SideNav from "../../../Components/SideNav/SideNav";
+import Card from "../../../Components/Card/Card";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { PiStudentFill } from "react-icons/pi";
 import { LuBookCopy } from "react-icons/lu";

@@ -1,38 +1,90 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import SideNav from "../../Components/SideNav/SideNav";
-import { useAuth } from "../../Hooks/useAuth";
+import { useParams } from "react-router-dom";
+import SideNavStudent from "../../../Components/SideNav/SideNavStudent";
+import { getAStudent, updateAStudent } from "../../../Services/studentServices";
 
-export default function CreateTeacher() {
-  const { user, signup } = useAuth();
+
+export default function UpdateStudent() {
+  const { id } = useParams();
   const [studentData, setStudentData] = useState({
     email: "",
     password: "",
     userType: "student",
     name: "",
     confirmPassword: "",
-    CurrentSemester: "1",
+    CurrentSemester: 1,
   });
 
-  const handleInputChange = (key, value) => {
-    setStudentData((prevData) => ({ ...prevData, [key]: value }));
-  };
+ const handleInputChange = (key, value) => {
+   if (key === "semesterNumber") {
+     setStudentData((prevData) => ({
+       ...prevData,
+       CurrentSemester: parseInt(value), // Convert value to number
+     }));
+   } else {
+     setStudentData((prevData) => ({ ...prevData, [key]: value }));
+   }
+ };
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responseStudent = await getAStudent(id);
+        console.log("A Student ==> ", responseStudent);
+        setStudentData({
+          name: responseStudent.name || "",
+          email: responseStudent.email || "",
+          CurrentSemester: responseStudent.CurrentSemester.semesterNumber || "",
+          password: "",
+          confirmPassword: "",
+        });
+      } catch (error) {
+        toast.error("Some error occured ! , please try again!");
+        console.log("Get a Student error ", error);
+      }
+    };
+    fetchData();
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form data:", studentData);
     try {
-      const SignupResponse = await signup(studentData);
-      console.log("login =>> ", SignupResponse);
+      const isPasswordUpdated = studentData.password.trim().length > 0;
+
+      if (
+        isPasswordUpdated &&
+        studentData.password !== studentData.confirmPassword
+      ) {
+        toast.error("Password must match");
+        return;
+      }
+
+      ///password change thayu hoi toj send karu nakar nhi
+      const updatePayload = isPasswordUpdated
+        ? { ...studentData, password: studentData.password }
+        : { ...studentData, password: undefined };
+
+      const updatedStudent = await updateAStudent(id, updatePayload);
+      console.log("Update teacher", updatedStudent);
+
+      if (updatedStudent.success === true) {
+        toast.success(updatedStudent.message);
+      } else {
+        toast.error(updatedStudent.message);
+      }
     } catch (error) {
-      toast.error("Some Error Occured !");
-      console.log("Login Page Frontend Error", error);
+      toast.error("Please try again");
+      console.log("Teacher create error frontend", error);
     }
   };
 
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
       <div className="lg:w-1/6">
-        <SideNav />
+        <SideNavStudent />
       </div>
       <div className="z-10 mt-5 flex w-full flex-col overflow-auto px-3 pt-10 lg:w-5/6  lg:flex-row">
         <div className="mx-auto w-full lg:w-3/4 xl:w-full">
@@ -42,14 +94,14 @@ export default function CreateTeacher() {
                 <div className="mb-5 rounded-t border-b-2 border-gray-500 bg-gray-50 px-5 py-3 md:mb-6">
                   <div className="flex items-center justify-between text-center">
                     <h6 className="text-blueGray-700 text-xl font-bold">
-                      🧑🏻‍🎓 Create Student
+                      🧑🏻‍🎓 Update Student
                     </h6>
                     <button
                       onClick={handleSubmit}
-                      className="text-md rounded bg-primary px-4 py-2 font-bold uppercase text-white shadow outline-none transition-all  duration-200 ease-linear hover:rounded-full hover:bg-mintPrimary hover:text-black hover:shadow-md focus:outline-none active:bg-red-600"
+                      className="text-md rounded  px-4 py-2 font-bold uppercase text-white shadow outline-none transition-all  duration-200 ease-linear hover:rounded-full hover:bg-red-100 hover:text-black hover:shadow-md focus:outline-none active:bg-red-600 bg-red-500"
                       type="submit"
                     >
-                      Create
+                      Update
                     </button>
                   </div>
                 </div>
@@ -69,7 +121,7 @@ export default function CreateTeacher() {
                           onChange={(e) =>
                             handleInputChange("name", e.target.value)
                           }
-                          placeholder="Enter Student's Name"
+                          placeholder="Enter Teacher's First Name"
                           className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-gray-800 shadow focus:outline-none focus:ring"
                         />
                       </div>
@@ -87,7 +139,7 @@ export default function CreateTeacher() {
                           onChange={(e) =>
                             handleInputChange("email", e.target.value)
                           }
-                          placeholder="student@gmail.com"
+                          placeholder="teacher@gmail.com"
                           className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-gray-800 shadow focus:outline-none focus:ring"
                         />
                       </div>
@@ -97,9 +149,13 @@ export default function CreateTeacher() {
                         </label>
                         <select
                           className="w-full rounded border-0 bg-white px-3 py-3 text-sm shadow focus:outline-none focus:ring"
-                          value={studentData.semester}
-                          onChange={(e) =>
-                            handleInputChange("CurrentSemester", e.target.value)
+                          value={studentData.CurrentSemester}
+                          onChange={
+                            (e) =>
+                              handleInputChange(
+                                "semesterNumber",
+                                e.target.value,
+                              ) // Correct key here
                           }
                         >
                           <option value="" disabled>
