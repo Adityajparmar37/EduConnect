@@ -299,8 +299,11 @@ router.get(
       const { id } = req.params;
       const teacherData =
         await AssignSubject.find({
-          teacherId: id
-        }).populate("subjectId" , "subjectName subjectNumber");
+          teacherId: id,
+        }).populate(
+          "subjectId",
+          "subjectName subjectNumber"
+        );
       res.send(teacherData);
     } catch (error) {
       next(
