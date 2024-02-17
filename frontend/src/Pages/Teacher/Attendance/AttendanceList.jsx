@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
-import TableCard from "../../../Components/TableCard/TableCard";
+import { BsCalendar2CheckFill } from "react-icons/bs";
 import TableCardAttendance from "../../../Components/TableCard/TableCardAttendance";
 import { SemesterStudent } from "../../../Services/subjectServices";
 
@@ -27,10 +27,13 @@ export default function AttendanceList() {
         <div className="w-1/6">
           <SideNavTeacher />
         </div>
-        <div className="z-10 flex h-auto w-5/6 justify-center px-3 pt-20">
+        <div className="z-10 flex h-auto w-5/6 justify-center px-3 pt-14">
           {studentList && studentList.length > 0 ? (
             <>
               <div className="flex w-full flex-col">
+                <h1 className="mb-10 text-center text-2xl font-bold">
+                  ✅ Attendace
+                </h1>
                 <table className="w-full text-left  rtl:text-right">
                   <thead className="border-b-4 border-white  text-[1rem] font-bold uppercase text-white dark:bg-primary">
                     <tr>
