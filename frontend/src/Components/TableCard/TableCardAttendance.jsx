@@ -43,7 +43,7 @@ const TableCardAttendance = ({ Student, index }) => {
           <td className={`px-6 py-4`}>
             <div className="flex space-x-5">
               <button
-                className={`rounded-md p-1 text-xl font-bold duration-200 hover:rounded-full hover:text-white dark:text-white ${attendance.buttonColor}`}
+                className={`rounded-md p-1 text-xl font-light duration-200 hover:rounded-full hover:text-white dark:text-white ${attendance.buttonColor}`}
                 onClick={handleAttendanceToggle}
               >
                 {attendance.buttonText}
