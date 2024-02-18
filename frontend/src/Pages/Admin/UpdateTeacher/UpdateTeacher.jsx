@@ -18,7 +18,7 @@ export default function UpdateTeacher() {
     subjects: [{ subjectName: "", subjectNumber: "", semester: "" }],
   });
 
-  const handleAddSubject = () => {
+   const handleAddSubject = () => {
     setTeacherData((prevData) => ({
       ...prevData,
       subjects: [
@@ -44,57 +44,66 @@ export default function UpdateTeacher() {
     e.preventDefault();
     console.log("Form data:", teacherData);
     try {
+      const isPasswordUpdated = teacherData.password.trim().length > 0;
 
-         const isPasswordUpdated = teacherData.password.trim().length > 0;
+      if (
+        isPasswordUpdated &&
+        teacherData.password !== teacherData.confirmPassword
+      ) {
+        toast.error("Password must match");
+        return;
+      }
 
-         if (
-           isPasswordUpdated &&
-           teacherData.password !== teacherData.confirmPassword
-         ) {
-           toast.error("Password must match");
-           return;
-         }
+      // Prepare update payload
+      const updatePayload = {
+        firstName: teacherData.firstName,
+        lastName: teacherData.lastName,
+        email: teacherData.email,
+        phone: teacherData.phone,
+        subjects: teacherData.subjects,
+      };
 
-         ///password change thayu hoi toj send karu nakar nhi
-         const updatePayload = isPasswordUpdated
-           ? { ...teacherData, password: teacherData.password }
-           : { ...teacherData, password: undefined };
-      
-      
-      
+      if (isPasswordUpdated) {
+        updatePayload.password = teacherData.password;
+      }
+
+      // Send update request
       const updatedTeacher = await updateATeacher(id, updatePayload);
       console.log("Update teacher", updatedTeacher);
 
       if (updatedTeacher.success === true) {
         toast.success(updatedTeacher.message);
+        navigate("/manageTeacher"); // Redirect to teacher management page after successful update
       } else {
         toast.error(updatedTeacher.message);
       }
     } catch (error) {
       toast.error("Please try again");
-      console.log("Teacher create error frontend", error);
+      console.log("Teacher update error", error);
     }
   };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseTeacher = await getATeacher(id);
-        console.log("A teacher ==> ", responseTeacher);
+        // Fetch teacher details and subject information
+        const response = await getATeacher(id);
+        console.log("Fetched data:", response);
         setTeacherData({
-          firstName: responseTeacher.firstName || "",
-          lastName: responseTeacher.lastName || "",
-          email: responseTeacher.email || "",
-          phone: responseTeacher.phone || "",
-          password: "",
-          confirmPassword: "",
-          subjects: responseTeacher.subjects || [
-            { subjectName: "", subjectNumber: "", semester: "" },
-          ],
+          firstName: response.teacherData.firstName || "",
+          lastName: response.teacherData.lastName || "",
+          email: response.teacherData.email || "",
+          phone: response.teacherData.phone || "",
+          password: "", // Password should not be displayed
+          confirmPassword: "", // Password should not be displayed
+          subjects: response.subjectData.map((subject) => ({
+            subjectName: subject.subjectId.subjectName || "",
+            subjectNumber: subject.subjectId.subjectNumber || "",
+            semester: subject.semesterId || "",
+          })),
         });
       } catch (error) {
-        toast.error("Some error occured ! , please try again!");
-        console.log("Get a Teacher error ", error);
+        toast.error("Some error occurred! Please try again!");
+        console.log("Fetch data error: ", error);
       }
     };
     fetchData();
@@ -328,7 +337,7 @@ export default function UpdateTeacher() {
                             <option value="" disabled>
                               Choose Semester
                             </option>
-                            {[1, 2, 3, 4, 5, 6,7,8].map((semester) => (
+                            {[1, 2, 3, 4, 5, 6, 7, 8].map((semester) => (
                               <option key={semester} value={semester}>
                                 Semester {semester}
                               </option>

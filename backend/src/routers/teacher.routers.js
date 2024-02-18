@@ -51,7 +51,9 @@ router.post(
       ) {
         res.json({
           _id: FindTeacher._id,
-          name: FindTeacher.firstName + FindTeacher.lastName,
+          name:
+            FindTeacher.firstName +
+            FindTeacher.lastName,
           email: FindTeacher.email,
           userType: "teacher",
           token: generateToken(
@@ -281,7 +283,18 @@ router.get(
       const teacherData = await Teacher.findById(
         id
       );
-      res.send(teacherData);
+
+      const subjectData =
+        await AssignSubject.find({
+          teacherId: id,
+        }).populate(
+          "subjectId",
+          "subjectName subjectNumber"
+        );
+      res.send({
+        teacherData,
+        subjectData,
+      });
     } catch (error) {
       next(
         errorHandler(404, "No Such Project Found")
