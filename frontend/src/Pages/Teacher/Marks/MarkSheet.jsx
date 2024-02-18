@@ -1,48 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Spreadsheet from "react-spreadsheet";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
+import { SemesterStudent } from "../../../Services/subjectServices";
 
 export default function MarkSheet() {
+  const { id } = useParams();
   const columnLabels = ["Student", "Mid-1", "Mid-2"];
-  const rowLabels = ["1", "2", "3", "4", "5", "6"];
-  const initialData = [
-    [
-      { value: "Aditya", button: <button>Button</button> },
-      { value: "25", button: <button>Button</button> },
-      { value: "25", button: <button>Button</button> },
-    ],
-    [
-      { value: "Parth", button: <button>Button</button> },
-      { value: "30", button: <button>Button</button> },
-      { value: "15", button: <button>Button</button> },
-    ],
-    [
-      { value: "Het", button: <button>Button</button> },
-      { value: "20", button: <button>Button</button> },
-      { value: "22", button: <button>Button</button> },
-    ],
-    [
-      { value: "Aryan", button: <button>Button</button> },
-      { value: "30", button: <button>Button</button> },
-      { value: "30", button: <button>Button</button> },
-    ],
-    [
-      { value: "Brijesh", button: <button>Button</button> },
-      { value: "30", button: <button>Button</button> },
-      { value: "30", button: <button>Button</button> },
-    ],
-    [
-      { value: "Vaidik", button: <button>Button</button> },
-      { value: "29", button: <button>Button</button> },
-      { value: "28", button: <button>Button</button> },
-    ],
-  ];
-  const [data, setData] = useState(initialData);
+  const [studentList, setStudentList] = useState([]);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await SemesterStudent(id);
+        setStudentList(response);
+      } catch (error) {
+        console.error("Error fetching student data:", error);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    // Populate initial data with student names and buttons
+    if (studentList.length > 0) {
+      const initialData = studentList.map((student) => [
+        { value: student.name },
+        { value: "", button: <button>Button</button> },
+        { value: "", button: <button>Button</button> },
+      ]);
+      setData(initialData);
+    }
+  }, [studentList]);
 
   const handleButtonClick = (rowIndex, columnIndex) => {
-    const updatedData = [...data];
-    // Do something when a button is clicked, for example:
     console.log(`Button clicked at row ${rowIndex}, column ${columnIndex}`);
+    // Implement button click handling logic here
   };
 
   return (
@@ -61,10 +55,8 @@ export default function MarkSheet() {
             <div className="flex w-full items-center justify-center">
               <Spreadsheet
                 className="text-xl"
-                style={{ width: "100%", height: "100%" }}
                 data={data}
                 columnLabels={columnLabels}
-                rowLabels={rowLabels}
                 onChange={setData}
                 renderComponent={(props) => {
                   const { cell, rowIndex, columnIndex } = props;

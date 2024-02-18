@@ -182,7 +182,7 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="/marksSheet"
+          path="/marks/:id"
           element={
             <AuthRoute>
               <MarkSheet />
