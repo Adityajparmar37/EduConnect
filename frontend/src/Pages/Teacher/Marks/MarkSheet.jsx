@@ -6,7 +6,15 @@ import { SemesterStudent } from "../../../Services/subjectServices";
 
 export default function MarkSheet() {
   const { id } = useParams();
-  const columnLabels = ["Student", "Mid-1", "Mid-2"];
+  const columnLabels = [
+    "Student",
+    "Mid-1",
+    "Mid-2",
+    "Pratical",
+    "End Semester",
+    "Total",
+    "Average",
+  ];
   const [studentList, setStudentList] = useState([]);
   const [data, setData] = useState([]);
 
@@ -49,8 +57,17 @@ export default function MarkSheet() {
           <div className="pt-10">
             <div className="mb-12">
               <h1 className="mb-5 text-center text-3xl font-bold">
-                📚 Enter Marks
+                📝 Enter Marks
               </h1>
+            </div>
+
+            <div className="mb-8 flex justify-evenly  ">
+              <button className="rounded-md bg-green-600 p-2 text-lg font-light text-white duration-300 hover:rounded-[3rem] hover:bg-green-100 hover:text-black">
+                Export Sheet
+              </button>
+              <button className="rounded-md bg-blue-600 p-2 text-lg font-light text-white duration-300 hover:rounded-[3rem] hover:bg-blue-100 hover:text-black">
+                Import Sheet
+              </button>
             </div>
             <div className="flex w-full items-center justify-center">
               <Spreadsheet
