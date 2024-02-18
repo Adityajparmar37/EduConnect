@@ -6,6 +6,7 @@ const adminRoutes = require("./src/routers/admin.routers.js");
 const studentRoutes = require("./src/routers/student.routers.js");
 const teacherRoutes = require("./src/routers/teacher.routers.js");
 const subjectRoutes = require("./src/routers/subject.routers.js");
+const profileRoutes = require("./src/routers/profile.routers.js");
 
 dotenv.config();
 const app = express();
@@ -26,6 +27,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/student", studentRoutes);
 app.use("/api/teacher", teacherRoutes);
 app.use("/api/subject", subjectRoutes);
+app.use("/api/profile", profileRoutes);
 
 // Internal Error Handling
 app.use((err, req, res, next) => {
@@ -42,3 +44,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`serving on ${PORT}`);
 });
+
+

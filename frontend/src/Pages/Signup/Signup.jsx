@@ -16,10 +16,10 @@ export default function Signup() {
   const [form, setForm] = useState({
     email: "",
     password: "",
-    userType: "",
+    userType: "student",
     name: "",
     confirmPassword: "",
-    semester: "1",
+    CurrentSemester: "1",
   });
 
   useEffect(() => {
@@ -70,12 +70,12 @@ export default function Signup() {
                 <div className="flex h-[100%] w-full flex-col ">
                   <div className="flex items-center justify-center">
                     <h1 className="text-4xl font-semibold text-black">
-                      Create your account
+                      Create Student account
                     </h1>
                   </div>
 
                   <div className="mt-10">
-                    <div className="flex justify-between">
+                    {/* <div className="flex justify-between">
                       <div className="flex flex-col">
                         <label className="flex flex-row items-center text-lg font-semibold">
                           <span className="mr-3 text-2xl">
@@ -93,14 +93,14 @@ export default function Signup() {
                           />
                           <label>Student</label>
 
-                          {/* <input
+                          <input
                             type="radio"
                             onChange={handleInputData}
                             name="userType"
                             value="teacher"
                             required
                           />
-                          <label>Teacher</label> */}
+                          <label>Teacher</label>
 
                           <input
                             type="radio"
@@ -112,7 +112,7 @@ export default function Signup() {
                           <label>Admin</label>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="mt-8 flex flex-row items-center text-white">
                       <label className="mr-3 text-2xl text-black">
                         <MdOutlinePersonAddAlt />
@@ -181,12 +181,12 @@ export default function Signup() {
                         <select
                           onChange={handleInputData}
                           className="w-full rounded-md border-2 border-gray-400 px-1 py-2"
-                          name="semester"
+                          name="CurrentSemester"
                         >
                           <option value="" disabled>
                             Choose Semester
                           </option>
-                          {[1, 2, 3, 4, 5, 6,7,8].map((semester) => (
+                          {[1, 2, 3, 4, 5, 6, 7, 8].map((semester) => (
                             <option key={semester} value={semester}>
                               Semester {semester}
                             </option>
