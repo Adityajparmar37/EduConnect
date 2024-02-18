@@ -51,7 +51,7 @@ router.post(
       ) {
         res.json({
           _id: FindTeacher._id,
-          name: FindTeacher.name,
+          name: FindTeacher.firstName + FindTeacher.lastName,
           email: FindTeacher.email,
           userType: "teacher",
           token: generateToken(

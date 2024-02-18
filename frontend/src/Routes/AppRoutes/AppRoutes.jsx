@@ -23,6 +23,7 @@ import CreateSubject from "../../Pages/Admin/CreateSubject/CreateSubject";
 import UpdateTeacher from "../../Pages/Admin/UpdateTeacher/UpdateTeacher";
 import Marks from "../../Pages/Teacher/Marks/Marks";
 import AttendanceList from "../../Pages/Teacher/Attendance/AttendanceList";
+import Profile from "../../Components/Profile/Profile";
 
 export default function AppRoutes() {
   return (
@@ -33,6 +34,17 @@ export default function AppRoutes() {
         <Route path="/" element={<DefaultPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+
+        {/* Profile */}
+        <Route
+          path="/profile"
+          element={
+            <AuthRoute>
+              <Profile />
+            </AuthRoute>
+          }
+        />
+
         {/* admin pages */}
         <Route
           path="/admin"
