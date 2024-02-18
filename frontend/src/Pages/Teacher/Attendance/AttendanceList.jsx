@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
-import { BsCalendar2CheckFill } from "react-icons/bs";
 import TableCardAttendance from "../../../Components/TableCard/TableCardAttendance";
 import { SemesterStudent } from "../../../Services/subjectServices";
 
