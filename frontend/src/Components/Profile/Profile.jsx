@@ -44,9 +44,17 @@ export default function Profile() {
         return;
       }
 
-      const updatePayload = isPasswordUpdated
-        ? { ...userDetail, password: userDetail.password }
-        : { ...userDetail, password: undefined };
+      let updatePayload = { ...userDetail };
+
+      if (isPasswordUpdated) {
+        updatePayload = {
+          ...updatePayload,
+          password: userDetail.password,
+        };
+      } else {
+        delete updatePayload.password; // Remove password from payload if not updated
+        delete updatePayload.confirmPassword; // Remove confirmPassword too
+      }
 
       console.log(updatePayload);
 
