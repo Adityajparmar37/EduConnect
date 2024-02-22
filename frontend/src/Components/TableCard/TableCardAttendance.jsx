@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const TableCardAttendance = ({ Student, index }) => {
   const currentDate = new Date().toLocaleDateString();
-  console.log(Student);
+  // console.log(Student);
 
   const [attendance, setAttendance] = useState({
     buttonText: "Present",
