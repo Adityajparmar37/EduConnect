@@ -51,14 +51,14 @@ export default function MarkSheet() {
   const handleSubmit = () => {
     const marksData = [];
     data.forEach((row, rowIndex) => {
+      const studentId = studentList[rowIndex]._id;
       const studentMarks = {
-        name: row[0].value, // Student name
-        marks: row.slice(1).map((cell) => cell.value), // Marks excluding student name
+        id: studentId,
+        marks: row.slice(1).map((cell) => cell.value),
       };
       marksData.push(studentMarks);
     });
-    console.log("All marks with student details:", marksData);
-    // You can further process or send this data as needed
+    console.log("All marks with student IDs:", marksData);
   };
 
   return (
