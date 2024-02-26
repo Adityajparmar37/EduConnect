@@ -10,13 +10,12 @@ export default function MarkSheet() {
     "Student",
     "Mid-1",
     "Mid-2",
-    "Pratical",
+    "Practical",
     "End Semester",
-    "Total",
-    "Average",
   ];
   const [studentList, setStudentList] = useState([]);
   const [data, setData] = useState([]);
+  const [marks, setMarks] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +36,8 @@ export default function MarkSheet() {
         { value: student.name },
         { value: "", button: <button>Button</button> },
         { value: "", button: <button>Button</button> },
+        { value: "", button: <button>Button</button> },
+        { value: "", button: <button>Button</button> },
       ]);
       setData(initialData);
     }
@@ -45,6 +46,19 @@ export default function MarkSheet() {
   const handleButtonClick = (rowIndex, columnIndex) => {
     console.log(`Button clicked at row ${rowIndex}, column ${columnIndex}`);
     // Implement button click handling logic here
+  };
+
+  const handleSubmit = () => {
+    const marksData = [];
+    data.forEach((row, rowIndex) => {
+      const studentMarks = {
+        name: row[0].value, // Student name
+        marks: row.slice(1).map((cell) => cell.value), // Marks excluding student name
+      };
+      marksData.push(studentMarks);
+    });
+    console.log("All marks with student details:", marksData);
+    // You can further process or send this data as needed
   };
 
   return (
@@ -93,6 +107,14 @@ export default function MarkSheet() {
                   }
                 }}
               />
+            </div>
+            <div className="mr-16 flex justify-end">
+              <button
+                onClick={handleSubmit}
+                className="mt-8 rounded-md bg-red-600 p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:bg-red-200 hover:text-black"
+              >
+                Submit
+              </button>
             </div>
           </div>
         </div>
