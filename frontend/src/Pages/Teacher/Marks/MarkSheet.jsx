@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Spreadsheet from "react-spreadsheet";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
 import { SemesterStudent } from "../../../Services/subjectServices";
+import * as XLSX from "xlsx";
 
 export default function MarkSheet() {
   const { id } = useParams();
@@ -60,6 +61,21 @@ export default function MarkSheet() {
       marksData.push(studentMarks);
     });
     console.log("All marks with student IDs:", marksData);
+
+    // Convert data to Excel format and export
+    exportToExcel(marksData);
+  };
+
+  const exportToExcel = (data) => {
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "MarksSheet");
+
+    // Generate a unique filename
+    const fileName = `marks_sheet_${new Date().toISOString()}.xlsx`;
+
+    // Trigger the file download
+    XLSX.writeFile(wb, fileName);
   };
 
   return (
@@ -77,7 +93,10 @@ export default function MarkSheet() {
             </div>
 
             <div className="mb-8 flex justify-evenly  ">
-              <button className="rounded-md bg-green-600 p-2 text-lg font-light text-white duration-300 hover:rounded-[3rem] hover:bg-green-100 hover:text-black">
+              <button
+                onClick={handleSubmit}
+                className="rounded-md bg-green-600 p-2 text-lg font-light text-white duration-300 hover:rounded-[3rem] hover:bg-green-100 hover:text-black"
+              >
                 Export Sheet
               </button>
               <button className="rounded-md bg-blue-600 p-2 text-lg font-light text-white duration-300 hover:rounded-[3rem] hover:bg-blue-100 hover:text-black">
@@ -110,10 +129,7 @@ export default function MarkSheet() {
               />
             </div>
             <div className="mr-16 flex justify-end">
-              <button
-                onClick={handleSubmit}
-                className="mt-8 rounded-md bg-red-600 p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:bg-red-200 hover:text-black"
-              >
+              <button className="mt-8 rounded-md bg-red-600 p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:bg-red-200 hover:text-black">
                 Submit
               </button>
             </div>

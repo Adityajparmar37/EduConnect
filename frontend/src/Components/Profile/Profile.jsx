@@ -83,9 +83,9 @@ export default function Profile() {
   return (
     <div className="flex h-screen">
       <div className="w-1/6">
-        {user && user.userType === "Admin" ? (
+        {user && user.userType === "admin" ? (
           <SideNav />
-        ) : user && user.userType === "Teacher" ? (
+        ) : user && user.userType === "teacher" ? (
           <SideNavTeacher />
         ) : (
           <SideNavStudent />
