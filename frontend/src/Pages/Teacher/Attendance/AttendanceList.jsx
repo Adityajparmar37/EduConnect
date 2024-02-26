@@ -17,6 +17,7 @@ export default function AttendanceList() {
       // Initialize attendance data with default "Present" attendance for all students
       setAttendanceData(
         response.map((student) => ({
+          SubjectId: id,
           Student: student._id,
           attendance: "Present",
         })),
@@ -77,6 +78,7 @@ export default function AttendanceList() {
                   <tbody>
                     {studentList.map((student, index) => (
                       <TableCardAttendance
+                        subjectId={id}
                         key={student._id}
                         student={student}
                         index={index}

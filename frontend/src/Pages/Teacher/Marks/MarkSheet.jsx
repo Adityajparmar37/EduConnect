@@ -53,7 +53,8 @@ export default function MarkSheet() {
     data.forEach((row, rowIndex) => {
       const studentId = studentList[rowIndex]._id;
       const studentMarks = {
-        id: studentId,
+        subject: id,
+        student: studentId,
         marks: row.slice(1).map((cell) => cell.value),
       };
       marksData.push(studentMarks);

@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 
-const TableCardAttendance = ({ student, index, updateAttendance }) => {
+const TableCardAttendance = ({
+  subjectId,
+  student,
+  index,
+  updateAttendance,
+}) => {
   const currentDate = new Date().toLocaleDateString();
   const [attendance, setAttendance] = useState("Present");
 
@@ -8,6 +13,7 @@ const TableCardAttendance = ({ student, index, updateAttendance }) => {
     const newAttendance = attendance === "Present" ? "Absent" : "Present";
     setAttendance(newAttendance);
     updateAttendance(index, {
+      SubjectId: subjectId,
       Student: student._id,
       attendance: newAttendance,
     });
