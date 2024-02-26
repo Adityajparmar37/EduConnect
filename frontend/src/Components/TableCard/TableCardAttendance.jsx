@@ -7,7 +7,10 @@ const TableCardAttendance = ({ student, index, updateAttendance }) => {
   const handleAttendanceToggle = () => {
     const newAttendance = attendance === "Present" ? "Absent" : "Present";
     setAttendance(newAttendance);
-    updateAttendance(index, { name: student.name, attendance: newAttendance });
+    updateAttendance(index, {
+      Student: student._id,
+      attendance: newAttendance,
+    });
   };
 
   return (

@@ -13,6 +13,14 @@ export default function AttendanceList() {
     const fetchData = async () => {
       const response = await SemesterStudent(id);
       setStudentList(response);
+
+      // Initialize attendance data with default "Present" attendance for all students
+      setAttendanceData(
+        response.map((student) => ({
+          Student: student._id,
+          attendance: "Present",
+        })),
+      );
     };
     fetchData();
   }, [id]);
