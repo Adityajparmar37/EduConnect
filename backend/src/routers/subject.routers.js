@@ -340,7 +340,7 @@ router.get(
   handler(async (req, res, next) => {
     try {
       const { id } = req.params;
-      console.log("SemesterId --> ", id);
+      // console.log("SemesterId --> ", id);
 
       const getStudent = await Student.find({
         CurrentSemester: id,

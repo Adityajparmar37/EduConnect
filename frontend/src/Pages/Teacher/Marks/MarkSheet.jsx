@@ -129,7 +129,10 @@ export default function MarkSheet() {
               />
             </div>
             <div className="mr-16 flex justify-end">
-              <button className="mt-8 rounded-md bg-red-600 p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:bg-red-200 hover:text-black">
+              <button
+                onClick={handleSubmit}
+                className="mt-8 rounded-md bg-red-600 p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:bg-red-200 hover:text-black"
+              >
                 Submit
               </button>
             </div>
