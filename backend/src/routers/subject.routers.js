@@ -101,7 +101,7 @@ router.get(
   "/getAllSubject",
   handler(async (req, res, next) => {
     try {
-      const semNo = req.query.semNo; // Use req.query to get the value of semNo from the query string
+      const semNo = req.query.semNo; 
       console.log(semNo);
 
       if (semNo) {

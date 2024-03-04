@@ -15,7 +15,7 @@ const TableCardAttendance = ({
     updateAttendance(index, {
       SubjectId: subjectId,
       Student: student._id,
-      attendance: newAttendance,
+      attendance: newAttendance === "Present" ? 1 : 0,
     });
   };
 

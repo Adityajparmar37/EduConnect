@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
 import TableCardAttendance from "../../../Components/TableCard/TableCardAttendance";
 import { SemesterStudent } from "../../../Services/subjectServices";
+import { markAttendance } from "../../../Services/teacherServices";
 
 export default function AttendanceList() {
   const { id } = useParams();
@@ -13,13 +14,11 @@ export default function AttendanceList() {
     const fetchData = async () => {
       const response = await SemesterStudent(id);
       setStudentList(response);
-
-      // Initialize attendance data with default "Present" attendance for all students
       setAttendanceData(
         response.map((student) => ({
           SubjectId: id,
           Student: student._id,
-          attendance: "Present",
+          attendance: 1,
         })),
       );
     };
@@ -34,8 +33,14 @@ export default function AttendanceList() {
     });
   };
 
-  const handleAttendanceSubmit = () => {
-    console.log(attendanceData);
+  const handleAttendanceSubmit = async () => {
+    try {
+      console.log(attendanceData);
+      const responseData = await markAttendance(attendanceData);
+      console.log(responseData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
