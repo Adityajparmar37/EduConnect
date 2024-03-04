@@ -15,19 +15,45 @@ router.get(
     try {
       const { attendanceData } = req.query;
 
-      attendanceData.forEach(async (data) => {
-        const newAttendance = new Attendance({
-          subjectId: data.SubjectId,
-          studentId: data.Student,
-          attendance: data.attendance,
-        });
+      for (const data of attendanceData) {
+        // Check if attendance data for the same subjectId and studentId exists for the current date
+        const existingAttendance =
+          await Attendance.findOne({
+            subjectId: data.SubjectId,
+            studentId: data.Student,
+            createdAt: {
+              $gte: new Date().setHours(
+                0,
+                0,
+                0,
+                0
+              ),
+            }, // Check for data of the same date
+          });
 
-        await newAttendance.save();
-        console.log(
-          "NEW ATTENDACE",
-          newAttendance
-        );
-      });
+        if (existingAttendance) {
+          // If existing attendance data found, update it
+          existingAttendance.attendance =
+            data.attendance;
+          await existingAttendance.save();
+          console.log(
+            "Existing attendance data updated:",
+            existingAttendance
+          );
+        } else {
+          // If no existing attendance data found, save new attendance data
+          const newAttendance = new Attendance({
+            subjectId: data.SubjectId,
+            studentId: data.Student,
+            attendance: data.attendance,
+          });
+          await newAttendance.save();
+          console.log(
+            "New attendance data saved:",
+            newAttendance
+          );
+        }
+      }
 
       res.send("done");
     } catch (error) {
