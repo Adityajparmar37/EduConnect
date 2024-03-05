@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 
 const marksSchema = mongoose.Schema(
   {
-    subjectId: {
+    SubjectId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Subject",
     },
-    studentId: {
+    StudentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Student",
     },
-    marks: [
+    Marks: [
       {
         type: Number,
         default: 0,

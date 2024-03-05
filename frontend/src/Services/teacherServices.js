@@ -91,6 +91,17 @@ export const markAttendance = async (attendanceData) => {
   }
 };
 
+export const enterMarks = async (marksData) => {
+  try {
+    console.log(marksData);
+    const response = await axios.post("api/marks/enterMarks", marksData);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export const getUser = () =>
   localStorage.getItem("UserInfo")
     ? JSON.parse(localStorage.getItem("UserInfo"))

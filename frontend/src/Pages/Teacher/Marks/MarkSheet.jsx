@@ -4,6 +4,8 @@ import Spreadsheet from "react-spreadsheet";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
 import { SemesterStudent } from "../../../Services/subjectServices";
 import * as XLSX from "xlsx";
+import toast from "react-hot-toast";
+import { enterMarks } from "../../../Services/teacherServices";
 
 export default function MarkSheet() {
   const { id } = useParams();
@@ -17,7 +19,8 @@ export default function MarkSheet() {
   ];
   const [studentList, setStudentList] = useState([]);
   const [data, setData] = useState([]);
-  const [marks, setMarks] = useState([]);
+  // const [marks, setMarks] = useState([]);
+  const [marksData, setMarksData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,6 +43,7 @@ export default function MarkSheet() {
         { value: "", button: <button>Button</button> },
         { value: "", button: <button>Button</button> },
         { value: "", button: <button>Button</button> },
+        { value: "", button: <button>Button</button> },
       ]);
       setData(initialData);
     }
@@ -50,7 +54,11 @@ export default function MarkSheet() {
     // Implement button click handling logic here
   };
 
-  const handleSubmit = () => {
+  const handleExport = () => {
+    exportToExcel(marksData);
+  };
+
+  const handleSubmit = async () => {
     const marksData = [];
     data.forEach((row, rowIndex) => {
       const studentId = studentList[rowIndex]._id;
@@ -61,10 +69,18 @@ export default function MarkSheet() {
       };
       marksData.push(studentMarks);
     });
-    console.log("All marks with student IDs:", marksData);
-
-    // Convert data to Excel format and export
-    exportToExcel(marksData);
+    setMarksData(marksData);
+    try {
+      const responseData = await enterMarks(marksData);
+      if (responseData.success === true) {
+        toast.success(responseData.message);
+      } else {
+        toast.error(responseData.message);
+      }
+    } catch (error) {
+      toast.error("Some error occured !");
+      console.log(error);
+    }
   };
 
   const exportToExcel = (data) => {
@@ -119,7 +135,7 @@ export default function MarkSheet() {
             </div>
             <div className="mr-16 flex justify-end gap-2">
               <button
-                onClick={handleSubmit}
+                onClick={handleExport}
                 className="mt-8 rounded-md bg-darkPrimary p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:bg-mintPrimary hover:text-black"
               >
                 Export Sheet
