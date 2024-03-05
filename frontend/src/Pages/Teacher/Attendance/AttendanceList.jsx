@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
 import TableCardAttendance from "../../../Components/TableCard/TableCardAttendance";
@@ -37,7 +38,11 @@ export default function AttendanceList() {
     try {
       console.log(attendanceData);
       const responseData = await markAttendance(attendanceData);
-      console.log(responseData);
+      if (responseData.success === true) {
+        toast.success(responseData.message);
+      } else {
+        toast.error(responseData.message);
+      }
     } catch (error) {
       console.log(error);
     }

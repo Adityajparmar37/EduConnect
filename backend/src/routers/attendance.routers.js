@@ -14,6 +14,7 @@ router.get(
   handler(async (req, res, next) => {
     try {
       const { attendanceData } = req.query;
+      let newAttendance;
 
       for (const data of attendanceData) {
         // Check if attendance data for the same subjectId and studentId exists for the current date
@@ -42,7 +43,7 @@ router.get(
           );
         } else {
           // If no existing attendance data found, save new attendance data
-          const newAttendance = new Attendance({
+          newAttendance = new Attendance({
             subjectId: data.SubjectId,
             studentId: data.Student,
             attendance: data.attendance,
@@ -55,8 +56,19 @@ router.get(
         }
       }
 
-      res.send("done");
+      if (newAttendance) {
+        res.json({
+          success: true,
+          message: "Attendance Marked",
+        });
+      } else {
+        res.json({
+          success: false,
+          message: "Please try again",
+        });
+      }
     } catch (error) {
+      next(error);
       console.log(error);
     }
   })

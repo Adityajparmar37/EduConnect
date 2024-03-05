@@ -83,6 +83,7 @@ export const markAttendance = async (attendanceData) => {
     const { data } = await axios.get("api/attendance/markAttendance", {
       params: {attendanceData},
     });
+    console.log(data);
     return data;
   } catch (error) {
     return error.response.data;
