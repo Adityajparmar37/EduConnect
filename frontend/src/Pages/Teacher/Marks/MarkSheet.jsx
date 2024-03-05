@@ -11,6 +11,7 @@ export default function MarkSheet() {
     "Student",
     "Mid-1",
     "Mid-2",
+    "Quiz",
     "Practical",
     "End Semester",
   ];
@@ -91,18 +92,6 @@ export default function MarkSheet() {
                 📝 Enter Marks
               </h1>
             </div>
-
-            <div className="mb-8 flex justify-evenly  ">
-              <button
-                onClick={handleSubmit}
-                className="rounded-md bg-green-600 p-2 text-lg font-light text-white duration-300 hover:rounded-[3rem] hover:bg-green-100 hover:text-black"
-              >
-                Export Sheet
-              </button>
-              <button className="rounded-md bg-blue-600 p-2 text-lg font-light text-white duration-300 hover:rounded-[3rem] hover:bg-blue-100 hover:text-black">
-                Import Sheet
-              </button>
-            </div>
             <div className="flex w-full items-center justify-center">
               <Spreadsheet
                 className="text-xl"
@@ -128,7 +117,13 @@ export default function MarkSheet() {
                 }}
               />
             </div>
-            <div className="mr-16 flex justify-end">
+            <div className="mr-16 flex justify-end gap-2">
+              <button
+                onClick={handleSubmit}
+                className="mt-8 rounded-md bg-darkPrimary p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:bg-mintPrimary hover:text-black"
+              >
+                Export Sheet
+              </button>
               <button
                 onClick={handleSubmit}
                 className="mt-8 rounded-md bg-red-600 p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:bg-red-200 hover:text-black"
