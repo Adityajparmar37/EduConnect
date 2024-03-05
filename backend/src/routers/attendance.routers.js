@@ -9,16 +9,16 @@ dotenv.config();
 
 router.use(authMid);
 
-router.get(
+router.post(
   "/markAttendance",
   handler(async (req, res, next) => {
     try {
-      const { attendanceData } = req.query;
-      let newAttendance;
+      const attendanceData = req.body;
+      let newAttendance, existingAttendance;
 
       for (const data of attendanceData) {
         // Check if attendance data for the same subjectId and studentId exists for the current date
-        const existingAttendance =
+        existingAttendance =
           await Attendance.findOne({
             subjectId: data.SubjectId,
             studentId: data.Student,
@@ -60,6 +60,11 @@ router.get(
         res.json({
           success: true,
           message: "Attendance Marked",
+        });
+      } else if (existingAttendance) {
+        res.json({
+          success: true,
+          message: "Attendance Updated",
         });
       } else {
         res.json({

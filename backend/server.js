@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const morgan = require("morgan");
 const dbconnect = require("./config/database.config");
 const adminRoutes = require("./src/routers/admin.routers.js");
 const studentRoutes = require("./src/routers/student.routers.js");
@@ -22,6 +23,9 @@ app.use(
     origin: ["http://localhost:5175"],
   })
 );
+
+// log http
+app.use(morgan("dev"));
 
 //routing api handling
 app.use("/api/admin", adminRoutes);

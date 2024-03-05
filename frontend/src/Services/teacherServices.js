@@ -80,16 +80,16 @@ export const updateATeacher = async (id, teacherData) => {
 export const markAttendance = async (attendanceData) => {
   try {
     console.log(attendanceData);
-    const { data } = await axios.get("api/attendance/markAttendance", {
-      params: {attendanceData},
-    });
-    console.log(data);
-    return data;
+    const response = await axios.post(
+      "api/attendance/markAttendance",
+      attendanceData,
+    );
+    console.log(response.data);
+    return response.data;
   } catch (error) {
     return error.response.data;
   }
 };
-
 
 export const getUser = () =>
   localStorage.getItem("UserInfo")
