@@ -84,7 +84,19 @@ export default function MarkSheet() {
   };
 
   const exportToExcel = (data) => {
-    const ws = XLSX.utils.json_to_sheet(data);
+    const formattedData = data.map((studentMarks, index) => {
+      const student = studentList[index]; // Fetch corresponding student from studentList
+      return {
+        Student: student.name,
+        "Mid-1": studentMarks.marks[0],
+        "Mid-2": studentMarks.marks[1],
+        Quiz: studentMarks.marks[2],
+        Practical: studentMarks.marks[3],
+        "End Semester": studentMarks.marks[4],
+      };
+    });
+
+    const ws = XLSX.utils.json_to_sheet(formattedData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "MarksSheet");
 
@@ -94,6 +106,7 @@ export default function MarkSheet() {
     // Trigger the file download
     XLSX.writeFile(wb, fileName);
   };
+
 
   return (
     <>

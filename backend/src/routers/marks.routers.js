@@ -39,7 +39,7 @@ router.post(
         res.send({
           success: true,
           message:
-            "Marks data uploaded successfully",
+            "Marks uploaded successfully",
         });
       else {
         res.send({
