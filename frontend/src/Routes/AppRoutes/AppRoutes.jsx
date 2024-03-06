@@ -24,6 +24,7 @@ import UpdateTeacher from "../../Pages/Admin/UpdateTeacher/UpdateTeacher";
 import Marks from "../../Pages/Teacher/Marks/Marks";
 import AttendanceList from "../../Pages/Teacher/Attendance/AttendanceList";
 import Profile from "../../Components/Profile/Profile";
+import ViewAttendance from "../../Pages/Student/Attendance/ViewAttendance";
 
 export default function AppRoutes() {
   return (
@@ -156,6 +157,14 @@ export default function AppRoutes() {
           element={
             <AuthRoute>
               <StudentHomePage />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/viewAttendance"
+          element={
+            <AuthRoute>
+              <ViewAttendance />
             </AuthRoute>
           }
         />

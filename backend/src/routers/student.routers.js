@@ -52,6 +52,8 @@ router.post(
           _id: FindStudent._id,
           name: FindStudent.name,
           email: FindStudent.email,
+          CurrentSemester:
+            FindStudent.CurrentSemester,
           userType: "student",
           token: generateToken(
             FindStudent._id,

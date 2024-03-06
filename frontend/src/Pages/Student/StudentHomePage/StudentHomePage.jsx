@@ -16,24 +16,24 @@ export default function StudentHomePage() {
       <div className="z-10 flex h-auto w-5/6 px-3 pt-20">
         <div className="grid grid-cols-3 gap-24">
           <Card
-            link="/uploadFiles"
-            bgColor="darkPrimary"
-            icon={<LiaFileUploadSolid />}
-            icon2={<IoArrowForwardSharp />}
-            title="Upload File"
-            text={["Upload your submission", "Upload Assignment"]}
-          />
-          <Card
-            link="/studentDashboard"
+            link="/viewAttendance"
             bgColor="darkPrimary"
             icon={<TbHexagonLetterA />}
             icon2={<IoArrowForwardSharp />}
             title="View Attendance"
             text={["View your attendance"]}
           />
+          <Card
+            link="/viewMarks"
+            bgColor="darkPrimary"
+            icon={<LiaFileUploadSolid />}
+            icon2={<IoArrowForwardSharp />}
+            title="View Marks"
+            text={["View your Marks", "Marks of each Subject"]}
+          />
 
           <Card
-            link="/subjectDashboard"
+            link="/chart"
             bgColor="darkPrimary"
             icon={<PiChatsFill />}
             icon2={<IoArrowForwardSharp />}

@@ -79,4 +79,23 @@ router.post(
   })
 );
 
+router.get(
+  "/viewattendance/:stuId",
+  handler(async (req, res, next) => {
+    try {
+      const stuId = req.params.stuId;
+      console.log(stuId);
+
+      const Student_attendance =
+        await Attendance.find({
+          studentId: stuId,
+        });
+      res.send(Student_attendance);
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  })
+);
+
 module.exports = router;

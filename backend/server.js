@@ -37,8 +37,6 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/marks", marksRoutes);
 
-
-
 // Internal Error Handling
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

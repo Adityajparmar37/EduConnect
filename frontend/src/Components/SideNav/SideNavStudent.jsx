@@ -32,23 +32,7 @@ export default function SideNavStudent() {
           </li>
           <li>
             <Link
-              to="/teacherDashboard"
-              className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
-            >
-              <span className="ml-4 inline-flex items-center justify-center text-2xl">
-                <LiaFileUploadSolid />
-              </span>
-              <span className="text-md ml-2 truncate tracking-wide">
-                Upload File
-              </span>
-              <span className="ml-auto rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium tracking-wide text-red-500">
-                New
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/studentDashboard"
+              to="/viewAttendance"
               className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
             >
               <span className="ml-4 inline-flex items-center justify-center text-2xl">
@@ -56,6 +40,22 @@ export default function SideNavStudent() {
               </span>
               <span className="text-md ml-2 truncate tracking-wide">
                 View Attendance
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/viewMarks"
+              className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
+            >
+              <span className="ml-4 inline-flex items-center justify-center text-2xl">
+                <LiaFileUploadSolid />
+              </span>
+              <span className="text-md ml-2 truncate tracking-wide">
+                View Marks
+              </span>
+              <span className="ml-auto rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium tracking-wide text-red-500">
+                New
               </span>
             </Link>
           </li>
