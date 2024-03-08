@@ -80,7 +80,6 @@ router.post(
   })
 );
 
-
 router.get(
   "/viewattendance/:stuId",
   handler(async (req, res, next) => {
@@ -91,7 +90,11 @@ router.get(
       const Student_attendance =
         await Attendance.find({
           studentId: stuId,
-        });
+        }).populate(
+          "subjectId",
+          "subjectName subjectNumber"
+        );
+
       res.send(Student_attendance);
     } catch (error) {
       console.log(error);
