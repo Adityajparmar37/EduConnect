@@ -101,7 +101,7 @@ router.get(
   "/getAllSubject",
   handler(async (req, res, next) => {
     try {
-      const semNo = req.query.semNo; 
+      const semNo = req.query.semNo;
       console.log(semNo);
 
       if (semNo) {
@@ -340,20 +340,35 @@ router.get(
   handler(async (req, res, next) => {
     try {
       const { id } = req.params;
-      // console.log("SemesterId --> ", id);
+      console.log("SemesterId --> ", id);
 
-      const getStudent = await Student.find({
-        CurrentSemester: id,
-      }).populate(
-        "CurrentSemester",
-        "semesterNumber"
-      );
+      const getSemester = await Semester.findOne({
+        subjects: id,
+      });
 
-      if (getStudent) {
-        res.status(200).send(getStudent);
+      console.log(getSemester);
+
+      if (getSemester) {
+        const getStudent = await Student.find({
+          CurrentSemester: getSemester.id,
+        }).populate(
+          "CurrentSemester",
+          "semesterNumber"
+        );
+
+        if (getStudent) {
+          res.status(200).send(getStudent);
+        } else {
+          next(
+            errorHandler(
+              404,
+              "No Student Found! "
+            )
+          );
+        }
       } else {
         next(
-          errorHandler(404, "No Student Found! ")
+          errorHandler(404, "No Student Found !")
         );
       }
     } catch (error) {

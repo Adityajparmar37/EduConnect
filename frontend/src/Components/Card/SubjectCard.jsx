@@ -10,7 +10,7 @@ export default function SubjectCard({ semSubject }) {
         {semSubject && (
           <div className="grid grid-cols-4 gap-14">
             {semSubject.map((subject, index) => (
-              <Link to={subject.semesterId}>
+              <Link to={subject.subjectId._id}>
                 <div
                   key={index}
                   className="mb-2 rounded-md border-black bg-zinc-50 p-4 shadow-md duration-300 hover:shadow-xl"

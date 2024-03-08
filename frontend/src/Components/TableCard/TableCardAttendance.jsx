@@ -41,7 +41,7 @@ const TableCardAttendance = ({
       <td className={`px-6 py-4`}>
         <div className="flex space-x-5">
           <button
-            className={`rounded-md p-1 text-xl font-light duration-200 hover:rounded-full hover:text-white dark:text-white bg-${attendance === "Present" ? "green-600" : "red-600"}`}
+            className={`rounded-md p-1 text-xl font-light duration-200 hover:rounded-full hover:text-white dark:text-white ${attendance === "Present" ? "bg-green-600" : "bg-red-600"}`}
             onClick={handleAttendanceToggle}
           >
             {attendance}

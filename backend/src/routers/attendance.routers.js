@@ -14,11 +14,11 @@ router.post(
   handler(async (req, res, next) => {
     try {
       const attendanceData = req.body;
-      let newAttendance, existingAttendance;
+      let newAttendance = false;
 
       for (const data of attendanceData) {
         // Check if attendance data for the same subjectId and studentId exists for the current date
-        existingAttendance =
+        const existingAttendance =
           await Attendance.findOne({
             subjectId: data.SubjectId,
             studentId: data.Student,
@@ -32,8 +32,13 @@ router.post(
             }, // Check for data of the same date
           });
 
-        if (existingAttendance) {
-          // If existing attendance data found, update it
+        if (
+          existingAttendance &&
+          existingAttendance.subjectId.equals(
+            data.SubjectId
+          )
+        ) {
+          // If existing attendance data found for the same subjectId and date, update it
           existingAttendance.attendance =
             data.attendance;
           await existingAttendance.save();
@@ -42,16 +47,17 @@ router.post(
             existingAttendance
           );
         } else {
-          // If no existing attendance data found, save new attendance data
-          newAttendance = new Attendance({
+          // If no existing attendance data found or subjectId changed or date is different, save new attendance data
+          const newRecord = new Attendance({
             subjectId: data.SubjectId,
             studentId: data.Student,
             attendance: data.attendance,
           });
-          await newAttendance.save();
+          await newRecord.save();
+          newAttendance = true; // Mark that new attendance has been added
           console.log(
             "New attendance data saved:",
-            newAttendance
+            newRecord
           );
         }
       }
@@ -61,15 +67,10 @@ router.post(
           success: true,
           message: "Attendance Marked",
         });
-      } else if (existingAttendance) {
+      } else {
         res.json({
           success: true,
           message: "Attendance Updated",
-        });
-      } else {
-        res.json({
-          success: false,
-          message: "Please try again",
         });
       }
     } catch (error) {
@@ -78,6 +79,7 @@ router.post(
     }
   })
 );
+
 
 router.get(
   "/viewattendance/:stuId",
