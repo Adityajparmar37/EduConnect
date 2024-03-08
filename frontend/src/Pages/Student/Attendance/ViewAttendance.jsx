@@ -1,31 +1,52 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import toast from "react-hot-toast";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SideNavStudent from "../../../Components/SideNav/SideNavStudent";
 import TableCardViewAttendance from "../../../Components/TableCard/TableCardViewAttendance";
 import { useAuth } from "../../../Hooks/useAuth";
 import { getMyAttendance } from "../../../Services/studentServices";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function ViewAttendance() {
   const { user } = useAuth();
-  // console.log(user);
   const [myAttendance, setMyAttendance] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [sortNewest, setSortNewest] = useState(true); // true for newest, false for oldest
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const responseData = await getMyAttendance(user._id);
-        console.log(responseData);
         setMyAttendance(responseData);
       } catch (error) {
         console.log(error);
-        toast.error("Please try again !");
       }
     };
-
     fetchData();
   }, []);
+
+  // Apply filters on myAttendance array
+  const filteredAttendance = myAttendance.filter((atten) => {
+    const date = new Date(atten.createdAt);
+    return (
+      atten.subjectId.subjectName
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) &&
+      (!startDate || date >= startDate) &&
+      (!endDate || date <= endDate)
+    );
+  });
+
+  // Sort the filtered attendance based on sortNewest
+  const sortedAttendance = [...filteredAttendance].sort((a, b) => {
+    if (sortNewest) {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    } else {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    }
+  });
 
   return (
     <>
@@ -40,7 +61,31 @@ export default function ViewAttendance() {
                 <h1 className="mb-5 text-center text-2xl font-bold">
                   ✅ Attendance
                 </h1>
+                <div className="mb-4 flex items-center justify-between">
+                  <input
+                    type="text"
+                    placeholder="Search by subject name"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <div>
+                    <label>From:</label>
+                    <DatePicker
+                      selected={startDate}
+                      onChange={(date) => setStartDate(date)}
+                    />
+                    <label>To:</label>
+                    <DatePicker
+                      selected={endDate}
+                      onChange={(date) => setEndDate(date)}
+                    />
+                  </div>
+                  <button onClick={() => setSortNewest(!sortNewest)}>
+                    {sortNewest ? "Sort Oldest" : "Sort Newest"}
+                  </button>
+                </div>
                 <table className="w-full text-left rtl:text-right">
+                  {/* Table header */}
                   <thead className="border-b-4 border-white text-[1rem] font-bold uppercase text-white dark:bg-primary">
                     <tr>
                       <th scope="col" className="p-4">
@@ -65,13 +110,14 @@ export default function ViewAttendance() {
                     </tr>
                   </thead>
                   <tbody>
-                    {myAttendance.map((atten, index) => (
+                    {sortedAttendance.map((atten, index) => (
                       <TableCardViewAttendance
+                        key={index}
                         index={index}
                         subjectName={atten.subjectId.subjectName}
                         subjectNumber={atten.subjectId.subjectNumber}
                         attendanced={atten.attendance}
-                        Date={atten.createdAt.slice(0,10)}
+                        Date={atten.createdAt.slice(0, 10)}
                       />
                     ))}
                   </tbody>
