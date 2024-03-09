@@ -58,31 +58,57 @@ export default function ViewAttendance() {
           {myAttendance && myAttendance.length > 0 ? (
             <>
               <div className="flex w-full flex-col">
-                <h1 className="mb-5 text-center text-2xl font-bold">
+                <h1 className="mb-8 text-center text-2xl font-bold">
                   ✅ Attendance
                 </h1>
-                <div className="mb-4 flex items-center justify-between">
-                  <input
-                    type="text"
-                    placeholder="Search by subject name"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
+                <div className="mb-8 flex flex-row items-center justify-center">
                   <div>
+                    <label className="mr-2 text-lg font-semibold">Search</label>
+                    <input
+                      type="text"
+                      placeholder="Search by subject name"
+                      value={searchTerm}
+                      className="rounded-md border-2 p-1 focus:border-2"
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+                  <div className="ml-8 flex justify-evenly text-lg font-semibold ">
                     <label>From:</label>
                     <DatePicker
+                      className="ml-2 mr-5 rounded-md border-2"
+                      placeholder="Click"
                       selected={startDate}
                       onChange={(date) => setStartDate(date)}
                     />
                     <label>To:</label>
                     <DatePicker
+                      className="ml-2 rounded-md border-2"
                       selected={endDate}
                       onChange={(date) => setEndDate(date)}
                     />
                   </div>
-                  <button onClick={() => setSortNewest(!sortNewest)}>
-                    {sortNewest ? "Sort Oldest" : "Sort Newest"}
-                  </button>
+
+                  <div className="flex items-center text-lg">
+                    <label className="ml-5 mr-3 font-semibold">Sort :</label>
+                    <input
+                      type="radio"
+                      value="new"
+                      checked={sortNewest}
+                      onChange={() => setSortNewest(true)}
+                    />
+                    <label htmlFor="newest" className="ml-2 mr-2">
+                      New
+                    </label>
+                    <input
+                      type="radio"
+                      value="old"
+                      checked={!sortNewest}
+                      onChange={() => setSortNewest(false)}
+                    />
+                    <label htmlFor="newest" className="ml-2 mr-2">
+                      Old
+                    </label>
+                  </div>
                 </div>
                 <table className="w-full text-left rtl:text-right">
                   {/* Table header */}
@@ -117,7 +143,9 @@ export default function ViewAttendance() {
                         subjectName={atten.subjectId.subjectName}
                         subjectNumber={atten.subjectId.subjectNumber}
                         attendanced={atten.attendance}
-                        Date={atten.createdAt.slice(0, 10)}
+                        Date={new Date(atten.createdAt).toLocaleDateString(
+                          "en-US",
+                        )}
                       />
                     ))}
                   </tbody>

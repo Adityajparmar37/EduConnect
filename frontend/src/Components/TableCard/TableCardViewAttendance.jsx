@@ -28,7 +28,7 @@ export default function TableCardViewAttendance({
       <td className={`px-6 py-4`}>
         <div className="flex space-x-5">
           <button
-            className={`rounded-md p-1 text-xl font-light duration-200 hover:rounded-full hover:text-white dark:text-white ${attendanced === 1 ? "bg-green-600" : "bg-red-600"}`}
+            className={`rounded-md p-1 text-xl font-semibold duration-200  hover:text-white dark:text-white ${attendanced === 1 ? "bg-green-600" : "bg-red-600"}`}
           >
             {attendanced === 1 ? "Present" : "Absent"}
           </button>
