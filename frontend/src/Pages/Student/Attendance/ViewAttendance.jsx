@@ -48,6 +48,27 @@ export default function ViewAttendance() {
     }
   });
 
+  // Count total present attendance
+  const totalPresentAttendance = filteredAttendance.filter(
+    (attendance) => attendance.attendance === 1,
+  ).length;
+
+  // Calculate percentage of present attendance
+  const totalAttendanceCount = filteredAttendance.length;
+  const presentAttendancePercentage =
+    totalAttendanceCount === 0
+      ? 0
+      : (totalPresentAttendance / totalAttendanceCount) * 100;
+
+  let colorClass;
+  if (presentAttendancePercentage >= 70) {
+    colorClass = "bg-green-500";
+  } else if (presentAttendancePercentage >= 50) {
+    colorClass = "bg-yellow-500";
+  } else {
+    colorClass = "bg-red-500";
+  }
+
   return (
     <>
       <div className="flex h-screen">
@@ -109,6 +130,14 @@ export default function ViewAttendance() {
                       Old
                     </label>
                   </div>
+                  <div className="ml-3">
+                    <h2 className="text-lg font-semibold">
+                      Total Present :{" "}
+                      <span className="font-light">
+                        {totalPresentAttendance}
+                      </span>
+                    </h2>
+                  </div>
                 </div>
                 <table className="w-full text-left rtl:text-right">
                   {/* Table header */}
@@ -150,6 +179,11 @@ export default function ViewAttendance() {
                     ))}
                   </tbody>
                 </table>
+                <div
+                  className={`absolute bottom-0 right-0 mb-16 mr-10 rounded-[2rem] p-3 text-2xl font-semibold text-white ${colorClass}`}
+                >
+                  {presentAttendancePercentage.toFixed(1)}%
+                </div>
               </div>
             </>
           ) : (
