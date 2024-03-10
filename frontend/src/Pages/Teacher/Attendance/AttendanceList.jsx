@@ -108,7 +108,7 @@ export default function AttendanceList() {
               </div>
             </>
           ) : (
-            <Link to="/studentDashboard">
+            <Link to="/teacher">
               <h1 className="items-center justify-center rounded-md bg-gray-600 p-2 text-lg text-white">
                 No Student Found! Click to go back
               </h1>
