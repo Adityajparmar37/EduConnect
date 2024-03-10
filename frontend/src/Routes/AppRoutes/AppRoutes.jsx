@@ -25,6 +25,7 @@ import Marks from "../../Pages/Teacher/Marks/Marks";
 import AttendanceList from "../../Pages/Teacher/Attendance/AttendanceList";
 import Profile from "../../Components/Profile/Profile";
 import ViewAttendance from "../../Pages/Student/Attendance/ViewAttendance";
+import ViewMarks from "../../Pages/Student/Marks/ViewMarks";
 
 export default function AppRoutes() {
   return (
@@ -165,6 +166,14 @@ export default function AppRoutes() {
           element={
             <AuthRoute>
               <ViewAttendance />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/viewMarks"
+          element={
+            <AuthRoute>
+              <ViewMarks />
             </AuthRoute>
           }
         />

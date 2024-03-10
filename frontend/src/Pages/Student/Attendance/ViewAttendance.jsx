@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SideNavStudent from "../../../Components/SideNav/SideNavStudent";
 import TableCardViewAttendance from "../../../Components/TableCard/TableCardViewAttendance";
-import { useAuth } from "../../../Hooks/useAuth";
 import { getMyAttendance } from "../../../Services/studentServices";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function ViewAttendance() {
-  const { user } = useAuth();
   const [myAttendance, setMyAttendance] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [startDate, setStartDate] = useState(null);

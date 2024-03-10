@@ -75,6 +75,17 @@ export const getMyAttendance = async () => {
   }
 };
 
+export const getMyMarks = async () => {
+  try {
+    // console.log(stuId);
+    const { data } = await axios.post(`api/marks/viewmarks`);
+    console.log("Student marks ==> ", data);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export const getUser = () =>
   localStorage.getItem("UserInfo")
     ? JSON.parse(localStorage.getItem("UserInfo"))

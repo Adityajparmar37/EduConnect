@@ -53,15 +53,27 @@ router.post(
   })
 );
 
-// router.post(
-//   "/getmarks",
-//   handler(async (req, res, next) => {
-//     try {
+router.post(
+  "/viewmarks",
+  handler(async (req, res, next) => {
+    try {
+      const stuId = req.user.id;
+      console.log(stuId);
 
-//     } catch (error) {
-//       next(error);
-//     }
-//   })
-// );
+      const Student_marks = await Marks.find({
+        StudentId: stuId,
+      }).populate(
+        "SubjectId",
+        "subjectName subjectNumber"
+      );
+
+      console.log(Student_marks);
+      res.send(Student_marks);
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  })
+);
 
 module.exports = router;
