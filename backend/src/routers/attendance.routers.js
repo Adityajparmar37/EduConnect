@@ -81,10 +81,10 @@ router.post(
 );
 
 router.get(
-  "/viewattendance/:stuId",
+  "/viewattendance",
   handler(async (req, res, next) => {
     try {
-      const stuId = req.params.stuId;
+      const stuId = req.user.id;
       console.log(stuId);
 
       const Student_attendance =

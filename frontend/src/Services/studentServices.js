@@ -64,10 +64,10 @@ export const updateAStudent = async (id, studentData) => {
   }
 };
 
-export const getMyAttendance = async (stuId) => {
+export const getMyAttendance = async () => {
   try {
-    console.log(stuId);
-    const { data } = await axios.get(`api/attendance/viewattendance/${stuId}`);
+    // console.log(stuId);
+    const { data } = await axios.get(`api/attendance/viewattendance`);
     console.log("Student Attendance ==> ", data);
     return data;
   } catch (error) {

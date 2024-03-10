@@ -18,7 +18,7 @@ export default function ViewAttendance() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseData = await getMyAttendance(user._id);
+        const responseData = await getMyAttendance();
         setMyAttendance(responseData);
       } catch (error) {
         console.log(error);

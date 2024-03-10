@@ -38,8 +38,7 @@ router.post(
       if (newMarks)
         res.send({
           success: true,
-          message:
-            "Marks uploaded successfully",
+          message: "Marks uploaded successfully",
         });
       else {
         res.send({
@@ -53,5 +52,16 @@ router.post(
     }
   })
 );
+
+// router.post(
+//   "/getmarks",
+//   handler(async (req, res, next) => {
+//     try {
+
+//     } catch (error) {
+//       next(error);
+//     }
+//   })
+// );
 
 module.exports = router;
