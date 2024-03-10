@@ -123,7 +123,7 @@ export default function MarkSheet() {
             </div>
             <div className="flex w-full items-center justify-center">
               <Spreadsheet
-                className="text-xl"
+                className="text-xl font-semibold"
                 data={data}
                 columnLabels={columnLabels}
                 onChange={setData}
