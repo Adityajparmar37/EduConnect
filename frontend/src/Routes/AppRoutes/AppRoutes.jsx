@@ -26,7 +26,7 @@ import AttendanceList from "../../Pages/Teacher/Attendance/AttendanceList";
 import Profile from "../../Components/Profile/Profile";
 import ViewAttendance from "../../Pages/Student/Attendance/ViewAttendance";
 import ViewMarks from "../../Pages/Student/Marks/ViewMarks";
-import DiscussionForum from "../../Pages/Student/DiscussionForum/DiscussionForum";
+import DiscussionForum from "../../Pages/DiscussionForum/DiscussionForum";
 
 export default function AppRoutes() {
   return (

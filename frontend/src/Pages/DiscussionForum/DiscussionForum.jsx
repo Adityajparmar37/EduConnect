@@ -1,21 +1,27 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { FaUserFriends } from "react-icons/fa";
-import { useAuth } from "../../../Hooks/useAuth";
-import { MySubject } from "../../../Services/discussionForumServices";
+import { useAuth } from "../../Hooks/useAuth";
+import { MySubject } from "../../Services/discussionForumServices";
 import { FcReadingEbook } from "react-icons/fc";
+import { getTeacherSubjects } from "../../Services/teacherServices";
 
 export default function DiscussionForum() {
   const { user } = useAuth();
+  console.log(user);
   const [subjects, setSubject] = useState([]);
   const [selectSub, setSelectSub] = useState();
   useEffect(() => {
     const fetch = async () => {
       try {
-        const allsubject = await MySubject(user.CurrentSemester);
-        console.log(allsubject.subjects);
-        setSubject(allsubject.subjects);
+        if (user.userType === "student") {
+          const allSubjects = await MySubject(user.CurrentSemester);
+          setSubject(allSubjects.subjects);
+        } else if (user.userType === "teacher") {
+          const allSubjects = await getTeacherSubjects(user._id);
+          console.log(allSubjects);
+            setSubject(allSubjects.map((sub) => sub.subjectId));
+        }
       } catch (error) {
         console.log(error);
       }
