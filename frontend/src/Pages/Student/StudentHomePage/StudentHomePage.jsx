@@ -33,7 +33,7 @@ export default function StudentHomePage() {
           />
 
           <Card
-            link="/chart"
+            link="/discussionForum"
             bgColor="darkPrimary"
             icon={<PiChatsFill />}
             icon2={<IoArrowForwardSharp />}

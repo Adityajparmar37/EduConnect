@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FaUserFriends } from "react-icons/fa";
 import { useAuth } from "../../../Hooks/useAuth";
 import { MySubject } from "../../../Services/discussionForumServices";
+import { FcReadingEbook } from "react-icons/fc";
 
 export default function DiscussionForum() {
   const { user } = useAuth();
@@ -33,7 +34,7 @@ export default function DiscussionForum() {
         <div className="flex h-[98%] w-[90%] flex-row rounded-2xl bg-white shadow-xl">
           <div className="w-1/4 border-r border-gray-500">
             <div className="flex h-16 flex-row items-center rounded-tl-2xl border-b border-gray-500 bg-gray-700/95 ">
-              <FaUserFriends className="ml-5 text-3xl text-gray-300" />
+              <FcReadingEbook className="ml-20 text-3xl text-gray-300" />
               <h1 className="ml-5 text-xl font-light text-white">
                 {" "}
                 Your Subjects
