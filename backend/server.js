@@ -10,6 +10,7 @@ const subjectRoutes = require("./src/routers/subject.routers.js");
 const profileRoutes = require("./src/routers/profile.routers.js");
 const attendanceRoutes = require("./src/routers/attendance.routers.js");
 const marksRoutes = require("./src/routers/marks.routers");
+const discussionForumRoutes = require("./src/routers/discussionForum.routers");
 
 dotenv.config();
 const app = express();
@@ -36,6 +37,10 @@ app.use("/api/subject", subjectRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/marks", marksRoutes);
+app.use(
+  "/api/discussionForum",
+  discussionForumRoutes
+);
 
 // Internal Error Handling
 app.use((err, req, res, next) => {

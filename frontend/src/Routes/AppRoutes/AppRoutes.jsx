@@ -26,6 +26,7 @@ import AttendanceList from "../../Pages/Teacher/Attendance/AttendanceList";
 import Profile from "../../Components/Profile/Profile";
 import ViewAttendance from "../../Pages/Student/Attendance/ViewAttendance";
 import ViewMarks from "../../Pages/Student/Marks/ViewMarks";
+import DiscussionForum from "../../Pages/Student/DiscussionForum/DiscussionForum";
 
 export default function AppRoutes() {
   return (
@@ -152,6 +153,7 @@ export default function AppRoutes() {
             </AuthRoute>
           }
         />
+
         {/* student pages */}
         <Route
           path="/student"
@@ -174,6 +176,14 @@ export default function AppRoutes() {
           element={
             <AuthRoute>
               <ViewMarks />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/discussionForum"
+          element={
+            <AuthRoute>
+              <DiscussionForum />
             </AuthRoute>
           }
         />
