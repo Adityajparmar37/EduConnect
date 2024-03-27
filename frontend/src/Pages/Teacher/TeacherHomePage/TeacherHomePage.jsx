@@ -34,7 +34,7 @@ export default function TeacherHomePage() {
             text={["Upload subject Marks"]}
           />
           <Card
-            link="/discussion"
+            link="/discussionForum"
             bgColor="darkPrimary"
             icon={<PiChatsFill />}
             icon2={<IoArrowForwardSharp />}

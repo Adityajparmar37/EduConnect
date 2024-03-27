@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const MySubject = async (semesterNumber) => {
   try {
-    console.log(semesterNumber);
+    // console.log(semesterNumber);
     const { data } = await axios.get("api/discussionForum/getSub", {
       params: { semesterNumber },
     });

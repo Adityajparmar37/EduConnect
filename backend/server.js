@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const http = require("http");
 const cors = require("cors");
 const morgan = require("morgan");
 const dbconnect = require("./config/database.config");
@@ -11,6 +12,7 @@ const profileRoutes = require("./src/routers/profile.routers.js");
 const attendanceRoutes = require("./src/routers/attendance.routers.js");
 const marksRoutes = require("./src/routers/marks.routers");
 const discussionForumRoutes = require("./src/routers/discussionForum.routers");
+const socketConfig = require("./src/socket/socket.js");
 
 dotenv.config();
 const app = express();
@@ -42,6 +44,10 @@ app.use(
   discussionForumRoutes
 );
 
+// Socket setup
+const server = http.createServer(app);
+socketConfig(server);
+
 // Internal Error Handling
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
@@ -54,6 +60,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`serving on ${PORT}`);
 });

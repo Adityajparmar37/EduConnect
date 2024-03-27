@@ -1,16 +1,85 @@
-import React from "react";
+import React, { useMemo } from "react";
+import io from "socket.io-client";
+import config from "../../configSocket/configSocket";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useAuth } from "../../Hooks/useAuth";
 import { MySubject } from "../../Services/discussionForumServices";
 import { FcReadingEbook } from "react-icons/fc";
 import { getTeacherSubjects } from "../../Services/teacherServices";
+import { IoSend } from "react-icons/io5";
 
 export default function DiscussionForum() {
+  const socket = useMemo(() => {
+    return io(config.serverUrl, {
+      withCredentials: true,
+    });
+  }, []);
+
   const { user } = useAuth();
-  console.log(user);
+  // console.log(user);
   const [subjects, setSubject] = useState([]);
   const [selectSub, setSelectSub] = useState();
+
+  const [newMessage, setNewMessage] = useState("");
+  const [messageReceived, setMessageReceived] = useState([]);
+  const [room, setRoom] = useState();
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("connected", socket.id);
+    });
+    socket.on("old-messages", (oldMessages) => {
+      console.log("----", oldMessages);
+      setMessageReceived(
+        oldMessages.map((oldmss) => ({
+          content: oldmss.content,
+          senderId: oldmss.senderId,
+          senderName: oldmss.senderName,
+        })),
+      );
+    });
+
+    socket.on(
+      "received-message",
+      ({ decryptedMessage, senderId, senderName }) => {
+        console.log("****", decryptedMessage);
+        setMessageReceived((prevMessages) => {
+          if (Array.isArray(prevMessages)) {
+            return [
+              ...prevMessages,
+              { content: decryptedMessage, senderId, senderName },
+            ];
+          } else {
+            return [{ content: decryptedMessage, senderId, senderName }];
+          }
+        });
+      },
+    );
+
+    socket.on("room-created", (data) => {
+      console.log("user join in room ", data);
+      if (data) {
+        setRoom(data);
+      }
+    });
+
+    return () => {
+      console.log("Disconnecting socket");
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const chatContainer = document.getElementById("chatContainer");
+    if (chatContainer) {
+      chatContainer.scrollTo({
+        behavior: "smooth",
+        top: chatContainer.scrollHeight,
+      });
+    }
+  }, [messageReceived, selectSub]);
+
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -19,8 +88,8 @@ export default function DiscussionForum() {
           setSubject(allSubjects.subjects);
         } else if (user.userType === "teacher") {
           const allSubjects = await getTeacherSubjects(user._id);
-          console.log(allSubjects);
-            setSubject(allSubjects.map((sub) => sub.subjectId));
+          // console.log(allSubjects);
+          setSubject(allSubjects.map((sub) => sub.subjectId));
         }
       } catch (error) {
         console.log(error);
@@ -29,9 +98,23 @@ export default function DiscussionForum() {
     fetch();
   }, []);
 
+  const handleEnterKey = (e) => {
+    if (e.key === "Enter") {
+      handleSend();
+    }
+  };
+
   const handleSubjectBtn = (sub) => {
-    console.log(sub);
-    setSelectSub(sub);
+    // console.log(sub);
+    setSelectSub(sub.subjectName);
+    setMessageReceived([]);
+    socket.emit("CreateRoom", sub);
+  };
+  const handleSend = () => {
+    console.log("Sending new message to room:", room);
+    console.log("This is new message", newMessage);
+    socket.emit("newMessage", room, newMessage, user._id, user.name);
+    setNewMessage("");
   };
 
   return (
@@ -55,7 +138,7 @@ export default function DiscussionForum() {
                       <button
                         className={`mb-2 w-full rounded-lg border-b-4 p-3 text-xl  font-bold ${sub.subjectName === selectSub ? " border-2 bg-gray-50 text-mintPrimary shadow-inner" : "hover:border-2 hover:bg-gray-50 hover:text-mintPrimary hover:shadow-inner"}`}
                         key={sub._id}
-                        onClick={() => handleSubjectBtn(sub.subjectName)}
+                        onClick={() => handleSubjectBtn(sub)}
                       >
                         {sub.subjectName}
                       </button>
@@ -85,7 +168,7 @@ export default function DiscussionForum() {
                 className="max-h-[80vh] overflow-y-auto pb-24"
               >
                 <div className="p-5 leading-8">
-                  {/* {messageReceived && messageReceived.length > 0 ? (
+                  {messageReceived && messageReceived.length > 0 ? (
                     messageReceived.map((message, index) => (
                       <div
                         key={index}
@@ -101,12 +184,12 @@ export default function DiscussionForum() {
                         {console.log("Message", message)}
                         <div
                           className={
-                            message.senderId === student._id
+                            message.senderId === user._id
                               ? "flex justify-end"
                               : "flex justify-start"
                           }
                         >
-                          {message.senderId === student._id ? (
+                          {message.senderId === user._id ? (
                             <>
                               <h1 className="mb-3 rounded-xl bg-blue-100 px-8 py-1 text-right text-lg font-bold leading-9 ">
                                 {message.content}
@@ -136,8 +219,27 @@ export default function DiscussionForum() {
                         </h1>
                       </div>
                     </>
-                  )} */}
+                  )}
                 </div>
+              </div>
+            </div>
+            <div className="absolute bottom-0 w-full">
+              <div className="flex w-full items-center bg-gray-700/95 px-3 py-2">
+                <input
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  onKeyDown={handleEnterKey}
+                  value={newMessage}
+                  type="text"
+                  name="message"
+                  className="w-full rounded-xl border-2 border-gray-200 bg-gray-100 p-4 font-semibold focus:shadow-inner focus:outline-none"
+                />
+
+                <button
+                  onClick={handleSend}
+                  className="ml-3 w-auto rounded-r-xl bg-blue-600 px-8 py-4 text-center text-[1.5rem] font-semibold text-white hover:bg-blue-900"
+                >
+                  <IoSend />
+                </button>
               </div>
             </div>
           </div>
