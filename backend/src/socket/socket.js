@@ -103,7 +103,7 @@ module.exports = (server) => {
             await ChatGroup.create({
               SubjectName: subject.subjectName,
               SubjectId: subject._id,
-              // members: project.projectMembers.map(
+              // members: Members.map(
               //   (member) => ({
               //     userId: member.memberId,
               //     name: member.memberName,
