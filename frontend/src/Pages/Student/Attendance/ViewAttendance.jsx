@@ -5,17 +5,25 @@ import TableCardViewAttendance from "../../../Components/TableCard/TableCardView
 import { getMyAttendance } from "../../../Services/studentServices";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useAuth } from "../../../Hooks/useAuth";
+import { MySubject } from "../../../Services/discussionForumServices";
 
 export default function ViewAttendance() {
+  const { user } = useAuth();
   const [myAttendance, setMyAttendance] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [mysub, setMysub] = useState([]);
   const [sortNewest, setSortNewest] = useState(true); // true for newest, false for oldest
 
+  // console.log(user);
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const getMySubject = await MySubject(user.CurrentSemester);
+        console.log(getMySubject);
+        setMysub(getMySubject.subjects);
         const responseData = await getMyAttendance();
         setMyAttendance(responseData);
       } catch (error) {
@@ -82,14 +90,24 @@ export default function ViewAttendance() {
                 </h1>
                 <div className="mb-8 flex flex-row items-center justify-center">
                   <div>
-                    <label className="mr-2 text-lg font-semibold">Search</label>
-                    <input
-                      type="text"
-                      placeholder="Search by subject name"
+                    <label className="mr-2 text-lg font-semibold">
+                      Subject:
+                    </label>
+                    <select
                       value={searchTerm}
-                      className="rounded-md border-2 p-1 focus:border-2"
                       onChange={(e) => setSearchTerm(e.target.value)}
-                    />
+                      className="rounded-md border-2 p-1 focus:border-2"
+                    >
+                      <option value="">All Subjects</option>
+                      {mysub.map((subject) => (
+                        <option
+                          key={subject.subjectId}
+                          value={subject.subjectName}
+                        >
+                          {subject.subjectName}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="ml-8 flex justify-evenly text-lg font-semibold ">
                     <label>From:</label>
