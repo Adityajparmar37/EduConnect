@@ -1,13 +1,19 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 
 const TableCardAttendance = ({
   subjectId,
   student,
   index,
   updateAttendance,
+  initialAttendance,
 }) => {
+  console.log(initialAttendance);
+  useEffect(() => {
+    setAttendance(initialAttendance);
+  }, [initialAttendance]);
   const currentDate = new Date().toLocaleDateString();
-  const [attendance, setAttendance] = useState("Present");
+  const [attendance, setAttendance] = useState(initialAttendance);
 
   const handleAttendanceToggle = () => {
     const newAttendance = attendance === "Present" ? "Absent" : "Present";

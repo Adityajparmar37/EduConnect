@@ -10,6 +10,7 @@ export default function AttendanceList() {
   const { id } = useParams();
   const [studentList, setStudentList] = useState([]);
   const [attendanceData, setAttendanceData] = useState([]);
+  const [attendanceToggle, setAttendanceToggle] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,12 +20,12 @@ export default function AttendanceList() {
         response.map((student) => ({
           SubjectId: id,
           Student: student._id,
-          attendance: 1,
+          attendance: attendanceToggle ? 1 : 0,
         })),
       );
     };
     fetchData();
-  }, [id]);
+  }, [id, attendanceToggle]);
 
   const updateAttendance = (index, newAttendance) => {
     setAttendanceData((prevAttendanceData) => {
@@ -48,6 +49,10 @@ export default function AttendanceList() {
     }
   };
 
+  const handleToggleAttendance = () => {
+    setAttendanceToggle(!attendanceToggle);
+  };
+
   return (
     <>
       <div className="flex h-screen">
@@ -61,6 +66,18 @@ export default function AttendanceList() {
                 <h1 className="mb-5 text-center text-2xl font-bold">
                   ✅ Attendance
                 </h1>
+                <div className="mb-3 mr-8 flex justify-end">
+                  <button
+                    onClick={handleToggleAttendance}
+                    className={`${
+                      attendanceToggle
+                        ? "bg-red-600 hover:bg-red-200"
+                        : "bg-green-600 hover:bg-green-200"
+                    } mr-5 rounded-md  p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:text-black`}
+                  >
+                    {attendanceToggle ? "Make All Absent" : "Make All Present"}
+                  </button>
+                </div>
                 <table className="w-full text-left rtl:text-right">
                   <thead className="border-b-4 border-white text-[1rem] font-bold uppercase text-white dark:bg-primary">
                     <tr>
@@ -92,6 +109,9 @@ export default function AttendanceList() {
                         key={student._id}
                         student={student}
                         index={index}
+                        initialAttendance={
+                          attendanceToggle ? "Present" : "Absent"
+                        }
                         updateAttendance={updateAttendance}
                       />
                     ))}
