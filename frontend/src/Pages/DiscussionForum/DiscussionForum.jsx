@@ -154,7 +154,7 @@ export default function DiscussionForum() {
             <div className="flex h-16 w-full flex-row items-center rounded-tr-2xl border-b border-gray-500 bg-gray-700/95">
               {selectSub ? (
                 <h1 className="ml-3 text-xl font-bold text-white">
-                  🔸{selectSub}
+                  🟢 {selectSub}
                 </h1>
               ) : (
                 <h1 className="ml-3 text-xl font-light text-white">
@@ -191,7 +191,7 @@ export default function DiscussionForum() {
                         >
                           {message.senderId === user._id ? (
                             <>
-                              <h1 className="mb-3 rounded-xl bg-blue-100 px-8 py-1 text-right text-lg font-bold leading-9 ">
+                              <h1 className="mb-3 rounded-xl bg-primary text-white px-8 py-1 text-right text-lg font-bold leading-9 ">
                                 {message.content}
                               </h1>
                               <span className="text-md mb-3 ml-2 rounded-full bg-gray-100 px-3 py-1 font-bold leading-9">
@@ -203,7 +203,7 @@ export default function DiscussionForum() {
                               <span className="text-md mb-3 mr-2 rounded-full bg-gray-100 px-3 py-1 font-bold leading-9">
                                 {message.senderName}
                               </span>
-                              <h1 className="mb-3 rounded-xl bg-purple-100 px-8 py-1 text-left text-lg font-bold leading-9">
+                              <h1 className="mb-3 rounded-xl bg-mintPrimary  text-black px-8 py-1 text-left text-lg font-bold leading-9">
                                 {message.content}
                               </h1>
                             </>
