@@ -74,6 +74,8 @@ const DiscussionForum = lazy(
 export default function AppRoutes() {
   const { user } = useAuth();
 
+  
+
   return (
     <>
       <Toaster position="top-center" toastOptions={{ duration: 2000 }} />

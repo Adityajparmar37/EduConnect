@@ -42,6 +42,13 @@ export default function Login() {
     }
   };
 
+  
+  ///testing error boundary
+  // if (1) {
+  //   throw new Error("test error boundary");
+  // }
+
+
   document.body.style.overflow = "hidden";
   return (
     <>
