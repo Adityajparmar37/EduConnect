@@ -3,6 +3,9 @@ const dotenv = require("dotenv");
 const http = require("http");
 const cors = require("cors");
 const morgan = require("morgan");
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const mongoSanitize = require("express-mongo-sanitize");
 const dbconnect = require("./config/database.config");
 const adminRoutes = require("./src/routers/admin.routers.js");
 const studentRoutes = require("./src/routers/student.routers.js");
@@ -20,6 +23,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const PORT = process.env.PORT;
 dbconnect();
+
+// Use Helmet middleware to secure HTTP headers
+app.use(helmet());
+
+// Use xss-clean middleware to prevent XSS attacks
+app.use(xss());
+
+// Use express-mongo-sanitize middleware to prevent MongoDB Injection attacks
+app.use(mongoSanitize());
 
 app.use(
   cors({
