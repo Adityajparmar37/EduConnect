@@ -132,6 +132,7 @@ export default function AppRoutes() {
               <Route path="/attendance/:id" element={<AttendanceList />} />
               <Route path="/marks" element={<Marks />} />
               <Route path="/marks/:id" element={<MarkSheet />} />
+              <Route path="/discussionForum" element={<DiscussionForum />} />
             </>
           )}
 
