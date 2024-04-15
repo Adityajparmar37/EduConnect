@@ -9,6 +9,7 @@ export default {
         mintPrimary: "#89d0c3",
         darkPrimary: "#22675b",
         loadingCol: "#e90c59",
+        WhiteLoading: "rgb(255, 255, 255, 0.918)",
       },
       backgroundImage: {
         backgroundPhoto: 'url("/background-image-2.jpg")',

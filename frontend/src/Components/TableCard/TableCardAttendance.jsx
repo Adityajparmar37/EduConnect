@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const TableCardAttendance = ({
   subjectId,
@@ -7,12 +6,12 @@ const TableCardAttendance = ({
   index,
   updateAttendance,
   initialAttendance,
+  selectedDate,
 }) => {
-  console.log(initialAttendance);
   useEffect(() => {
     setAttendance(initialAttendance);
   }, [initialAttendance]);
-  const currentDate = new Date().toLocaleDateString();
+
   const [attendance, setAttendance] = useState(initialAttendance);
 
   const handleAttendanceToggle = () => {
@@ -22,6 +21,7 @@ const TableCardAttendance = ({
       SubjectId: subjectId,
       Student: student._id,
       attendance: newAttendance === "Present" ? 1 : 0,
+      date: selectedDate.toISOString(), // Pass selected date to the parent component
     });
   };
 
@@ -42,7 +42,9 @@ const TableCardAttendance = ({
         {student.CurrentSemester.semesterNumber}
       </td>
       <td className={`px-6 py-4 text-lg`}>
-        <h1 className={`rounded-lg p-1 text-lg`}>{currentDate}</h1>
+        <h1 className={`rounded-lg p-1 text-lg`}>
+          {selectedDate.toLocaleDateString()}
+        </h1>
       </td>
       <td className={`px-6 py-4`}>
         <div className="flex space-x-5">

@@ -110,3 +110,16 @@ export const getUser = () =>
 export const logout = () => {
   localStorage.removeItem("UserInfo");
 };
+
+export const AttendanceReport = async (subjectId) => {
+  try {
+    console.log(subjectId);
+    const response = await axios.get(
+      `api/attendance/downloadAttendanceReport?subjectId=${subjectId}`,
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

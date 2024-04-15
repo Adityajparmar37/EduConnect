@@ -4,13 +4,19 @@ import { Link, useParams } from "react-router-dom";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
 import TableCardAttendance from "../../../Components/TableCard/TableCardAttendance";
 import { SemesterStudent } from "../../../Services/subjectServices";
-import { markAttendance } from "../../../Services/teacherServices";
+import {
+  AttendanceReport,
+  markAttendance,
+} from "../../../Services/teacherServices";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function AttendanceList() {
   const { id } = useParams();
   const [studentList, setStudentList] = useState([]);
   const [attendanceData, setAttendanceData] = useState([]);
   const [attendanceToggle, setAttendanceToggle] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date()); // Default to current date
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,11 +27,12 @@ export default function AttendanceList() {
           SubjectId: id,
           Student: student._id,
           attendance: attendanceToggle ? 1 : 0,
-        })),
+          date: selectedDate.toISOString(), // Convert selected date to ISO format
+        }))
       );
     };
     fetchData();
-  }, [id, attendanceToggle]);
+  }, [id, attendanceToggle, selectedDate]);
 
   const updateAttendance = (index, newAttendance) => {
     setAttendanceData((prevAttendanceData) => {
@@ -49,6 +56,15 @@ export default function AttendanceList() {
     }
   };
 
+  const handleAttendanceReport = async () => {
+    try {
+      const response = await AttendanceReport(id);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleToggleAttendance = () => {
     setAttendanceToggle(!attendanceToggle);
   };
@@ -66,17 +82,29 @@ export default function AttendanceList() {
                 <h1 className="mb-5 text-center text-2xl font-bold">
                   ✅ Attendance
                 </h1>
-                <div className="mb-3 mr-8 flex justify-end">
-                  <button
-                    onClick={handleToggleAttendance}
-                    className={`${
-                      attendanceToggle
-                        ? "bg-red-600 hover:bg-red-200"
-                        : "bg-green-600 hover:bg-green-200"
-                    } mr-5 rounded-md  p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:text-black`}
-                  >
-                    {attendanceToggle ? "Make All Absent" : "Make All Present"}
-                  </button>
+                <div className="flex mb-3 justify-between">
+                  <div>
+                    <label className="font-bold text-xl text-center">Date : </label>
+                    <DatePicker
+                      selected={selectedDate}
+                      onChange={(date) => setSelectedDate(date)}
+                      className="mr-5 rounded-md border border-gray-400 px-2 py-1 text-lg font-semibold"
+                    />
+                  </div>
+                  <div>
+                    <button
+                      onClick={handleToggleAttendance}
+                      className={`${
+                        attendanceToggle
+                          ? "bg-red-600 hover:bg-red-200"
+                          : "bg-green-600 hover:bg-green-200"
+                      } mr-5 rounded-md  p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:text-black`}
+                    >
+                      {attendanceToggle
+                        ? "Make All Absent"
+                        : "Make All Present"}
+                    </button>
+                  </div>
                 </div>
                 <table className="w-full text-left rtl:text-right">
                   <thead className="border-b-4 border-white text-[1rem] font-bold uppercase text-white dark:bg-primary">
@@ -113,6 +141,7 @@ export default function AttendanceList() {
                           attendanceToggle ? "Present" : "Absent"
                         }
                         updateAttendance={updateAttendance}
+                        selectedDate={selectedDate}
                       />
                     ))}
                   </tbody>
@@ -124,6 +153,12 @@ export default function AttendanceList() {
                   >
                     Submit
                   </button>
+                  {/* <button
+                    onClick={handleAttendanceReport}
+                    className="ml-5 mt-8 rounded-md bg-blue-600 p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:bg-blue-200 hover:text-black"
+                  >
+                    Download Report
+                  </button> */}
                 </div>
               </div>
             </>
