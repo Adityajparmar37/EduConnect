@@ -19,6 +19,7 @@ export default function MarkSheet() {
   ];
   const [studentList, setStudentList] = useState([]);
   const [data, setData] = useState([]);
+  // const [marks, setMarks] = useState([]);
   const [marksData, setMarksData] = useState([]);
 
   useEffect(() => {
@@ -106,14 +107,6 @@ export default function MarkSheet() {
     XLSX.writeFile(wb, fileName);
   };
 
-  const handleChange = (rowIndex, columnIndex, newValue) => {
-    if (!isNaN(newValue)) {
-      const updatedData = [...data];
-      updatedData[rowIndex][columnIndex].value = newValue;
-      setData(updatedData);
-    }
-  };
-
   return (
     <>
       <div className="flex h-screen">
@@ -132,7 +125,7 @@ export default function MarkSheet() {
                 className="text-xl font-semibold"
                 data={data}
                 columnLabels={columnLabels}
-                onChange={handleChange}
+                onChange={setData}
                 renderComponent={(props) => {
                   const { cell, rowIndex, columnIndex } = props;
                   if (cell.button) {
