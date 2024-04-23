@@ -9,6 +9,7 @@ dotenv.config();
 const {
   generateToken,
 } = require("../utils/generateToken");
+const Timetable = require("../models/timetableModel.js");
 
 //admin login
 router.post(
@@ -128,6 +129,59 @@ router.post(
     } catch (error) {
       console.error("SignUp error", error);
       next(error);
+    }
+  })
+);
+
+//create timetable
+router.post(
+  "/createTimetable",
+  handler(async (req, res) => {
+    const {
+      teacherId,
+      day,
+      time,
+      subject,
+      batchName,
+      type,
+      classroom,
+    } = req.body;
+
+    try {
+      const existingEntry =
+        await Timetable.findOne({
+          teacherId,
+          day,
+          time,
+          subject,
+          batchName,
+          type,
+          classroom,
+        });
+
+      if (existingEntry) {
+        return res.status(400).json({
+          message:
+            "Duplicate entry: This timetable data already exists",
+        });
+      }
+
+      // If not duplicate, insert into the database
+      const newTimetableItem =
+        await Timetable.create({
+          teacherId,
+          day,
+          time,
+          subject,
+          batchName,
+          type,
+          classroom,
+        });
+      res.status(201).json(newTimetableItem);
+    } catch (error) {
+      res
+        .status(400)
+        .json({ message: error.message });
     }
   })
 );

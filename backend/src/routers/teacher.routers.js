@@ -17,6 +17,7 @@ const {
 } = require("../utils/generateToken");
 const Subject = require("../models/subjectModel.js");
 const AssignSubject = require("../models/assignSubject.js");
+const Timetable = require("../models/timetableModel.js");
 
 //admin login
 router.post(
@@ -421,5 +422,31 @@ router.put(
     }
   })
 );
+
+//get timetable
+router.post("/timetable", async (req, res) => {
+  const { Teacherid } = req.body;
+
+  try {
+    // Check if the same timetable entry already exists
+    const TimetableFound =
+      await Timetable.findOne({
+        teacherId: Teacherid,
+      });
+
+    if (TimetableFound) {
+      return res.status(201).json(TimetableFound);
+    } else {
+      next(
+        404,
+        "No Time Table is asssign till !"
+      );
+    }
+  } catch (error) {
+    res
+      .status(400)
+      .json({ message: error.message });
+  }
+});
 
 module.exports = router;

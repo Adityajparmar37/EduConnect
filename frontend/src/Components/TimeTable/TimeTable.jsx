@@ -81,7 +81,7 @@ const Timetable = () => {
                 ].map((day) => (
                   <div
                     key={day}
-                    className="flex-1 border-b border-r border-gray-800 p-2 py-2 text-center hover:text-blue-500 duration-300 text-lg hover:bg-gray-100"
+                    className="flex-1 border-b border-r border-gray-800 p-2 py-2 text-center text-lg duration-300 hover:bg-gray-100 hover:text-blue-500"
                   >
                     {timetableData.find(
                       (item) => item.day === day && item.time === timeSlot,

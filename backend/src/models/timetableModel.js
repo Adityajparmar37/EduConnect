@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const timetableSchema = new mongoose.Schema({
+  teacherId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Teacher",
+    required: true,
+  },
   day: { type: String, required: true },
   time: { type: String, required: true },
   subject: { type: String, required: true },
