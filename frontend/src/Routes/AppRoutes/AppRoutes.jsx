@@ -5,6 +5,7 @@ import { useAuth } from "../../Hooks/useAuth";
 import UnauthorizedMessage from "../../Components/Unauthorized/UnauthorizedMessage";
 import AuthRoute from "../AuthRoutes/AuthRoutes";
 import FallbackUI from "../../Components/FallbackUI/FallbackUI";
+import TimeTable from "../../Components/TimeTable/TimeTable";
 
 const DefaultPage = lazy(() => import("../../Pages/DefaultPage/DefaultPage"));
 const Login = lazy(() => import("../../Pages/Login/Login"));
@@ -133,6 +134,7 @@ export default function AppRoutes() {
               <Route path="/marks" element={<Marks />} />
               <Route path="/marks/:id" element={<MarkSheet />} />
               <Route path="/discussionForum" element={<DiscussionForum />} />
+              <Route path="/timetable" element={<TimeTable />} />
             </>
           )}
 
