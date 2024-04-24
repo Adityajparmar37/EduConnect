@@ -16,15 +16,12 @@ const CreateTimetable = () => {
       {
         subject: "",
         type: "Theory",
-        time: "",
+        time: { hour: "", minute: "", period: "AM" }, // Modified time structure
         classroom: "",
         batch: "A",
       },
     ],
   });
-  const [hour, setHour] = useState("");
-  const [minute, setMinute] = useState("");
-  const [period, setPeriod] = useState("");
 
   useEffect(() => {
     const fetchAllTeacher = async () => {
@@ -61,10 +58,59 @@ const CreateTimetable = () => {
     }
   }, [formData.teacherId]);
 
-  const handleChange = (e, index) => {
+  const handleSubjectChange = (e, index) => {
     const { name, value } = e.target;
     const newSubjects = [...formData.subjects];
     newSubjects[index][name] = value;
+    setFormData({
+      ...formData,
+      subjects: newSubjects,
+    });
+  };
+
+  const handleTypeChange = (e, index) => {
+    const { value } = e.target;
+    const newSubjects = [...formData.subjects];
+    newSubjects[index]["type"] = value;
+    setFormData({
+      ...formData,
+      subjects: newSubjects,
+    });
+  };
+
+  const handleHourChange = (e, index) => {
+    const { value } = e.target;
+    const newSubjects = [...formData.subjects];
+    newSubjects[index]["time"] = {
+      ...newSubjects[index]["time"],
+      hour: value,
+    };
+    setFormData({
+      ...formData,
+      subjects: newSubjects,
+    });
+  };
+
+  const handleMinuteChange = (e, index) => {
+    const { value } = e.target;
+    const newSubjects = [...formData.subjects];
+    newSubjects[index]["time"] = {
+      ...newSubjects[index]["time"],
+      minute: value,
+    };
+    setFormData({
+      ...formData,
+      subjects: newSubjects,
+    });
+  };
+
+  const handlePeriodChange = (e, index) => {
+    const { value } = e.target;
+    const newSubjects = [...formData.subjects];
+    newSubjects[index]["time"] = {
+      ...newSubjects[index]["time"],
+      period: value,
+    };
     setFormData({
       ...formData,
       subjects: newSubjects,
@@ -79,7 +125,7 @@ const CreateTimetable = () => {
         {
           subject: "",
           type: "Theory",
-          time: "",
+          time: { hour: "", minute: "", period: "AM" }, // Default time values
           classroom: "",
           batch: "A", // Default batch value when adding a new subject
         },
@@ -99,7 +145,7 @@ const CreateTimetable = () => {
             {
               subject: "",
               type: "Theory",
-              time: "",
+              time: { hour: "", minute: "", period: "AM" }, // Reset time values
               classroom: "",
               batch: "A", // Reset batch value to 'A' after submission
             },
@@ -109,18 +155,6 @@ const CreateTimetable = () => {
       .catch((error) => {
         console.error("Error creating timetable entries:", error);
       });
-  };
-
-  const handleHourChange = (e) => {
-    setHour(e.target.value);
-  };
-
-  const handleMinuteChange = (e) => {
-    setMinute(e.target.value);
-  };
-
-  const handlePeriodChange = (e) => {
-    setPeriod(e.target.value);
   };
 
   return (
@@ -199,7 +233,7 @@ const CreateTimetable = () => {
                               id={`subject${index}`}
                               name="subject"
                               value={subject.subject}
-                              onChange={(e) => handleChange(e, index)}
+                              onChange={(e) => handleSubjectChange(e, index)}
                               className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-gray-800 shadow focus:outline-none focus:ring"
                             >
                               <option value="">Select Subject</option>
@@ -212,22 +246,22 @@ const CreateTimetable = () => {
                               ))}
                             </select>
                           </div>
-                          <div className="mb-4 flex gap-12">
-                            <div>
+                          <div className="flex gap-12">
+                            <div className="mb-4">
                               <label
                                 htmlFor={`type${index}`}
                                 className="text-blueGray-600 mb-2 block text-xs font-bold uppercase"
                               >
                                 Type
                               </label>
-                              <div>
+                              <div className="flex flex-col">
                                 <label className="mr-4 inline-flex items-center">
                                   <input
                                     type="radio"
-                                    name={`type`}
+                                    name={`type${index}`}
                                     value="Theory"
                                     checked={subject.type === "Theory"}
-                                    onChange={(e) => handleChange(e, index)}
+                                    onChange={(e) => handleTypeChange(e, index)}
                                     className="mr-2"
                                   />
                                   Theory
@@ -235,10 +269,10 @@ const CreateTimetable = () => {
                                 <label className="inline-flex items-center">
                                   <input
                                     type="radio"
-                                    name={`type`}
+                                    name={`type${index}`}
                                     value="Practical"
                                     checked={subject.type === "Practical"}
-                                    onChange={(e) => handleChange(e, index)}
+                                    onChange={(e) => handleTypeChange(e, index)}
                                     className="mr-2"
                                   />
                                   Practical
@@ -246,7 +280,7 @@ const CreateTimetable = () => {
                               </div>
                             </div>
                             {subject.type === "Practical" && (
-                              <div className="w-full">
+                              <div className="mb-4 w-full">
                                 <label
                                   htmlFor={`batch${index}`}
                                   className="text-blueGray-600 mb-2 block text-xs font-bold uppercase"
@@ -257,7 +291,9 @@ const CreateTimetable = () => {
                                   id={`batch${index}`}
                                   name="batch"
                                   value={subject.batch}
-                                  onChange={(e) => handleChange(e, index)}
+                                  onChange={(e) =>
+                                    handleSubjectChange(e, index)
+                                  }
                                   className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-gray-800 shadow focus:outline-none focus:ring"
                                 >
                                   <option value="A">A</option>
@@ -278,8 +314,8 @@ const CreateTimetable = () => {
                             </label>
                             <div className="flex items-center space-x-2">
                               <select
-                                value={hour}
-                                onChange={handleHourChange}
+                                value={subject.time.hour}
+                                onChange={(e) => handleHourChange(e, index)}
                                 className="rounded border border-gray-300 px-2 py-1"
                               >
                                 <option value="">Hour</option>
@@ -296,8 +332,8 @@ const CreateTimetable = () => {
                               </select>
                               <span className="text-gray-500">:</span>
                               <select
-                                value={minute}
-                                onChange={handleMinuteChange}
+                                value={subject.time.minute}
+                                onChange={(e) => handleMinuteChange(e, index)}
                                 className="rounded border border-gray-300 px-2 py-1"
                               >
                                 <option value="">Minute</option>
@@ -311,8 +347,8 @@ const CreateTimetable = () => {
                                 ))}
                               </select>
                               <select
-                                value={period}
-                                onChange={handlePeriodChange}
+                                value={subject.time.period}
+                                onChange={(e) => handlePeriodChange(e, index)}
                                 className="rounded border border-gray-300 px-2 py-1"
                               >
                                 <option value="AM">AM</option>
@@ -332,7 +368,7 @@ const CreateTimetable = () => {
                               id={`classroom${index}`}
                               name="classroom"
                               value={subject.classroom}
-                              onChange={(e) => handleChange(e, index)}
+                              onChange={(e) => handleSubjectChange(e, index)}
                               className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-gray-800 shadow focus:outline-none focus:ring"
                             />
                           </div>
