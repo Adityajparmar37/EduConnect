@@ -19,7 +19,7 @@ const CreateTimetable = () => {
         startTime: { hour: "", minute: "", period: "AM" },
         endTime: { hour: "", minute: "", period: "AM" },
         classroom: "",
-        batch: "A",
+        batch: 0,
       },
     ],
   });
@@ -129,7 +129,7 @@ const CreateTimetable = () => {
           startTime: { hour: "", minute: "", period: "AM" },
           endTime: { hour: "", minute: "", period: "AM" },
           classroom: "",
-          batch: "A",
+          batch: 0,
         },
       ],
     });
@@ -137,27 +137,7 @@ const CreateTimetable = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("/timetable", formData)
-      .then((response) => {
-        console.log("Timetable entries created:", response.data);
-        setFormData({
-          teacherId: "",
-          subjects: [
-            {
-              subject: "",
-              type: "Theory",
-              startTime: { hour: "", minute: "", period: "AM" },
-              endTime: { hour: "", minute: "", period: "AM" },
-              classroom: "",
-              batch: "A",
-            },
-          ],
-        });
-      })
-      .catch((error) => {
-        console.error("Error creating timetable entries:", error);
-      });
+    console.log(formData);
   };
 
   return (
@@ -207,7 +187,7 @@ const CreateTimetable = () => {
                           }
                           className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-gray-800 shadow focus:outline-none focus:ring"
                         >
-                          <option value=""> -- Select Teacher -- </option>
+                          <option value="">Select Teacher</option>
                           {teacherOptions.map((teacher) => (
                             <option key={teacher._id} value={teacher._id}>
                               {teacher.firstName + " " + teacher.lastName}
