@@ -6,6 +6,7 @@ import {
   getTeacherSubjects,
 } from "../../../Services/teacherServices";
 import toast from "react-hot-toast";
+import { createTimeTable } from "../../../Services/adminServices";
 
 const CreateTimetable = () => {
   const [teacherOptions, setTeacherOptions] = useState([]);
@@ -14,12 +15,13 @@ const CreateTimetable = () => {
     teacherId: "",
     subjects: [
       {
-        subject: "",
+        subjectId: "",
         type: "Theory",
         startTime: { hour: "", minute: "", period: "AM" },
         endTime: { hour: "", minute: "", period: "AM" },
         classroom: "",
         batch: 0,
+        days: [], // Added an array to store selected days
       },
     ],
   });
@@ -118,26 +120,49 @@ const CreateTimetable = () => {
     });
   };
 
+  const handleDayChange = (day, index) => {
+    const newSubjects = [...formData.subjects];
+    const dayIndex = newSubjects[index].days.indexOf(day);
+    if (dayIndex === -1) {
+      newSubjects[index].days.push(day);
+    } else {
+      newSubjects[index].days.splice(dayIndex, 1);
+    }
+    setFormData({
+      ...formData,
+      subjects: newSubjects,
+    });
+  };
+
   const handleAddSubject = () => {
     setFormData({
       ...formData,
       subjects: [
         ...formData.subjects,
         {
-          subject: "",
+          subjectId: "",
           type: "Theory",
           startTime: { hour: "", minute: "", period: "AM" },
           endTime: { hour: "", minute: "", period: "AM" },
           classroom: "",
           batch: 0,
+          days: [],
         },
       ],
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    try {
+      console.log(formData);
+      const response = await createTimeTable(formData);
+      console.log(response);
+      toast.success("Time Table Created");
+    } catch (error) {
+      toast.error("Please try again !");
+      console.log(error);
+    }
   };
 
   return (
@@ -214,8 +239,8 @@ const CreateTimetable = () => {
                             </label>
                             <select
                               id={`subject${index}`}
-                              name="subject"
-                              value={subject.subject}
+                              name="subjectId"
+                              value={subject.subjectId}
                               onChange={(e) => handleSubjectChange(e, index)}
                               className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-gray-800 shadow focus:outline-none focus:ring"
                             >
@@ -228,6 +253,40 @@ const CreateTimetable = () => {
                                 </option>
                               ))}
                             </select>
+                          </div>
+                          <div className="mb-4">
+                            <label className="text-blueGray-600 mb-2 block text-xs font-bold uppercase">
+                              Days
+                            </label>
+                            <div className="flex gap-4">
+                              {[
+                                "Mon",
+                                "Tue",
+                                "Wed",
+                                "Thu",
+                                "Fri",
+                                "Sat",
+                                "Sun",
+                              ].map((day) => (
+                                <label
+                                  key={day}
+                                  className="inline-flex items-center"
+                                >
+                                  <input
+                                    type="checkbox"
+                                    value={day}
+                                    checked={subject.days.includes(day)}
+                                    onChange={() => handleDayChange(day, index)}
+                                    className="mr-2"
+                                  />
+                                  <span
+                                    className={`text-sm font-medium ${subject.days.includes(day) ? "text-blue-600" : "text-gray-600"}`}
+                                  >
+                                    {day}
+                                  </span>
+                                </label>
+                              ))}
+                            </div>
                           </div>
                           <div className="flex gap-12">
                             <div className="mb-4">

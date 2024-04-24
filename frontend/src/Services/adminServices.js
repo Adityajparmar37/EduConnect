@@ -20,6 +20,17 @@ export const signup = async (signupData) => {
   }
 };
 
+export const createTimeTable = async (formData) => {
+  try {
+    console.log(formData);
+    const { data } = await axios.post("api/admin/createTimetable", formData);
+    console.log("Create TimeTable  ==> ", data);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export const getUser = () =>
   localStorage.getItem("UserInfo")
     ? JSON.parse(localStorage.getItem("UserInfo"))

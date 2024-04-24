@@ -8,10 +8,23 @@ const timetableSchema = new mongoose.Schema({
   },
   subjects: [
     {
-      day: { type: String, required: true },
-      time: { type: String, required: true },
-      subject: { type: String, required: true },
-      batchName: { type: String, required: true },
+      subject: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Subject",
+        required: true,
+      },
+      days: [{ type: String, required: true }], // Change to array of strings
+      startTime: {
+        hour: { type: String, required: true },
+        minute: { type: String, required: true },
+        period: { type: String, required: true },
+      },
+      endTime: {
+        hour: { type: String, required: true },
+        minute: { type: String, required: true },
+        period: { type: String, required: true },
+      },
+      batch: { type: String },
       type: { type: String, required: true },
       classroom: { type: String, required: true },
     },

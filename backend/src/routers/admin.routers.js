@@ -137,48 +137,68 @@ router.post(
 router.post(
   "/createTimetable",
   handler(async (req, res) => {
-    const {
-      teacherId,
-      day,
-      time,
-      subject,
-      batchName,
-      type,
-      classroom,
-    } = req.body;
+    const formData = req.body;
+    console.log(formData);
+    const { teacherId, subjects } = formData;
 
     try {
-      const existingEntry =
-        await Timetable.findOne({
-          teacherId,
-          day,
-          time,
-          subject,
-          batchName,
+      // Iterate through each subject in the request body
+      for (const subject of subjects) {
+        const {
+          subjectId,
+          days,
+          startTime,
+          endTime,
+          batch,
           type,
           classroom,
-        });
+        } = subject;
 
-      if (existingEntry) {
-        return res.status(400).json({
-          message:
-            "Duplicate entry: This timetable data already exists",
-        });
+        // Check if the timetable entry already exists
+        const existingEntry =
+          await Timetable.findOne({
+            teacherId,
+            "subjects.days": days,
+            "subjects.startTime": startTime,
+            "subjects.endTime": endTime,
+            "subjects.subject": subjectId,
+            "subjects.batch": batch,
+            "subjects.type": type,
+            "subjects.classroom": classroom,
+          });
+
+        if (existingEntry) {
+          return res.status(400).json({
+            message:
+              "Duplicate entry: This timetable data already exists",
+          });
+        }
+
+        // If not a duplicate, insert into the database
+          await Timetable.findOneAndUpdate(
+            { teacherId },
+            {
+              $push: {
+                subjects: {
+                  subject: subjectId,
+                  days,
+                  startTime,
+                  endTime,
+                  batch,
+                  type,
+                  classroom,
+                },
+              },
+            },
+            { upsert: true }
+          );
       }
 
-      // If not duplicate, insert into the database
-      const newTimetableItem =
-        await Timetable.create({
-          teacherId,
-          day,
-          time,
-          subject,
-          batchName,
-          type,
-          classroom,
-        });
-      res.status(201).json(newTimetableItem);
+      res.status(201).json({
+        message: "Timetable created successfully",
+      });
     } catch (error) {
+      console.log(error);
       res
         .status(400)
         .json({ message: error.message });
