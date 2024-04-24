@@ -16,7 +16,8 @@ const CreateTimetable = () => {
       {
         subject: "",
         type: "Theory",
-        time: { hour: "", minute: "", period: "AM" }, // Modified time structure
+        startTime: { hour: "", minute: "", period: "AM" },
+        endTime: { hour: "", minute: "", period: "AM" },
         classroom: "",
         batch: "A",
       },
@@ -78,11 +79,11 @@ const CreateTimetable = () => {
     });
   };
 
-  const handleHourChange = (e, index) => {
+  const handleHourChange = (e, index, type) => {
     const { value } = e.target;
     const newSubjects = [...formData.subjects];
-    newSubjects[index]["time"] = {
-      ...newSubjects[index]["time"],
+    newSubjects[index][type] = {
+      ...newSubjects[index][type],
       hour: value,
     };
     setFormData({
@@ -91,11 +92,11 @@ const CreateTimetable = () => {
     });
   };
 
-  const handleMinuteChange = (e, index) => {
+  const handleMinuteChange = (e, index, type) => {
     const { value } = e.target;
     const newSubjects = [...formData.subjects];
-    newSubjects[index]["time"] = {
-      ...newSubjects[index]["time"],
+    newSubjects[index][type] = {
+      ...newSubjects[index][type],
       minute: value,
     };
     setFormData({
@@ -104,11 +105,11 @@ const CreateTimetable = () => {
     });
   };
 
-  const handlePeriodChange = (e, index) => {
+  const handlePeriodChange = (e, index, type) => {
     const { value } = e.target;
     const newSubjects = [...formData.subjects];
-    newSubjects[index]["time"] = {
-      ...newSubjects[index]["time"],
+    newSubjects[index][type] = {
+      ...newSubjects[index][type],
       period: value,
     };
     setFormData({
@@ -125,9 +126,10 @@ const CreateTimetable = () => {
         {
           subject: "",
           type: "Theory",
-          time: { hour: "", minute: "", period: "AM" }, // Default time values
+          startTime: { hour: "", minute: "", period: "AM" },
+          endTime: { hour: "", minute: "", period: "AM" },
           classroom: "",
-          batch: "A", // Default batch value when adding a new subject
+          batch: "A",
         },
       ],
     });
@@ -145,9 +147,10 @@ const CreateTimetable = () => {
             {
               subject: "",
               type: "Theory",
-              time: { hour: "", minute: "", period: "AM" }, // Reset time values
+              startTime: { hour: "", minute: "", period: "AM" },
+              endTime: { hour: "", minute: "", period: "AM" },
               classroom: "",
-              batch: "A", // Reset batch value to 'A' after submission
+              batch: "A",
             },
           ],
         });
@@ -307,15 +310,17 @@ const CreateTimetable = () => {
                           </div>
                           <div className="mb-4">
                             <label
-                              htmlFor={`time${index}`}
+                              htmlFor={`startTime${index}`}
                               className="text-blueGray-600 mb-2 block text-xs font-bold uppercase"
                             >
-                              Time
+                              Start Time
                             </label>
                             <div className="flex items-center space-x-2">
                               <select
-                                value={subject.time.hour}
-                                onChange={(e) => handleHourChange(e, index)}
+                                value={subject.startTime.hour}
+                                onChange={(e) =>
+                                  handleHourChange(e, index, "startTime")
+                                }
                                 className="rounded border border-gray-300 px-2 py-1"
                               >
                                 <option value="">Hour</option>
@@ -332,8 +337,10 @@ const CreateTimetable = () => {
                               </select>
                               <span className="text-gray-500">:</span>
                               <select
-                                value={subject.time.minute}
-                                onChange={(e) => handleMinuteChange(e, index)}
+                                value={subject.startTime.minute}
+                                onChange={(e) =>
+                                  handleMinuteChange(e, index, "startTime")
+                                }
                                 className="rounded border border-gray-300 px-2 py-1"
                               >
                                 <option value="">Minute</option>
@@ -347,8 +354,67 @@ const CreateTimetable = () => {
                                 ))}
                               </select>
                               <select
-                                value={subject.time.period}
-                                onChange={(e) => handlePeriodChange(e, index)}
+                                value={subject.startTime.period}
+                                onChange={(e) =>
+                                  handlePeriodChange(e, index, "startTime")
+                                }
+                                className="rounded border border-gray-300 px-2 py-1"
+                              >
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="mb-4">
+                            <label
+                              htmlFor={`endTime${index}`}
+                              className="text-blueGray-600 mb-2 block text-xs font-bold uppercase"
+                            >
+                              End Time
+                            </label>
+                            <div className="flex items-center space-x-2">
+                              <select
+                                value={subject.endTime.hour}
+                                onChange={(e) =>
+                                  handleHourChange(e, index, "endTime")
+                                }
+                                className="rounded border border-gray-300 px-2 py-1"
+                              >
+                                <option value="">Hour</option>
+                                {[...Array(12)].map((_, index) => (
+                                  <option
+                                    key={index + 1}
+                                    value={(index + 1)
+                                      .toString()
+                                      .padStart(2, "0")}
+                                  >
+                                    {(index + 1).toString().padStart(2, "0")}
+                                  </option>
+                                ))}
+                              </select>
+                              <span className="text-gray-500">:</span>
+                              <select
+                                value={subject.endTime.minute}
+                                onChange={(e) =>
+                                  handleMinuteChange(e, index, "endTime")
+                                }
+                                className="rounded border border-gray-300 px-2 py-1"
+                              >
+                                <option value="">Minute</option>
+                                {[...Array(60)].map((_, index) => (
+                                  <option
+                                    key={index}
+                                    value={index.toString().padStart(2, "0")}
+                                  >
+                                    {index.toString().padStart(2, "0")}
+                                  </option>
+                                ))}
+                              </select>
+                              <select
+                                value={subject.endTime.period}
+                                onChange={(e) =>
+                                  handlePeriodChange(e, index, "endTime")
+                                }
                                 className="rounded border border-gray-300 px-2 py-1"
                               >
                                 <option value="AM">AM</option>
