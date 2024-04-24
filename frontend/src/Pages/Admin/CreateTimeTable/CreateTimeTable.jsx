@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SideNav from "../../../Components/SideNav/SideNav";
+import {
+  getAllTeacher,
+  getTeacherSubjects,
+} from "../../../Services/teacherServices";
+import toast from "react-hot-toast";
 
 const CreateTimetable = () => {
   const [teacherOptions, setTeacherOptions] = useState([]);
@@ -13,31 +18,48 @@ const CreateTimetable = () => {
         type: "Theory",
         time: "",
         classroom: "",
+        batch: "A",
       },
     ],
   });
+  const [hour, setHour] = useState("");
+  const [minute, setMinute] = useState("");
+  const [period, setPeriod] = useState("");
 
   useEffect(() => {
-    // Fetch teacher options
-    axios
-      .get("/teachers")
-      .then((response) => {
-        setTeacherOptions(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching teachers:", error);
-      });
+    const fetchAllTeacher = async () => {
+      try {
+        const responseTeacher = await getAllTeacher();
+        setTeacherOptions(responseTeacher);
+      } catch (error) {
+        toast.error("Please try again");
+        console.log(error);
+      }
+    };
 
-    // Fetch subject options
-    axios
-      .get("/subjects")
-      .then((response) => {
-        setSubjectOptions(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching subjects:", error);
-      });
+    fetchAllTeacher();
   }, []);
+
+  useEffect(() => {
+    const fetchTeacherSubjects = async () => {
+      try {
+        const response = await getTeacherSubjects(formData.teacherId);
+        const subjectOptions = response.map((item) => ({
+          _id: item.subjectId._id,
+          subjectName: item.subjectId.subjectName,
+          subjectNumber: item.subjectId.subjectNumber,
+        }));
+        setSubjectOptions(subjectOptions);
+      } catch (error) {
+        toast.error("Error fetching teacher subjects. Please try again.");
+        console.error("Error fetching teacher subjects:", error);
+      }
+    };
+
+    if (formData.teacherId) {
+      fetchTeacherSubjects();
+    }
+  }, [formData.teacherId]);
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
@@ -59,6 +81,7 @@ const CreateTimetable = () => {
           type: "Theory",
           time: "",
           classroom: "",
+          batch: "A", // Default batch value when adding a new subject
         },
       ],
     });
@@ -66,12 +89,10 @@ const CreateTimetable = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Send form data to backend API to create timetable entries
     axios
       .post("/timetable", formData)
       .then((response) => {
         console.log("Timetable entries created:", response.data);
-        // Reset form fields after successful submission
         setFormData({
           teacherId: "",
           subjects: [
@@ -80,6 +101,7 @@ const CreateTimetable = () => {
               type: "Theory",
               time: "",
               classroom: "",
+              batch: "A", // Reset batch value to 'A' after submission
             },
           ],
         });
@@ -89,12 +111,24 @@ const CreateTimetable = () => {
       });
   };
 
+  const handleHourChange = (e) => {
+    setHour(e.target.value);
+  };
+
+  const handleMinuteChange = (e) => {
+    setMinute(e.target.value);
+  };
+
+  const handlePeriodChange = (e) => {
+    setPeriod(e.target.value);
+  };
+
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
       <div className="lg:w-1/6">
         <SideNav />
       </div>
-      <div className="z-10 mt-5 flex w-full flex-col overflow-auto px-3 pt-10 lg:w-5/6  lg:flex-row">
+      <div className="z-10 mt-5 flex w-full flex-col overflow-auto px-3 pt-10 lg:w-5/6 lg:flex-row">
         <div className="mx-auto w-full lg:w-3/4 xl:w-full">
           <section className="w-full py-1">
             <div className="mx-auto w-full px-4 lg:w-full">
@@ -136,16 +170,21 @@ const CreateTimetable = () => {
                           }
                           className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-gray-800 shadow focus:outline-none focus:ring"
                         >
-                          <option value="">Select Teacher</option>
+                          <option value=""> -- Select Teacher -- </option>
                           {teacherOptions.map((teacher) => (
                             <option key={teacher._id} value={teacher._id}>
-                              {teacher.name}
+                              {teacher.firstName + " " + teacher.lastName}
                             </option>
                           ))}
                         </select>
                       </div>
                     </div>
                     {/* Subject Information */}
+                    <div className="border-t text-center">
+                      <h1 className="text-dark mb-6 mt-3 font-bold uppercase">
+                        Select Subjects
+                      </h1>
+                    </div>
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
                       {formData.subjects.map((subject, index) => (
                         <div key={index}>
@@ -165,43 +204,70 @@ const CreateTimetable = () => {
                             >
                               <option value="">Select Subject</option>
                               {subjectOptions.map((subject) => (
-                                <option key={subject} value={subject}>
-                                  {subject}
+                                <option key={subject._id} value={subject._id}>
+                                  {subject.subjectName +
+                                    " " +
+                                    subject.subjectNumber}
                                 </option>
                               ))}
                             </select>
                           </div>
-                          <div className="mb-4">
-                            <label
-                              htmlFor={`type${index}`}
-                              className="text-blueGray-600 mb-2 block text-xs font-bold uppercase"
-                            >
-                              Type
-                            </label>
+                          <div className="mb-4 flex gap-12">
                             <div>
-                              <label className="mr-4 inline-flex items-center">
-                                <input
-                                  type="radio"
-                                  name={`type${index}`}
-                                  value="Theory"
-                                  checked={subject.type === "Theory"}
-                                  onChange={(e) => handleChange(e, index)}
-                                  className="mr-2"
-                                />
-                                Theory
+                              <label
+                                htmlFor={`type${index}`}
+                                className="text-blueGray-600 mb-2 block text-xs font-bold uppercase"
+                              >
+                                Type
                               </label>
-                              <label className="inline-flex items-center">
-                                <input
-                                  type="radio"
-                                  name={`type${index}`}
-                                  value="Practical"
-                                  checked={subject.type === "Practical"}
-                                  onChange={(e) => handleChange(e, index)}
-                                  className="mr-2"
-                                />
-                                Practical
-                              </label>
+                              <div>
+                                <label className="mr-4 inline-flex items-center">
+                                  <input
+                                    type="radio"
+                                    name={`type`}
+                                    value="Theory"
+                                    checked={subject.type === "Theory"}
+                                    onChange={(e) => handleChange(e, index)}
+                                    className="mr-2"
+                                  />
+                                  Theory
+                                </label>
+                                <label className="inline-flex items-center">
+                                  <input
+                                    type="radio"
+                                    name={`type`}
+                                    value="Practical"
+                                    checked={subject.type === "Practical"}
+                                    onChange={(e) => handleChange(e, index)}
+                                    className="mr-2"
+                                  />
+                                  Practical
+                                </label>
+                              </div>
                             </div>
+                            {subject.type === "Practical" && (
+                              <div className="w-full">
+                                <label
+                                  htmlFor={`batch${index}`}
+                                  className="text-blueGray-600 mb-2 block text-xs font-bold uppercase"
+                                >
+                                  Batch
+                                </label>
+                                <select
+                                  id={`batch${index}`}
+                                  name="batch"
+                                  value={subject.batch}
+                                  onChange={(e) => handleChange(e, index)}
+                                  className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-gray-800 shadow focus:outline-none focus:ring"
+                                >
+                                  <option value="A">A</option>
+                                  <option value="B">B</option>
+                                  <option value="C">C</option>
+                                  <option value="D">D</option>
+                                  <option value="E">E</option>
+                                </select>
+                              </div>
+                            )}
                           </div>
                           <div className="mb-4">
                             <label
@@ -210,16 +276,49 @@ const CreateTimetable = () => {
                             >
                               Time
                             </label>
-                            <select
-                              id={`time${index}`}
-                              name="time"
-                              value={subject.time}
-                              onChange={(e) => handleChange(e, index)}
-                              className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-gray-800 shadow focus:outline-none focus:ring"
-                            >
-                              <option value="">Select Time</option>
-                              {/* Add options for time */}
-                            </select>
+                            <div className="flex items-center space-x-2">
+                              <select
+                                value={hour}
+                                onChange={handleHourChange}
+                                className="rounded border border-gray-300 px-2 py-1"
+                              >
+                                <option value="">Hour</option>
+                                {[...Array(12)].map((_, index) => (
+                                  <option
+                                    key={index + 1}
+                                    value={(index + 1)
+                                      .toString()
+                                      .padStart(2, "0")}
+                                  >
+                                    {(index + 1).toString().padStart(2, "0")}
+                                  </option>
+                                ))}
+                              </select>
+                              <span className="text-gray-500">:</span>
+                              <select
+                                value={minute}
+                                onChange={handleMinuteChange}
+                                className="rounded border border-gray-300 px-2 py-1"
+                              >
+                                <option value="">Minute</option>
+                                {[...Array(60)].map((_, index) => (
+                                  <option
+                                    key={index}
+                                    value={index.toString().padStart(2, "0")}
+                                  >
+                                    {index.toString().padStart(2, "0")}
+                                  </option>
+                                ))}
+                              </select>
+                              <select
+                                value={period}
+                                onChange={handlePeriodChange}
+                                className="rounded border border-gray-300 px-2 py-1"
+                              >
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                              </select>
+                            </div>
                           </div>
                           <div className="mb-4">
                             <label
