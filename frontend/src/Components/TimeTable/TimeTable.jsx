@@ -32,7 +32,6 @@ const Timetable = () => {
     "4:00 PM - 5:00 PM",
     "5:00 PM - 6:00 PM",
   ];
-
   return (
     <>
       <div className="flex h-screen">
@@ -40,7 +39,9 @@ const Timetable = () => {
           <SideNavTeacher />
         </div>
         <div className="container  mx-auto my-5">
-          <h1 className="mb-4 text-center text-2xl font-bold">Timetable</h1>
+          <h1 className="mb-14 mt-8 text-center text-2xl font-bold ">
+            Timetable
+          </h1>
           <div className="border border-gray-800">
             <div className="flex text-xl font-bold">
               <div className="w-24 border-b border-r border-gray-800 bg-gray-200 p-2 py-2 text-center">
@@ -81,7 +82,7 @@ const Timetable = () => {
                 ].map((day) => (
                   <div
                     key={day}
-                    className="flex-1 border-b border-r border-gray-800 p-2 py-2 text-center text-lg duration-300 hover:bg-gray-100 hover:text-blue-500"
+                    className="flex-1 border-b border-r border-gray-800 p-2 py-2 text-center text-lg duration-300 hover:cursor-pointer hover:bg-gray-50 hover:shadow-lg"
                   >
                     {timetableData.find(
                       (item) => item.day === day && item.time === timeSlot,

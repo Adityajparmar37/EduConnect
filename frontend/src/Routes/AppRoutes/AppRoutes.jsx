@@ -6,6 +6,7 @@ import UnauthorizedMessage from "../../Components/Unauthorized/UnauthorizedMessa
 import AuthRoute from "../AuthRoutes/AuthRoutes";
 import FallbackUI from "../../Components/FallbackUI/FallbackUI";
 import TimeTable from "../../Components/TimeTable/TimeTable";
+import CreateTimeTable from "../../Pages/Admin/CreateTimeTable/CreateTimeTable";
 
 const DefaultPage = lazy(() => import("../../Pages/DefaultPage/DefaultPage"));
 const Login = lazy(() => import("../../Pages/Login/Login"));
@@ -114,6 +115,7 @@ export default function AppRoutes() {
               <Route path="/manageStudent/" element={<ManageStudent />} />
               <Route path="/createStudent/" element={<CreateStudent />} />
               <Route path="/updateStudent/:id" element={<UpdateStudent />} />
+              <Route path="/createTimetable" element={<CreateTimeTable />} />
             </>
           )}
 
