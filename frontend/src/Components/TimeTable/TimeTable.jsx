@@ -99,10 +99,16 @@ const Timetable = () => {
                         entry.endTime.minute +
                         " " +
                         entry.endTime.period;
+                      const duration =
+                        entry.endTime.hour - entry.startTime.hour;
+                      {
+                        console.log(
+                          startTimeStr + " " + endTimeStr + " " + duration,
+                        );
+                      }
                       return (
                         entry.days.includes(shorthandDay) &&
-                        timeRange.startTime === startTimeStr &&
-                        timeRange.endTime === endTimeStr
+                        timeRange.startTime === startTimeStr
                       );
                     });
 
@@ -112,11 +118,36 @@ const Timetable = () => {
                         className="flex-1 border-b border-r border-gray-800 p-2 py-2 text-center text-lg duration-300 hover:cursor-pointer hover:bg-gray-50 hover:shadow-lg"
                       >
                         {matchingEntries.length > 0 ? (
-                          matchingEntries.map((entry, entryIndex) => (
-                            <div key={entryIndex}>
-                              {`${entry.subject} - ${entry.batch} - ${entry.type} - ${entry.classroom}`}
-                            </div>
-                          ))
+                          <>
+                            {console.log(matchingEntries)}
+                            {matchingEntries.some(
+                              (entry) => entry.type === "Theory",
+                            ) && (
+                              <div className="rounded-md bg-blue-100 duration-300 hover:bg-blue-200">
+                                {matchingEntries
+                                  .filter((entry) => entry.type === "Theory")
+                                  .map((entry, entryIndex) => (
+                                    <div key={entryIndex}>
+                                      {`${entry.subject.subjectName + " " + "(" + entry.subject.subjectNumber + ")"}${entry.batch !== "0" ? "" + entry.batch : ""} - ${entry.type} - ${entry.classroom}`}
+                                    </div>
+                                  ))}
+                              </div>
+                            )}
+                            {matchingEntries.some(
+                              (entry) => entry.type === "Practical",
+                            ) && (
+                              <div className="rounded-md bg-yellow-100 duration-300 hover:bg-yellow-200">
+                                {/* Filter and map only practical subjects with 2-hour duration */}
+                                {matchingEntries
+                                  .filter((entry) => entry.type === "Practical")
+                                  .map((entry, entryIndex) => (
+                                    <div key={entryIndex}>
+                                      {`${entry.subject.subjectName + " " + "(" + entry.subject.subjectNumber + ")"} - ${entry.type} : ${entry.batch}  ${entry.classroom}`}
+                                    </div>
+                                  ))}
+                              </div>
+                            )}
+                          </>
                         ) : (
                           <div>-</div>
                         )}

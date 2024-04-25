@@ -431,10 +431,18 @@ router.get(
     console.log(Teacherid);
     try {
       // Check if the same timetable entry already exists
-      const TimetableFound =
-        await Timetable.findOne({
-          teacherId: Teacherid,
-        });
+       const TimetableFound =
+         await Timetable.findOne({
+           teacherId: Teacherid,
+         }).populate({
+           path: "subjects",
+           populate: {
+             path: "subject",
+             select: "subjectName subjectNumber",
+           },
+         });
+
+      console.log(TimetableFound);
 
       if (TimetableFound) {
         return res
