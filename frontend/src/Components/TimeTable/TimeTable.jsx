@@ -16,7 +16,7 @@ const timeRanges = [
   { startTime: "10:30 AM", endTime: "11:30 AM" },
   { startTime: "11:30 AM", endTime: "12:30 PM" },
   { startTime: "12:30 PM", endTime: "01:30 PM" },
-  { startTime: "01:30 PM", endTime: "02:00 PM" },
+  { startTime: "01:30 PM", endTime: "02:00 PM" }, // Break time
   { startTime: "02:00 PM", endTime: "03:00 PM" },
   { startTime: "03:00 PM", endTime: "04:00 PM" },
   { startTime: "04:00 PM", endTime: "05:00 PM" },
@@ -121,9 +121,9 @@ const Timetable = () => {
                                 (entry) => entry.type === "Practical",
                               )
                               ? "bg-yellow-100 duration-300 hover:bg-transparent"
-                              : "bg-blue-100 duration-300 hover:bg-transparent "
+                              : "bg-blue-100 duration-300 hover:bg-transparent"
                             : ""
-                        } hover:shadow-lg`}
+                        } hover:shadow-md`}
                       >
                         {matchingEntries.length > 0 ? (
                           <>
@@ -157,7 +157,11 @@ const Timetable = () => {
                             )}
                           </>
                         ) : (
-                          <div>-</div>
+                          timeRange.startTime === "01:30 PM" ? (
+                            <div className="font-light cursor-not-allowed">
+                              Break
+                            </div>
+                          ) : (<div></div>)
                         )}
                       </div>
                     );

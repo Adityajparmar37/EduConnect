@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
           setUser(user);
           localStorage.setItem("UserInfo", JSON.stringify(user));
           toast.success("Successfully Login !");
-          navigate("/teacher");
+          navigate("/timetable");
         } else {
           if (user.success === false) {
             toast.error(user.message);

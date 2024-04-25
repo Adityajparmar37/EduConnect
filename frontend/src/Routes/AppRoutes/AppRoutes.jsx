@@ -5,9 +5,9 @@ import { useAuth } from "../../Hooks/useAuth";
 import UnauthorizedMessage from "../../Components/Unauthorized/UnauthorizedMessage";
 import AuthRoute from "../AuthRoutes/AuthRoutes";
 import FallbackUI from "../../Components/FallbackUI/FallbackUI";
-import TimeTable from "../../Components/TimeTable/TimeTable";
-import CreateTimeTable from "../../Pages/Admin/CreateTimeTable/CreateTimeTable";
 
+const TimeTable = lazy ( () => import("../../Components/TimeTable/TimeTable"));
+const CreateTimeTable = lazy(()=> import("../../Pages/Admin/CreateTimeTable/CreateTimeTable"));
 const DefaultPage = lazy(() => import("../../Pages/DefaultPage/DefaultPage"));
 const Login = lazy(() => import("../../Pages/Login/Login"));
 const Signup = lazy(() => import("../../Pages/Signup/Signup"));
