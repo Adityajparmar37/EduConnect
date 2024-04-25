@@ -258,7 +258,7 @@ const CreateTimetable = () => {
                             <label className="text-blueGray-600 mb-2 block text-xs font-bold uppercase">
                               Days
                             </label>
-                            <div className="flex gap-4">
+                            <div className="flex gap-6">
                               {[
                                 "Mon",
                                 "Tue",
@@ -266,7 +266,6 @@ const CreateTimetable = () => {
                                 "Thu",
                                 "Fri",
                                 "Sat",
-                                "Sun",
                               ].map((day) => (
                                 <label
                                   key={day}
