@@ -115,7 +115,15 @@ const Timetable = () => {
                     return (
                       <div
                         key={dayIndex}
-                        className="flex-1 border-b border-r border-gray-800 p-2 py-2 text-center text-lg duration-300 hover:cursor-pointer hover:bg-gray-50 hover:shadow-lg"
+                        className={`flex-1 border-b border-r border-gray-800 p-2 py-2 text-center text-lg duration-300 hover:cursor-pointer ${
+                          matchingEntries.length > 0
+                            ? matchingEntries.some(
+                                (entry) => entry.type === "Practical",
+                              )
+                              ? "bg-yellow-100 duration-300 hover:bg-transparent"
+                              : "bg-blue-100 duration-300 hover:bg-transparent "
+                            : ""
+                        } hover:shadow-lg`}
                       >
                         {matchingEntries.length > 0 ? (
                           <>
@@ -123,7 +131,7 @@ const Timetable = () => {
                             {matchingEntries.some(
                               (entry) => entry.type === "Theory",
                             ) && (
-                              <div className="rounded-md bg-blue-100 duration-300 hover:bg-blue-200">
+                              <div className="rounded-sm bg-blue-100 duration-300 hover:bg-blue-300">
                                 {matchingEntries
                                   .filter((entry) => entry.type === "Theory")
                                   .map((entry, entryIndex) => (
@@ -136,7 +144,7 @@ const Timetable = () => {
                             {matchingEntries.some(
                               (entry) => entry.type === "Practical",
                             ) && (
-                              <div className="rounded-md bg-yellow-100 duration-300 hover:bg-yellow-200">
+                              <div className="rounded-sm bg-yellow-100 duration-300 hover:bg-yellow-300">
                                 {/* Filter and map only practical subjects with 2-hour duration */}
                                 {matchingEntries
                                   .filter((entry) => entry.type === "Practical")
