@@ -102,15 +102,6 @@ export const enterMarks = async (marksData) => {
   }
 };
 
-export const getUser = () =>
-  localStorage.getItem("UserInfo")
-    ? JSON.parse(localStorage.getItem("UserInfo"))
-    : null;
-
-export const logout = () => {
-  localStorage.removeItem("UserInfo");
-};
-
 export const AttendanceReport = async (subjectId) => {
   try {
     console.log(subjectId);
@@ -122,4 +113,23 @@ export const AttendanceReport = async (subjectId) => {
   } catch (error) {
     return error.response.data;
   }
+};
+
+export const getTimeTable = async (id) => {
+  try {
+    const response = await axios.get(`api/teacher/timetable/${id}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const getUser = () =>
+  localStorage.getItem("UserInfo")
+    ? JSON.parse(localStorage.getItem("UserInfo"))
+    : null;
+
+export const logout = () => {
+  localStorage.removeItem("UserInfo");
 };

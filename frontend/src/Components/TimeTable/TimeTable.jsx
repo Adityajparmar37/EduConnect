@@ -1,45 +1,61 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../Hooks/useAuth";
+import { getTimeTable } from "../../Services/teacherServices";
 import SideNavTeacher from "../SideNav/SideNavTeacher";
 
-const Timetable = () => {
-  const timetableData = [
-    {
-      day: "Monday",
-      time: "10:30 AM - 11:30 AM",
-      subject: "Maths",
-      batchName: "Batch A",
-      type: "Theory",
-      classroom: "101",
-    },
-    {
-      day: "Tuesday",
-      time: "12:30 AM - 1:30 AM",
-      subject: "Physics",
-      batchName: "Batch B",
-      type: "Practical",
-      classroom: "102",
-    },
-    // Add more entries for each day and time
-  ];
+const dayMappings = {
+  Mon: "Monday",
+  Tue: "Tuesday",
+  Wed: "Wednesday",
+  Thu: "Thursday",
+  Fri: "Friday",
+  Sat: "Saturday",
+};
 
-  const timeSlots = [
-    "10:30 AM - 11:30 AM",
-    "11:30 AM - 12:30 AM",
-    "12:30 AM - 1:30 AM",
-    "1:30 PM - 2:00 PM",
-    "2:00 PM - 3:00 PM",
-    "3:00 PM - 4:00 PM",
-    "4:00 PM - 5:00 PM",
-    "5:00 PM - 6:00 PM",
-  ];
+const timeRanges = [
+  { startTime: "10:30 AM", endTime: "11:30 AM" },
+  { startTime: "11:30 AM", endTime: "12:30 PM" },
+  { startTime: "12:30 PM", endTime: "01:30 PM" },
+  { startTime: "01:30 PM", endTime: "02:00 PM" },
+  { startTime: "02:00 PM", endTime: "03:00 PM" },
+  { startTime: "03:00 PM", endTime: "04:00 PM" },
+  { startTime: "04:00 PM", endTime: "05:00 PM" },
+  { startTime: "05:00 PM", endTime: "06:00 PM" },
+];
+
+const Timetable = () => {
+  const { user } = useAuth();
+  const [timetableData, setTimetableData] = useState([]);
+
+  useEffect(() => {
+    const fetchTimetableData = async () => {
+      try {
+        const response = await getTimeTable(user._id);
+        console.log("Response:", response);
+        if (response && response.subjects && Array.isArray(response.subjects)) {
+          setTimetableData(response.subjects);
+        } else {
+          console.error(
+            "Timetable data is not in the expected format:",
+            response,
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching timetable data:", error);
+      }
+    };
+
+    fetchTimetableData();
+  }, [user._id]);
+
   return (
     <>
       <div className="flex h-screen">
         <div className="w-1/6">
           <SideNavTeacher />
         </div>
-        <div className="container  mx-auto my-5">
-          <h1 className="mb-14 mt-8 text-center text-2xl font-bold ">
+        <div className="container mx-auto my-5">
+          <h1 className="mb-14 mt-8 text-center text-2xl font-bold">
             Timetable
           </h1>
           <div className="border border-gray-800">
@@ -47,50 +63,67 @@ const Timetable = () => {
               <div className="w-24 border-b border-r border-gray-800 bg-gray-200 p-2 py-2 text-center">
                 Time
               </div>
-              <div className="flex-1 border-b  border-gray-800 bg-gray-200 p-2 py-2 text-center">
-                Monday
-              </div>
-              <div className="flex-1 border-b  border-gray-800 bg-gray-200 p-2 py-2 text-center">
-                Tuesday
-              </div>
-              <div className="flex-1 border-b  border-gray-800 bg-gray-200 p-2 py-2 text-center">
-                Wednesday
-              </div>
-              <div className="flex-1 border-b  border-gray-800 bg-gray-200 p-2 py-2 text-center">
-                Thursday
-              </div>
-              <div className="flex-1 border-b  border-gray-800 bg-gray-200 p-2 py-2 text-center">
-                Friday
-              </div>
-              <div className="flex-1 border-b border-gray-800 bg-gray-200 py-2 text-center">
-                Saturday
-              </div>
+              {[
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+              ].map((day) => (
+                <div
+                  key={day}
+                  className="flex-1 border-b border-gray-800 bg-gray-200 p-2 py-2 text-center"
+                >
+                  {day}
+                </div>
+              ))}
             </div>
-            {/* Render timetable data */}
-            {timeSlots.map((timeSlot, index) => (
+            {timeRanges.map((timeRange, index) => (
               <div key={index} className="flex font-semibold">
                 <div className="w-24 border-b border-r border-gray-800 p-2 py-2 text-center">
-                  {timeSlot}
+                  {timeRange.startTime} - {timeRange.endTime}
                 </div>
-                {[
-                  "Monday",
-                  "Tuesday",
-                  "Wednesday",
-                  "Thursday",
-                  "Friday",
-                  "Saturday",
-                ].map((day) => (
-                  <div
-                    key={day}
-                    className="flex-1 border-b border-r border-gray-800 p-2 py-2 text-center text-lg duration-300 hover:cursor-pointer hover:bg-gray-50 hover:shadow-lg"
-                  >
-                    {timetableData.find(
-                      (item) => item.day === day && item.time === timeSlot,
-                    )
-                      ? `${timetableData.find((item) => item.day === day && item.time === timeSlot).subject} - ${timetableData.find((item) => item.day === day && item.time === timeSlot).batchName} - ${timetableData.find((item) => item.day === day && item.time === timeSlot).type} - ${timetableData.find((item) => item.day === day && item.time === timeSlot).classroom}`
-                      : ""}
-                  </div>
-                ))}
+                {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+                  (shorthandDay, dayIndex) => {
+                    const matchingEntries = timetableData.filter((entry) => {
+                      const startTimeStr =
+                        entry.startTime.hour +
+                        ":" +
+                        entry.startTime.minute +
+                        " " +
+                        entry.startTime.period;
+                      const endTimeStr =
+                        entry.endTime.hour +
+                        ":" +
+                        entry.endTime.minute +
+                        " " +
+                        entry.endTime.period;
+                      return (
+                        entry.days.includes(shorthandDay) &&
+                        timeRange.startTime === startTimeStr &&
+                        timeRange.endTime === endTimeStr
+                      );
+                    });
+
+                    return (
+                      <div
+                        key={dayIndex}
+                        className="flex-1 border-b border-r border-gray-800 p-2 py-2 text-center text-lg duration-300 hover:cursor-pointer hover:bg-gray-50 hover:shadow-lg"
+                      >
+                        {matchingEntries.length > 0 ? (
+                          matchingEntries.map((entry, entryIndex) => (
+                            <div key={entryIndex}>
+                              {`${entry.subject} - ${entry.batch} - ${entry.type} - ${entry.classroom}`}
+                            </div>
+                          ))
+                        ) : (
+                          <div>-</div>
+                        )}
+                      </div>
+                    );
+                  },
+                )}
               </div>
             ))}
           </div>

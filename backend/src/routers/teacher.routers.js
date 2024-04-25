@@ -424,29 +424,33 @@ router.put(
 );
 
 //get timetable
-router.post("/timetable", async (req, res) => {
-  const { Teacherid } = req.body;
+router.get(
+  "/timetable/:id",
+  async (req, res, next) => {
+    const Teacherid = req.params.id;
+    console.log(Teacherid);
+    try {
+      // Check if the same timetable entry already exists
+      const TimetableFound =
+        await Timetable.findOne({
+          teacherId: Teacherid,
+        });
 
-  try {
-    // Check if the same timetable entry already exists
-    const TimetableFound =
-      await Timetable.findOne({
-        teacherId: Teacherid,
-      });
-
-    if (TimetableFound) {
-      return res.status(201).json(TimetableFound);
-    } else {
-      next(
-        404,
-        "No Time Table is asssign till !"
-      );
+      if (TimetableFound) {
+        return res
+          .status(201)
+          .json(TimetableFound);
+      } else {
+        next(
+          404,
+          "No Time Table is asssign till !"
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      next(error);
     }
-  } catch (error) {
-    res
-      .status(400)
-      .json({ message: error.message });
   }
-});
+);
 
 module.exports = router;
