@@ -1,32 +1,24 @@
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import Spreadsheet from "react-spreadsheet";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
 import { SemesterStudent } from "../../../Services/subjectServices";
-import * as XLSX from "xlsx";
-import toast from "react-hot-toast";
 import { enterMarks } from "../../../Services/teacherServices";
 
 export default function MarkSheet() {
-  const { id } = useParams();
-  const columnLabels = [
-    "Student",
-    "Mid-1",
-    "Mid-2",
-    "Quiz",
-    "Practical",
-    "End Semester",
-  ];
   const [studentList, setStudentList] = useState([]);
-  const [data, setData] = useState([]);
-  // const [marks, setMarks] = useState([]);
   const [marksData, setMarksData] = useState([]);
+  const { id } = useParams();
+  const [isValid, setIsValid] = useState(true); // State to track mark validation
 
+  // Fetch student list
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await SemesterStudent(id);
         setStudentList(response);
+        // Initialize marksData array with empty arrays for each student
+        setMarksData(response.map(() => [null, null, null, null, null, null]));
       } catch (error) {
         console.error("Error fetching student data:", error);
       }
@@ -34,42 +26,58 @@ export default function MarkSheet() {
     fetchData();
   }, [id]);
 
-  useEffect(() => {
-    // Populate initial data with student names and buttons
-    if (studentList.length > 0) {
-      const initialData = studentList.map((student) => [
-        { value: student.name },
-        { value: "", button: <button>Button</button> },
-        { value: "", button: <button>Button</button> },
-        { value: "", button: <button>Button</button> },
-        { value: "", button: <button>Button</button> },
-        { value: "", button: <button>Button</button> },
-      ]);
-      setData(initialData);
+  // Handle input change
+  const handleInputChange = (e, studentIndex, markIndex) => {
+    const newValue = e.target.value;
+    const newMarksData = [...marksData];
+    newMarksData[studentIndex][markIndex] = newValue;
+    setMarksData(newMarksData);
+    checkMarksValidation(); // Check marks validation when data is input
+  };
+
+  // Calculate grand total for each student
+  const calculateGrandTotal = (studentIndex) => {
+    const mid1 = parseFloat(marksData[studentIndex][0]) || 0;
+    const mid2 = parseFloat(marksData[studentIndex][1]) || 0;
+    const totalMid = (mid1 + mid2) / 2;
+    const quiz1 = parseFloat(marksData[studentIndex][2]) || 0;
+    const quiz2 = parseFloat(marksData[studentIndex][3]) || 0;
+    const practical = parseFloat(marksData[studentIndex][4]) || 0;
+    const endSem = parseFloat(marksData[studentIndex][5]) || 0;
+    const grandTotal = totalMid + quiz1 + quiz2 + practical + endSem;
+    return grandTotal.toFixed(2);
+  };
+
+  // Check marks validation and submit the form
+  const checkMarksValidation = async () => {
+    let isValidMarks = true;
+    for (let i = 0; i < marksData.length; i++) {
+      const totalMid =
+        parseFloat(marksData[i][0]) + parseFloat(marksData[i][1]);
+      if (
+        totalMid > 30 ||
+        marksData[i][2] > 10 ||
+        marksData[i][3] > 10 ||
+        marksData[i][4] > 20 ||
+        marksData[i][5] > 80
+      ) {
+        isValidMarks = false;
+        setIsValid(false); // Set isValid state to false
+        break;
+      }
     }
-  }, [studentList]);
-
-  const handleButtonClick = (rowIndex, columnIndex) => {
-    console.log(`Button clicked at row ${rowIndex}, column ${columnIndex}`);
-    // Implement button click handling logic here
+    if (isValidMarks) {
+      setIsValid(true); // Set isValid state to true
+    }
   };
 
-  const handleExport = () => {
-    exportToExcel(marksData);
-  };
-
+  console.log(isValid)
+  // Handle form submission
   const handleSubmit = async () => {
-    const marksData = [];
-    data.forEach((row, rowIndex) => {
-      const studentId = studentList[rowIndex]._id;
-      const studentMarks = {
-        subject: id,
-        student: studentId,
-        marks: row.slice(1).map((cell) => cell.value),
-      };
-      marksData.push(studentMarks);
-    });
-    setMarksData(marksData);
+    if (!isValid) {
+      alert("Invalid marks entered!");
+      return;
+    }
     try {
       const responseData = await enterMarks(marksData);
       if (responseData.success === true) {
@@ -78,33 +86,9 @@ export default function MarkSheet() {
         toast.error(responseData.message);
       }
     } catch (error) {
-      toast.error("Some error occured !");
+      toast.error("Some error occurred!");
       console.log(error);
     }
-  };
-
-  const exportToExcel = (data) => {
-    const formattedData = data.map((studentMarks, index) => {
-      const student = studentList[index]; // Fetch corresponding student from studentList
-      return {
-        Student: student.name,
-        "Mid-1": studentMarks.marks[0],
-        "Mid-2": studentMarks.marks[1],
-        Quiz: studentMarks.marks[2],
-        Practical: studentMarks.marks[3],
-        "End Semester": studentMarks.marks[4],
-      };
-    });
-
-    const ws = XLSX.utils.json_to_sheet(formattedData);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "MarksSheet");
-
-    // Generate a unique filename
-    const fileName = `marks_sheet_${new Date().toISOString()}.xlsx`;
-
-    // Trigger the file download
-    XLSX.writeFile(wb, fileName);
   };
 
   return (
@@ -121,37 +105,48 @@ export default function MarkSheet() {
               </h1>
             </div>
             <div className="flex w-full items-center justify-center">
-              <Spreadsheet
-                className="text-xl font-semibold"
-                data={data}
-                columnLabels={columnLabels}
-                onChange={setData}
-                renderComponent={(props) => {
-                  const { cell, rowIndex, columnIndex } = props;
-                  if (cell.button) {
-                    return (
-                      <div>
-                        {cell.value} {cell.button}
-                      </div>
-                    );
-                  }
-                  return cell.value;
-                }}
-                onCellClick={(rowIndex, columnIndex) => {
-                  const cell = data[rowIndex][columnIndex];
-                  if (cell.button) {
-                    handleButtonClick(rowIndex, columnIndex);
-                  }
-                }}
-              />
+              <table>
+                <thead className="bg-gray-300">
+                  <tr>
+                    <th className=" border border-gray-800">Student</th>
+                    <th className=" border border-gray-800">Mid-1</th>
+                    <th className=" border border-gray-800">Mid-2</th>
+                    <th className=" border border-gray-800">Quiz-1</th>
+                    <th className=" border border-gray-800 ">Quiz-2</th>
+                    <th className=" border border-gray-800">Practical</th>
+                    <th className=" border border-gray-800">End Semester</th>
+                    <th className=" border border-gray-800">Grand Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {studentList.map((student, studentIndex) => (
+                    <tr key={studentIndex} className="border border-gray-800  ">
+                      <td className="border border-gray-800 bg-gray-300 p-2 font-bold">
+                        {student.name}
+                      </td>
+                      {[...Array(6).keys()].map((markIndex) => (
+                        <td key={markIndex}>
+                          <input
+                            type="number"
+                            min="0"
+                            step="any"
+                            className="border border-black p-1 text-center font-bold outline-none"
+                            value={marksData[studentIndex]?.[markIndex] || ""}
+                            onChange={(e) =>
+                              handleInputChange(e, studentIndex, markIndex)
+                            }
+                          />
+                        </td>
+                      ))}
+                      <td className="text-center">
+                        = {calculateGrandTotal(studentIndex)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
             <div className="mr-16 flex justify-end gap-2">
-              <button
-                onClick={handleExport}
-                className="mt-8 rounded-md bg-darkPrimary p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:bg-mintPrimary hover:text-black"
-              >
-                Export Sheet
-              </button>
               <button
                 onClick={handleSubmit}
                 className="mt-8 rounded-md bg-red-600 p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:bg-red-200 hover:text-black"
