@@ -70,12 +70,13 @@ const CreateTimetable = () => {
     { label: "05:00 PM - 06:00 PM", value: "05:00-06:00" },
   ];
 
-  const timeRangeOptionsPractical = [
-    { label: "10:30 AM - 12:30 PM", value: "10:30-12:30" },
-    { label: "12:30 PM - 01:30 PM", value: "12:30-01:30" },
-    { label: "02:00 PM - 04:00 PM", value: "02:00-04:00" },
-    { label: "04:00 PM - 06:00 PM", value: "04:00-06:00" },
-  ];
+ const timeRangeOptionsPractical = [
+   { label: "10:30 AM - 12:30 PM", value: "10:30-11:30;11:30-12:30" },
+   { label: "02:00 PM - 04:00 PM", value: "02:00-03:00;03:00-04:00" },
+   { label: "03:00 PM - 05:00 PM", value: "03:00-04:00;04:00-05:00" },
+   { label: "04:00 PM - 06:00 PM", value: "04:00-05:00;05:00-06:00" },
+ ];
+
 
   const timeRangeOptionsTutorial = [
     // Define your time ranges for tutorials
