@@ -160,8 +160,8 @@ export default function MarkSheet() {
                           />
                         </td>
                       ))}
-                      <td className="text-center">
-                        = {calculateGrandTotal(studentIndex)}
+                      <td className="text-center font-bold text-lg">
+                         {calculateGrandTotal(studentIndex)}
                       </td>
                     </tr>
                   ))}
