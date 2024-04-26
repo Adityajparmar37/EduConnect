@@ -20,12 +20,14 @@ router.post(
         subjectName,
         subjectNumber,
         semesterNumber,
+        type, // Add type to request body
       } = req.body;
 
       if (
         !subjectName ||
         !subjectNumber ||
-        !semesterNumber
+        !semesterNumber ||
+        !type // Ensure type is provided
       ) {
         return next(
           errorHandler(
@@ -35,22 +37,35 @@ router.post(
         );
       }
 
-      const existingSubject =
-        await Subject.findOne({ subjectName });
+      // Find existing subjects with the same name
+      const existingSubjects = await Subject.find(
+        {
+          $or: [
+            { subjectName },
+            { subjectNumber },
+          ],
+        }
+      );
 
-      if (existingSubject) {
-        return next(
-          errorHandler(
-            409,
-            "Subject already exists"
-          )
+      // Check if any of the existing subjects have different types
+      const hasDifferentType =
+        existingSubjects.some(
+          (subject) => subject.type !== type
+        );
+
+      // If any existing subject has a different type, allow insertion
+      if (hasDifferentType) {
+        console.log(
+          "A subject with the same name or number but different type already exists. Proceeding with insertion..."
         );
       }
 
+      // Create the new subject
       const subject = new Subject({
         subjectName: subjectName,
         subjectNumber: subjectNumber,
-        semesterNumber,
+        semesterNumber: semesterNumber,
+        type: type, // Add type to the subject
       });
 
       const savedSubject = await subject.save();
@@ -96,6 +111,7 @@ router.post(
     }
   })
 );
+
 
 router.get(
   "/getAllSubject",

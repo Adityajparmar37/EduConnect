@@ -8,10 +8,13 @@ export default function CreateSubject() {
     subjectName: "",
     subjectNumber: "",
     semesterNumber: "1",
+    type: "Theory", // Default value for type
   });
+
   const handleInputChange = (key, value) => {
     setSubjectData((prevData) => ({ ...prevData, [key]: value }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form data:", subjectData);
@@ -104,6 +107,49 @@ export default function CreateSubject() {
                             </option>
                           ))}
                         </select>
+                      </div>
+                      <div className="mb-4">
+                        <label className="text-blueGray-600 mb-2 block text-xs font-bold uppercase">
+                          Type
+                        </label>
+                        <div>
+                          <label className="inline-flex items-center">
+                            <input
+                              type="radio"
+                              className="form-radio"
+                              value="Theory"
+                              checked={subjectData.type === "Theory"}
+                              onChange={(e) =>
+                                handleInputChange("type", e.target.value)
+                              }
+                            />
+                            <span className="ml-2">Theory</span>
+                          </label>
+                          <label className="ml-6 inline-flex items-center">
+                            <input
+                              type="radio"
+                              className="form-radio"
+                              value="Practical"
+                              checked={subjectData.type === "Practical"}
+                              onChange={(e) =>
+                                handleInputChange("type", e.target.value)
+                              }
+                            />
+                            <span className="ml-2">Practical</span>
+                          </label>
+                          <label className="ml-6 inline-flex items-center">
+                            <input
+                              type="radio"
+                              className="form-radio"
+                              value="Tutorial"
+                              checked={subjectData.type === "Tutorial"}
+                              onChange={(e) =>
+                                handleInputChange("type", e.target.value)
+                              }
+                            />
+                            <span className="ml-2">Tutorial</span>
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </form>
