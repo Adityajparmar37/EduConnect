@@ -26,13 +26,31 @@ export default function MarkSheet() {
     fetchData();
   }, [id]);
 
+  // Handle form submission
+  const handleSubmit = async () => {
+    try {
+      if (!isValid) {
+        alert("Invalid marks entered!");
+        return;
+      }
+      const responseData = await enterMarks(marksData);
+      if (responseData.success === true) {
+        toast.success(responseData.message);
+      } else {
+        toast.error(responseData.message);
+      }
+    } catch (error) {
+      toast.error("Some error occurred!");
+      console.log(error);
+    }
+  };
+
   // Handle input change
   const handleInputChange = (e, studentIndex, markIndex) => {
     const newValue = e.target.value;
     const newMarksData = [...marksData];
     newMarksData[studentIndex][markIndex] = newValue;
     setMarksData(newMarksData);
-    checkMarksValidation(); // Check marks validation when data is input
   };
 
   // Calculate grand total for each student
@@ -48,14 +66,14 @@ export default function MarkSheet() {
     return grandTotal.toFixed(2);
   };
 
-  // Check marks validation and submit the form
-  const checkMarksValidation = async () => {
+  // Check marks validation
+  const checkMarksValidation = () => {
     let isValidMarks = true;
+    let invalidMarksDetails = []; // Array to store details of invalid marks
     for (let i = 0; i < marksData.length; i++) {
-      const totalMid =
-        parseFloat(marksData[i][0]) + parseFloat(marksData[i][1]);
       if (
-        totalMid > 30 ||
+        marksData[i][0] > 30 ||
+        marksData[i][1] > 30 ||
         marksData[i][2] > 10 ||
         marksData[i][3] > 10 ||
         marksData[i][4] > 20 ||
@@ -63,31 +81,29 @@ export default function MarkSheet() {
       ) {
         isValidMarks = false;
         setIsValid(false); // Set isValid state to false
-        break;
+        // Collect details of invalid marks
+        invalidMarksDetails.push({
+          student: studentList[i].name,
+          invalidExams: [
+            marksData[i][0] ? "Mid-1" : null,
+            marksData[i][1] ? "Mid-2" : null,
+            marksData[i][2] > 10 ? "Quiz-1" : null,
+            marksData[i][3] > 10 ? "Quiz-2" : null,
+            marksData[i][4] > 20 ? "Practical" : null,
+            marksData[i][5] > 80 ? "End Semester" : null,
+          ].filter((exam) => exam !== null),
+        });
       }
     }
     if (isValidMarks) {
       setIsValid(true); // Set isValid state to true
-    }
-  };
-
-  console.log(isValid)
-  // Handle form submission
-  const handleSubmit = async () => {
-    if (!isValid) {
-      alert("Invalid marks entered!");
-      return;
-    }
-    try {
-      const responseData = await enterMarks(marksData);
-      if (responseData.success === true) {
-        toast.success(responseData.message);
-      } else {
-        toast.error(responseData.message);
-      }
-    } catch (error) {
-      toast.error("Some error occurred!");
-      console.log(error);
+    } else {
+      // Display alert message with details of invalid marks
+      let errorMessage = "Invalid marks entered for:\n\n";
+      invalidMarksDetails.forEach((details) => {
+        errorMessage += `Student: ${details.student} \nInvalid Makrs in Exams: ${details.invalidExams.join(", ")}\n\n`;
+      });
+      alert(errorMessage);
     }
   };
 
@@ -148,7 +164,7 @@ export default function MarkSheet() {
             </div>
             <div className="mr-16 flex justify-end gap-2">
               <button
-                onClick={handleSubmit}
+                onClick={checkMarksValidation}
                 className="mt-8 rounded-md bg-red-600 p-2 text-xl font-semibold text-white duration-300 hover:rounded-[3rem] hover:bg-red-200 hover:text-black"
               >
                 Submit
