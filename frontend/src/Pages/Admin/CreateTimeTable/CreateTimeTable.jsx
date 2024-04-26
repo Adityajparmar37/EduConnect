@@ -17,11 +17,10 @@ const CreateTimetable = () => {
       {
         subjectId: "",
         type: "Theory",
-        startTime: { hour: "", minute: "", period: "AM" },
-        endTime: { hour: "", minute: "", period: "AM" },
+        timeRange: "",
         classroom: "",
         batch: 0,
-        days: [], // Added an array to store selected days
+        days: [],
       },
     ],
   });
@@ -61,15 +60,26 @@ const CreateTimetable = () => {
     }
   }, [formData.teacherId]);
 
-  const handleSubjectChange = (e, index) => {
-    const { name, value } = e.target;
-    const newSubjects = [...formData.subjects];
-    newSubjects[index][name] = value;
-    setFormData({
-      ...formData,
-      subjects: newSubjects,
-    });
-  };
+  const timeRangeOptionsTheory = [
+    { label: "10:30 AM - 11:30 AM", value: "10:30-11:30" },
+    { label: "11:30 AM - 12:30 PM", value: "11:30-12:30" },
+    { label: "12:30 PM - 01:30 PM", value: "12:30-01:30" },
+    { label: "02:00 PM - 03:00 PM", value: "02:00-03:00" },
+    { label: "03:00 PM - 04:00 PM", value: "03:00-04:00" },
+    { label: "04:00 PM - 05:00 PM", value: "04:00-05:00" },
+    { label: "05:00 PM - 06:00 PM", value: "05:00-06:00" },
+  ];
+
+  const timeRangeOptionsPractical = [
+    { label: "10:30 AM - 12:30 PM", value: "10:30-12:30" },
+    { label: "12:30 PM - 01:30 PM", value: "12:30-01:30" },
+    { label: "02:00 PM - 04:00 PM", value: "02:00-04:00" },
+    { label: "04:00 PM - 06:00 PM", value: "04:00-06:00" },
+  ];
+
+  const timeRangeOptionsTutorial = [
+    // Define your time ranges for tutorials
+  ];
 
   const handleTypeChange = (e, index) => {
     const { value } = e.target;
@@ -81,39 +91,20 @@ const CreateTimetable = () => {
     });
   };
 
-  const handleHourChange = (e, index, type) => {
+  const handleTimeRangeChange = (e, index) => {
     const { value } = e.target;
     const newSubjects = [...formData.subjects];
-    newSubjects[index][type] = {
-      ...newSubjects[index][type],
-      hour: value,
-    };
+    newSubjects[index]["timeRange"] = value;
     setFormData({
       ...formData,
       subjects: newSubjects,
     });
   };
 
-  const handleMinuteChange = (e, index, type) => {
-    const { value } = e.target;
+  const handleSubjectChange = (e, index) => {
+    const { name, value } = e.target;
     const newSubjects = [...formData.subjects];
-    newSubjects[index][type] = {
-      ...newSubjects[index][type],
-      minute: value,
-    };
-    setFormData({
-      ...formData,
-      subjects: newSubjects,
-    });
-  };
-
-  const handlePeriodChange = (e, index, type) => {
-    const { value } = e.target;
-    const newSubjects = [...formData.subjects];
-    newSubjects[index][type] = {
-      ...newSubjects[index][type],
-      period: value,
-    };
+    newSubjects[index][name] = value;
     setFormData({
       ...formData,
       subjects: newSubjects,
@@ -142,8 +133,7 @@ const CreateTimetable = () => {
         {
           subjectId: "",
           type: "Theory",
-          startTime: { hour: "", minute: "", period: "AM" },
-          endTime: { hour: "", minute: "", period: "AM" },
+          timeRange: "",
           classroom: "",
           batch: 0,
           days: [],
@@ -284,7 +274,8 @@ const CreateTimetable = () => {
                               )}
                             </div>
                           </div>
-                          <div className="flex gap-12">
+
+                          <div className="flex gap-20">
                             <div className="mb-4">
                               <label
                                 htmlFor={`type${index}`}
@@ -292,6 +283,7 @@ const CreateTimetable = () => {
                               >
                                 Type
                               </label>
+
                               <div className="flex flex-col">
                                 <label className="mr-4 inline-flex items-center">
                                   <input
@@ -353,6 +345,7 @@ const CreateTimetable = () => {
                                 </select>
                               </div>
                             )}
+
                             {subject.type === "Tutorial" && (
                               <div className="mb-4 w-full">
                                 <label
@@ -381,117 +374,54 @@ const CreateTimetable = () => {
                           </div>
                           <div className="mb-4">
                             <label
-                              htmlFor={`startTime${index}`}
+                              htmlFor={`timeRange${index}`}
                               className="text-blueGray-600 mb-2 block text-xs font-bold uppercase"
                             >
-                              Start Time
+                              Time Range
                             </label>
-                            <div className="flex items-center space-x-2">
-                              <select
-                                value={subject.startTime.hour}
-                                onChange={(e) =>
-                                  handleHourChange(e, index, "startTime")
-                                }
-                                className="rounded border border-gray-300 px-2 py-1"
-                              >
-                                <option value="">Hour</option>
-                                {[...Array(12)].map((_, index) => (
-                                  <option
-                                    key={index + 1}
-                                    value={(index + 1)
-                                      .toString()
-                                      .padStart(2, "0")}
-                                  >
-                                    {(index + 1).toString().padStart(2, "0")}
-                                  </option>
-                                ))}
-                              </select>
-                              <span className="text-gray-500">:</span>
-                              <select
-                                value={subject.startTime.minute}
-                                onChange={(e) =>
-                                  handleMinuteChange(e, index, "startTime")
-                                }
-                                className="rounded border border-gray-300 px-2 py-1"
-                              >
-                                <option value="">Minute</option>
-                                {[...Array(60)].map((_, index) => (
-                                  <option
-                                    key={index}
-                                    value={index.toString().padStart(2, "0")}
-                                  >
-                                    {index.toString().padStart(2, "0")}
-                                  </option>
-                                ))}
-                              </select>
-                              <select
-                                value={subject.startTime.period}
-                                onChange={(e) =>
-                                  handlePeriodChange(e, index, "startTime")
-                                }
-                                className="rounded border border-gray-300 px-2 py-1"
-                              >
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="mb-4">
-                            <label
-                              htmlFor={`endTime${index}`}
-                              className="text-blueGray-600 mb-2 block text-xs font-bold uppercase"
+                            <select
+                              value={subject.timeRange}
+                              onChange={(e) => handleTimeRangeChange(e, index)}
+                              className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-gray-800 shadow focus:outline-none focus:ring"
                             >
-                              End Time
-                            </label>
-                            <div className="flex items-center space-x-2">
-                              <select
-                                value={subject.endTime.hour}
-                                onChange={(e) =>
-                                  handleHourChange(e, index, "endTime")
-                                }
-                                className="rounded border border-gray-300 px-2 py-1"
-                              >
-                                <option value="">Hour</option>
-                                {[...Array(12)].map((_, index) => (
+                              <option value="">Select Time Range</option>
+                              {subject.type === "Theory" &&
+                                timeRangeOptionsTheory.map((option) => (
                                   <option
-                                    key={index + 1}
-                                    value={(index + 1)
-                                      .toString()
-                                      .padStart(2, "0")}
+                                    key={option.value}
+                                    value={option.value}
                                   >
-                                    {(index + 1).toString().padStart(2, "0")}
+                                    {option.label}
                                   </option>
                                 ))}
-                              </select>
-                              <span className="text-gray-500">:</span>
-                              <select
-                                value={subject.endTime.minute}
-                                onChange={(e) =>
-                                  handleMinuteChange(e, index, "endTime")
-                                }
-                                className="rounded border border-gray-300 px-2 py-1"
-                              >
-                                <option value="">Minute</option>
-                                {[...Array(60)].map((_, index) => (
+                              {subject.type === "Tutorial" &&
+                                timeRangeOptionsTheory.map((option) => (
                                   <option
-                                    key={index}
-                                    value={index.toString().padStart(2, "0")}
+                                    key={option.value}
+                                    value={option.value}
                                   >
-                                    {index.toString().padStart(2, "0")}
+                                    {option.label}
                                   </option>
                                 ))}
-                              </select>
-                              <select
-                                value={subject.endTime.period}
-                                onChange={(e) =>
-                                  handlePeriodChange(e, index, "endTime")
-                                }
-                                className="rounded border border-gray-300 px-2 py-1"
-                              >
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                              </select>
-                            </div>
+                              {subject.type === "Practical" &&
+                                timeRangeOptionsPractical.map((option) => (
+                                  <option
+                                    key={option.value}
+                                    value={option.value}
+                                  >
+                                    {option.label}
+                                  </option>
+                                ))}
+                              {subject.type === "Tutorial" &&
+                                timeRangeOptionsTutorial.map((option) => (
+                                  <option
+                                    key={option.value}
+                                    value={option.value}
+                                  >
+                                    {option.label}
+                                  </option>
+                                ))}
+                            </select>
                           </div>
                           <div className="mb-4">
                             <label

@@ -147,8 +147,7 @@ router.post(
         const {
           subjectId,
           days,
-          startTime,
-          endTime,
+          timeRange, // Use timeRange instead of startTime and endTime
           batch,
           type,
           classroom,
@@ -159,8 +158,7 @@ router.post(
           await Timetable.findOne({
             teacherId,
             "subjects.days": days,
-            "subjects.startTime": startTime,
-            "subjects.endTime": endTime,
+            "subjects.timeRange": timeRange, // Check for timeRange instead of startTime and endTime
             "subjects.subject": subjectId,
             "subjects.batch": batch,
             "subjects.type": type,
@@ -175,23 +173,22 @@ router.post(
         }
 
         // If not a duplicate, insert into the database
-          await Timetable.findOneAndUpdate(
-            { teacherId },
-            {
-              $push: {
-                subjects: {
-                  subject: subjectId,
-                  days,
-                  startTime,
-                  endTime,
-                  batch,
-                  type,
-                  classroom,
-                },
+        await Timetable.findOneAndUpdate(
+          { teacherId },
+          {
+            $push: {
+              subjects: {
+                subject: subjectId,
+                days,
+                timeRange, // Use timeRange instead of startTime and endTime
+                batch,
+                type,
+                classroom,
               },
             },
-            { upsert: true }
-          );
+          },
+          { upsert: true }
+        );
       }
 
       res.status(201).json({
@@ -205,5 +202,6 @@ router.post(
     }
   })
 );
+
 
 module.exports = router;

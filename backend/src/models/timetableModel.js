@@ -14,16 +14,7 @@ const timetableSchema = new mongoose.Schema({
         required: true,
       },
       days: [{ type: String, required: true }], // Change to array of strings
-      startTime: {
-        hour: { type: String, required: true },
-        minute: { type: String, required: true },
-        period: { type: String, required: true },
-      },
-      endTime: {
-        hour: { type: String, required: true },
-        minute: { type: String, required: true },
-        period: { type: String, required: true },
-      },
+      timeRange: { type: String, required: true }, // Use timeRange instead of startTime and endTime
       batch: { type: String },
       type: { type: String, required: true },
       classroom: { type: String, required: true },

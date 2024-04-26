@@ -13,17 +13,6 @@ const dayMappings = {
   Sat: "Saturday",
 };
 
-const timeRanges = [
-  { startTime: "10:30 AM", endTime: "11:30 AM" },
-  { startTime: "11:30 AM", endTime: "12:30 PM" },
-  { startTime: "12:30 PM", endTime: "01:30 PM" },
-  { startTime: "01:30 PM", endTime: "02:00 PM" }, // Break time
-  { startTime: "02:00 PM", endTime: "03:00 PM" },
-  { startTime: "03:00 PM", endTime: "04:00 PM" },
-  { startTime: "04:00 PM", endTime: "05:00 PM" },
-  { startTime: "05:00 PM", endTime: "06:00 PM" },
-];
-
 const Timetable = () => {
   const { user } = useAuth();
   const [timetableData, setTimetableData] = useState([]);
@@ -80,94 +69,43 @@ const Timetable = () => {
                 </div>
               ))}
             </div>
-            {timeRanges.map((timeRange, index) => (
-              <div key={index} className="flex font-semibold">
-                <div className="w-24 border-b border-r border-gray-800 p-2 py-2 text-center">
-                  {timeRange.startTime} - {timeRange.endTime}
+            {timetableData.map((subject) => (
+              <div key={subject._id} className="flex font-semibold">
+                <div className="w-24 border-b border-r border-gray-800 p-1 py-8 text-center">
+                  {subject.timeRange}
                 </div>
                 {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
                   (shorthandDay, dayIndex) => {
-                    const matchingEntries = timetableData.filter((entry) => {
-                      const startTimeStr =
-                        entry.startTime.hour +
-                        ":" +
-                        entry.startTime.minute +
-                        " " +
-                        entry.startTime.period;
-                      const endTimeStr =
-                        entry.endTime.hour +
-                        ":" +
-                        entry.endTime.minute +
-                        " " +
-                        entry.endTime.period;
-                      const duration =
-                        entry.endTime.hour - entry.startTime.hour;
-                      {
-                        console.log(
-                          startTimeStr + " " + endTimeStr + " " + duration,
-                        );
-                      }
-                      return (
-                        entry.days.includes(shorthandDay) &&
-                        timeRange.startTime === startTimeStr
-                      );
-                    });
+                    const matchingEntries = subject.days.includes(shorthandDay);
 
                     return (
                       <div
                         key={dayIndex}
                         className={`flex-1 border-b border-r border-gray-800 p-2 py-2 text-center text-lg duration-300 hover:cursor-pointer ${
-                          matchingEntries.length > 0
-                            ? matchingEntries.some(
-                                (entry) => entry.type === "Practical",
-                              )
+                          matchingEntries
+                            ? subject.type === "Practical"
                               ? "bg-yellow-100 duration-300 hover:bg-transparent"
-                              : "bg-blue-100 duration-300 hover:bg-transparent"
+                              : subject.type === "Theory"
+                                ? " bg-blue-100 hover:bg-transparent"
+                                : "bg-green-100 hover:bg-transparent"
                             : ""
                         } hover:shadow-md`}
                       >
-                        {matchingEntries.length > 0 ? (
-                          <>
-                            {console.log(matchingEntries)}
-                            {matchingEntries.some(
-                              (entry) => entry.type === "Theory",
-                            ) && (
-                              <Link
-                                to={`/attendance/${matchingEntries[0].subject._id}`}
-                              >
-                                <div className="rounded-sm bg-blue-100 duration-300 hover:bg-blue-300">
-                                  {matchingEntries
-                                    .filter((entry) => entry.type === "Theory")
-                                    .map((entry, entryIndex) => (
-                                      <div key={entryIndex}>
-                                        {`${entry.subject.subjectName + " " + "(" + entry.subject.subjectNumber + ")"}${entry.batch !== "0" ? "" + entry.batch : ""} - ${entry.type} - ${entry.classroom}`}
-                                      </div>
-                                    ))}
-                                </div>
-                              </Link>
-                            )}
-                            {matchingEntries.some(
-                              (entry) => entry.type === "Practical",
-                            ) && (
-                              <Link
-                                to={`/attendance/${matchingEntries[0].subject._id}`}
-                              >
-                                <div className="rounded-sm bg-yellow-100 duration-300 hover:bg-yellow-300">
-                                  
-                                  {matchingEntries
-                                    .filter(
-                                      (entry) => entry.type === "Practical",
-                                    )
-                                    .map((entry, entryIndex) => (
-                                      <div key={entryIndex}>
-                                        {`${entry.subject.subjectName + " " + "(" + entry.subject.subjectNumber + ")"} - ${entry.type} : ${entry.batch}  ${entry.classroom}`}
-                                      </div>
-                                    ))}
-                                </div>
-                              </Link>
-                            )}
-                          </>
-                        ) : timeRange.startTime === "01:30 PM" ? (
+                        {matchingEntries ? (
+                          <Link to={`/attendance/${subject.subject._id}`}>
+                            <div
+                              className={`rounded-sm ${
+                                subject.type === "Theory"
+                                  ? "bg-blue-100 duration-300 hover:bg-blue-300"
+                                  : subject.type === "Tutorial"
+                                    ? "bg-green-100 duration-300 hover:bg-green-300"
+                                    : "bg-yellow-100 duration-300 hover:bg-yellow-300"
+                              }`}
+                            >
+                              {`${subject.subject.subjectName} (${subject.subject.subjectNumber}) ${subject.batch !== "0" ? subject.batch : ""} - ${subject.type} - ${subject.classroom}`}
+                            </div>
+                          </Link>
+                        ) : subject.timeRange === "01:30-02:00" ? (
                           <div className="cursor-not-allowed font-light">
                             Break
                           </div>
