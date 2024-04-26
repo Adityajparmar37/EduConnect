@@ -72,7 +72,7 @@ const Timetable = () => {
           <SideNavTeacher />
         </div>
         <div className="container mx-auto my-5">
-          <h1 className="mb-14 mt-8 text-center text-2xl font-bold">
+          <h1 className="mb-14 text-center text-2xl font-bold">
             Timetable
           </h1>
           <div className="border border-gray-800">

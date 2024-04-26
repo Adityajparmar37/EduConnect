@@ -29,11 +29,16 @@ export default function MarkSheet() {
   // Handle form submission
   const handleSubmit = async () => {
     try {
-      if (!isValid) {
-        alert("Invalid marks entered!");
-        return;
-      }
-      const responseData = await enterMarks(marksData);
+      // Prepare data for submission
+      const formattedMarksData = marksData.map((marks, index) => ({
+        subject: id, // Assuming id represents the subject ID
+        student: studentList[index]._id, // Assuming studentList contains student objects with _id field
+        marks: marks, // Marks for the current student
+      }));
+
+      // Send data to backend
+      const responseData = await enterMarks(formattedMarksData);
+      console.log(responseData);
       if (responseData.success === true) {
         toast.success(responseData.message);
       } else {
@@ -96,7 +101,8 @@ export default function MarkSheet() {
       }
     }
     if (isValidMarks) {
-      setIsValid(true); // Set isValid state to true
+      setIsValid(true);
+      handleSubmit();
     } else {
       // Display alert message with details of invalid marks
       let errorMessage = "Invalid marks entered for:\n\n";
