@@ -18,7 +18,7 @@ export default function TeacherHomePage() {
       <div className="flex h-auto w-5/6 px-3 pt-20">
         <div className="grid grid-cols-3 gap-24">
           <Card
-            link="/attendance"
+            link="/timetable"
             bgColor="darkPrimary"
             icon={<TbHexagonLetterA />}
             icon2={<IoArrowForwardSharp />}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../Hooks/useAuth";
 import { getTimeTable } from "../../Services/teacherServices";
 import SideNavTeacher from "../SideNav/SideNavTeacher";
@@ -131,37 +132,47 @@ const Timetable = () => {
                             {matchingEntries.some(
                               (entry) => entry.type === "Theory",
                             ) && (
-                              <div className="rounded-sm bg-blue-100 duration-300 hover:bg-blue-300">
-                                {matchingEntries
-                                  .filter((entry) => entry.type === "Theory")
-                                  .map((entry, entryIndex) => (
-                                    <div key={entryIndex}>
-                                      {`${entry.subject.subjectName + " " + "(" + entry.subject.subjectNumber + ")"}${entry.batch !== "0" ? "" + entry.batch : ""} - ${entry.type} - ${entry.classroom}`}
-                                    </div>
-                                  ))}
-                              </div>
+                              <Link
+                                to={`/attendance/${matchingEntries[0].subject._id}`}
+                              >
+                                <div className="rounded-sm bg-blue-100 duration-300 hover:bg-blue-300">
+                                  {matchingEntries
+                                    .filter((entry) => entry.type === "Theory")
+                                    .map((entry, entryIndex) => (
+                                      <div key={entryIndex}>
+                                        {`${entry.subject.subjectName + " " + "(" + entry.subject.subjectNumber + ")"}${entry.batch !== "0" ? "" + entry.batch : ""} - ${entry.type} - ${entry.classroom}`}
+                                      </div>
+                                    ))}
+                                </div>
+                              </Link>
                             )}
                             {matchingEntries.some(
                               (entry) => entry.type === "Practical",
                             ) && (
-                              <div className="rounded-sm bg-yellow-100 duration-300 hover:bg-yellow-300">
-                                {/* Filter and map only practical subjects with 2-hour duration */}
-                                {matchingEntries
-                                  .filter((entry) => entry.type === "Practical")
-                                  .map((entry, entryIndex) => (
-                                    <div key={entryIndex}>
-                                      {`${entry.subject.subjectName + " " + "(" + entry.subject.subjectNumber + ")"} - ${entry.type} : ${entry.batch}  ${entry.classroom}`}
-                                    </div>
-                                  ))}
-                              </div>
+                              <Link
+                                to={`/attendance/${matchingEntries[0].subject._id}`}
+                              >
+                                <div className="rounded-sm bg-yellow-100 duration-300 hover:bg-yellow-300">
+                                  
+                                  {matchingEntries
+                                    .filter(
+                                      (entry) => entry.type === "Practical",
+                                    )
+                                    .map((entry, entryIndex) => (
+                                      <div key={entryIndex}>
+                                        {`${entry.subject.subjectName + " " + "(" + entry.subject.subjectNumber + ")"} - ${entry.type} : ${entry.batch}  ${entry.classroom}`}
+                                      </div>
+                                    ))}
+                                </div>
+                              </Link>
                             )}
                           </>
+                        ) : timeRange.startTime === "01:30 PM" ? (
+                          <div className="cursor-not-allowed font-light">
+                            Break
+                          </div>
                         ) : (
-                          timeRange.startTime === "01:30 PM" ? (
-                            <div className="font-light cursor-not-allowed">
-                              Break
-                            </div>
-                          ) : (<div></div>)
+                          <div></div>
                         )}
                       </div>
                     );

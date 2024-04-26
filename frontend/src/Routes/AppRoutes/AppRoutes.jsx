@@ -131,7 +131,6 @@ export default function AppRoutes() {
           {user && user.userType === "teacher" && (
             <>
               <Route path="/teacher" element={<TeacherHomePage />} />
-              <Route path="/attendance" element={<Attendance />} />
               <Route path="/attendance/:id" element={<AttendanceList />} />
               <Route path="/marks" element={<Marks />} />
               <Route path="/marks/:id" element={<MarkSheet />} />
