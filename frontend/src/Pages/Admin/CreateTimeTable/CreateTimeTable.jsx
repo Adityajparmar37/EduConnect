@@ -259,32 +259,29 @@ const CreateTimetable = () => {
                               Days
                             </label>
                             <div className="flex gap-6">
-                              {[
-                                "Mon",
-                                "Tue",
-                                "Wed",
-                                "Thu",
-                                "Fri",
-                                "Sat",
-                              ].map((day) => (
-                                <label
-                                  key={day}
-                                  className="inline-flex items-center"
-                                >
-                                  <input
-                                    type="checkbox"
-                                    value={day}
-                                    checked={subject.days.includes(day)}
-                                    onChange={() => handleDayChange(day, index)}
-                                    className="mr-2"
-                                  />
-                                  <span
-                                    className={`text-sm font-medium ${subject.days.includes(day) ? "text-blue-600" : "text-gray-600"}`}
+                              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+                                (day) => (
+                                  <label
+                                    key={day}
+                                    className="inline-flex items-center"
                                   >
-                                    {day}
-                                  </span>
-                                </label>
-                              ))}
+                                    <input
+                                      type="checkbox"
+                                      value={day}
+                                      checked={subject.days.includes(day)}
+                                      onChange={() =>
+                                        handleDayChange(day, index)
+                                      }
+                                      className="mr-2"
+                                    />
+                                    <span
+                                      className={`text-sm font-medium ${subject.days.includes(day) ? "text-blue-600" : "text-gray-600"}`}
+                                    >
+                                      {day}
+                                    </span>
+                                  </label>
+                                ),
+                              )}
                             </div>
                           </div>
                           <div className="flex gap-12">
@@ -318,9 +315,45 @@ const CreateTimetable = () => {
                                   />
                                   Practical
                                 </label>
+                                <label className="inline-flex items-center">
+                                  <input
+                                    type="radio"
+                                    name={`type${index}`}
+                                    value="Tutorial"
+                                    checked={subject.type === "Tutorial"}
+                                    onChange={(e) => handleTypeChange(e, index)}
+                                    className="mr-2"
+                                  />
+                                  Tutorial
+                                </label>
                               </div>
                             </div>
                             {subject.type === "Practical" && (
+                              <div className="mb-4 w-full">
+                                <label
+                                  htmlFor={`batch${index}`}
+                                  className="text-blueGray-600 mb-2 block text-xs font-bold uppercase"
+                                >
+                                  Batch
+                                </label>
+                                <select
+                                  id={`batch${index}`}
+                                  name="batch"
+                                  value={subject.batch}
+                                  onChange={(e) =>
+                                    handleSubjectChange(e, index)
+                                  }
+                                  className="w-full rounded border-0 bg-white px-3 py-3 text-sm text-gray-800 shadow focus:outline-none focus:ring"
+                                >
+                                  <option value="A">A</option>
+                                  <option value="B">B</option>
+                                  <option value="C">C</option>
+                                  <option value="D">D</option>
+                                  <option value="E">E</option>
+                                </select>
+                              </div>
+                            )}
+                            {subject.type === "Tutorial" && (
                               <div className="mb-4 w-full">
                                 <label
                                   htmlFor={`batch${index}`}
