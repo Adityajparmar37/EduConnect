@@ -1,9 +1,15 @@
 import SideNav from "../../../Components/SideNav/SideNav";
 import Card from "../../../Components/Card/Card";
 import { FaChalkboardTeacher } from "react-icons/fa";
-import { PiStudentFill } from "react-icons/pi";
+import { PiAddressBook, PiStudentFill } from "react-icons/pi";
 import { LuBookCopy } from "react-icons/lu";
 import { IoArrowForwardSharp } from "react-icons/io5";
+import { MdOutlineGroupAdd } from "react-icons/md";
+import { TbBook2 } from "react-icons/tb";
+import { RiBookletLine } from "react-icons/ri";
+import { GoPersonAdd } from "react-icons/go";
+import { BsPersonVideo2 } from "react-icons/bs";
+import HomePageProfile from "../../../Components/Profile/HomePageProfile";
 
 export default function AdminHomePage() {
   document.body.style.overflow = "hidden";
@@ -12,33 +18,60 @@ export default function AdminHomePage() {
       <div className="w-1/6">
         <SideNav />
       </div>
-      <div className="z-10 flex h-auto w-5/6 px-3 pt-20">
-        <div className="grid grid-cols-3 gap-24">
+      <div className="flex h-auto w-full px-3 pt-[3rem] ml-20">
+        <div className="flex flex-col gap-y-10 w-1/2">
           <Card
-            link="/teacherDashboard"
+            link="/createTeacher"
             bgColor="darkPrimary"
-            icon={<FaChalkboardTeacher />}
+            icon={<MdOutlineGroupAdd />}
             icon2={<IoArrowForwardSharp />}
-            title="Teacher Dashboard"
-            text={["Manage Teacher", "Add New Teacher"]}
+            title="New Teacher"
+            text={["Add New Teacher", "Create New Teacher Credentials"]}
           />
           <Card
-            link="/studentDashboard"
+            link="/manageTeacher"
             bgColor="darkPrimary"
-            icon={<PiStudentFill />}
+            icon={<PiAddressBook />}
             icon2={<IoArrowForwardSharp />}
-            title="Student Dashboard"
-            text={["Manage Student", "Update Student Details"]}
+            title="Manage Teacher"
+            text={["Update Teacher Details", "Delete Teacher Details"]}
+          />
+          <Card
+            link="/createStudent"
+            bgColor="darkPrimary"
+            icon={<GoPersonAdd />}
+            icon2={<IoArrowForwardSharp />}
+            title="New Student"
+            text={["Add New Student", "Add Student Details"]}
+          />
+          <Card
+            link="/manageStudent"
+            bgColor="darkPrimary"
+            icon={<BsPersonVideo2 />}
+            icon2={<IoArrowForwardSharp />}
+            title="Manage Student"
+            text={["Update Subject Details", "Delete Subject Details"]}
           />
 
           <Card
-            link="/subjectDashboard"
+            link="/createSubject"
             bgColor="darkPrimary"
-            icon={<LuBookCopy />}
+            icon={<TbBook2 />}
             icon2={<IoArrowForwardSharp />}
-            title="Subject Dashboard"
-            text={["Manage Subject", "Update or add new subject"]}
+            title="New Subject"
+            text={["Add New Subject", "Add Subject Details"]}
           />
+          <Card
+            link="/manageSubject"
+            bgColor="darkPrimary"
+            icon={<RiBookletLine />}
+            icon2={<IoArrowForwardSharp />}
+            title="Manage Subject"
+            text={["Update Subject Details", "Delete Subject Details"]}
+          />
+        </div>
+        <div className="w-1/2 flex justify-between">
+          <HomePageProfile />
         </div>
       </div>
     </div>

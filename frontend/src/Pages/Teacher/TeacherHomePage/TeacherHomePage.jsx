@@ -5,7 +5,8 @@ import { TbHexagonLetterA } from "react-icons/tb";
 import { PiChatsFill } from "react-icons/pi";
 import Card from "../../../Components/Card/Card";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
-import Modal from "react-modal";
+import HomePageProfile from "../../../Components/Profile/HomePageProfile";
+
 
 export default function TeacherHomePage() {
   document.body.style.overflow = "hidden";
@@ -15,8 +16,8 @@ export default function TeacherHomePage() {
       <div className="w-1/6">
         <SideNavTeacher />
       </div>
-      <div className="flex h-auto w-5/6 px-3 pt-20">
-        <div className="grid grid-cols-3 gap-24">
+      <div className="ml-20 flex h-auto w-full px-3 pt-[6rem]">
+        <div className="flex w-1/2 flex-col gap-y-10 mt-10">
           <Card
             link="/timetable"
             bgColor="darkPrimary"
@@ -25,6 +26,7 @@ export default function TeacherHomePage() {
             title="Attendance"
             text={["Mark student attendance"]}
           />
+
           <Card
             link="/marks"
             bgColor="darkPrimary"
@@ -44,6 +46,9 @@ export default function TeacherHomePage() {
               "One to One doubt solving",
             ]}
           />
+        </div>
+        <div className="flex w-1/2 justify-between">
+          <HomePageProfile />
         </div>
       </div>
     </div>

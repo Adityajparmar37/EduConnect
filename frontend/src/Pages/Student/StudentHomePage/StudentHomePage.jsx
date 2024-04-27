@@ -5,6 +5,7 @@ import { TbHexagonLetterA } from "react-icons/tb";
 import { PiChatsFill } from "react-icons/pi";
 import Card from "../../../Components/Card/Card";
 import SideNavStudent from "../../../Components/SideNav/SideNavStudent";
+import HomePageProfile from "../../../Components/Profile/HomePageProfile";
 
 export default function StudentHomePage() {
   document.body.style.overflow = "hidden";
@@ -13,8 +14,8 @@ export default function StudentHomePage() {
       <div className="w-1/6">
         <SideNavStudent />
       </div>
-      <div className="z-10 flex h-auto w-5/6 px-3 pt-20">
-        <div className="grid grid-cols-3 gap-24">
+      <div className="ml-20 flex h-auto w-full px-3 pt-[6rem]">
+        <div className="mt-10 flex w-1/2 flex-col gap-y-10">
           <Card
             link="/viewAttendance"
             bgColor="darkPrimary"
@@ -43,6 +44,9 @@ export default function StudentHomePage() {
               "One to One doubt solving",
             ]}
           />
+        </div>
+        <div className="flex w-1/2 justify-between">
+          <HomePageProfile />
         </div>
       </div>
     </div>

@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
           setUser(user);
           localStorage.setItem("UserInfo", JSON.stringify(user));
           toast.success("Successfully Login !");
-          navigate("/student");
+          navigate("/viewAttendance");
         } else {
           if (user.success === false) {
             toast.error(user.message);
@@ -99,7 +99,7 @@ export const AuthProvider = ({ children }) => {
           setUser(user);
           localStorage.setItem("UserInfo", JSON.stringify(user));
           toast.success("Successfully");
-          navigate("/student");
+          navigate("/viewAttendance");
         } else {
           if (user.success === false) {
             toast.error(user.message);
