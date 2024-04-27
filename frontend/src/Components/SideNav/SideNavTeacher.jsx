@@ -4,6 +4,8 @@ import { TbHexagonLetterA } from "react-icons/tb";
 import { PiChatsFill } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import { MdPersonOutline } from "react-icons/md";
+import { TbReport } from "react-icons/tb";
+import { BsFiletypeCsv } from "react-icons/bs";
 
 export default function SideNavTeacher() {
   return (
@@ -37,7 +39,7 @@ export default function SideNavTeacher() {
                 className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
               >
                 <span className="ml-4 inline-flex items-center justify-center text-2xl">
-                  <TbHexagonLetterA />
+                  <TbReport />
                 </span>
                 <span className="text-md ml-2 truncate tracking-wide">
                   Mark Attendance
@@ -67,6 +69,19 @@ export default function SideNavTeacher() {
                 </span>
                 <span className="text-md ml-2 truncate tracking-wide">
                   Upload Marks
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/marksReport"
+                className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
+              >
+                <span className="ml-4 inline-flex items-center justify-center text-2xl">
+                  <BsFiletypeCsv />
+                </span>
+                <span className="text-md ml-2 truncate tracking-wide">
+                  Marks Report
                 </span>
               </Link>
             </li>

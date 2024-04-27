@@ -76,4 +76,23 @@ router.post(
   })
 );
 
+router.get(
+  "/marksReport/:subjectId",
+  handler(async (req, res, next) => {
+    try {
+      const subjectId = req.params.subjectId;
+
+      const Students_marks = await Marks.find({
+        SubjectId: subjectId,
+      }).populate("StudentId", "name");
+
+      console.log(Students_marks);
+      res.send(Students_marks);
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  })
+);
+
 module.exports = router;

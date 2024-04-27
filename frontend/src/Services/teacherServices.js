@@ -104,6 +104,17 @@ export const attendanceReport = async (subjectId, percentage) => {
   }
 };
 
+export const marksReport = async (subjectId) => {
+  try {
+    console.log(subjectId);
+    const response = await axios.get(`api/marks/marksReport/${subjectId}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export const enterMarks = async (marksData) => {
   try {
     console.log(marksData);

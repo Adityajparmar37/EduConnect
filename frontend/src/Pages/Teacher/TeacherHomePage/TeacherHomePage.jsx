@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
+import { BsFiletypeCsv } from "react-icons/bs";
 import { IoArrowForwardSharp } from "react-icons/io5";
 import { LiaFileUploadSolid } from "react-icons/lia";
-import { TbHexagonLetterA } from "react-icons/tb";
+import { TbHexagonLetterA, TbReport } from "react-icons/tb";
 import { PiChatsFill } from "react-icons/pi";
 import Card from "../../../Components/Card/Card";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
@@ -16,7 +17,7 @@ export default function TeacherHomePage() {
         <SideNavTeacher />
       </div>
       <div className="ml-20 flex h-auto w-full px-3 pt-[6rem]">
-        <div className="mt-10 flex w-1/2 flex-col gap-y-10">
+        <div className="mt-5 flex w-1/2 flex-col gap-y-10">
           <Card
             link="/timetable"
             bgColor="darkPrimary"
@@ -28,13 +29,10 @@ export default function TeacherHomePage() {
           <Card
             link="/attendanceReport"
             bgColor="darkPrimary"
-            icon={<PiChatsFill />}
+            icon={<TbReport />}
             icon2={<IoArrowForwardSharp />}
             title="Attendance Report"
-            text={[
-              "Discuss your doubt with teacher",
-              "One to One doubt solving",
-            ]}
+            text={["Download Attendace Report"]}
           />
           <Card
             link="/marks"
@@ -43,6 +41,14 @@ export default function TeacherHomePage() {
             icon2={<IoArrowForwardSharp />}
             title="Upload Marks"
             text={["Upload subject Marks"]}
+          />
+          <Card
+            link="/marksReport"
+            bgColor="darkPrimary"
+            icon={<BsFiletypeCsv />}
+            icon2={<IoArrowForwardSharp />}
+            title="Marks Report"
+            text={["Download Marks Report"]}
           />
           <Card
             link="/discussionForum"
