@@ -54,7 +54,8 @@ export default function MarkSheet() {
   const handleInputChange = (e, studentIndex, markIndex) => {
     const newValue = e.target.value;
     const newMarksData = [...marksData];
-    newMarksData[studentIndex][markIndex] = newValue;
+    newMarksData[studentIndex][markIndex] =
+      newValue === "" ? 0 : parseFloat(newValue);
     setMarksData(newMarksData);
   };
 
@@ -70,12 +71,40 @@ export default function MarkSheet() {
     const grandTotal = totalMid + quiz1 + quiz2 + practical + endSem;
     return grandTotal.toFixed(2);
   };
-
   // Check marks validation
   const checkMarksValidation = () => {
     let isValidMarks = true;
     let invalidMarksDetails = []; // Array to store details of invalid marks
+    let emptyFieldsDetails = []; // Array to store details of empty fields
+
     for (let i = 0; i < marksData.length; i++) {
+      let isEmptyField = false;
+
+      // Check for empty fields
+      for (let j = 0; j < marksData[i].length; j++) {
+        if (marksData[i][j] === null || marksData[i][j] === "") {
+          isEmptyField = true;
+          emptyFieldsDetails.push({
+            student: studentList[i].name,
+            emptyField:
+              j === 0
+                ? "Mid-1"
+                : j === 1
+                  ? "Mid-2"
+                  : j === 2
+                    ? "Quiz-1"
+                    : j === 3
+                      ? "Quiz-2"
+                      : j === 4
+                        ? "Practical"
+                        : j === 5
+                          ? "End Semester"
+                          : "",
+          });
+        }
+      }
+
+      // Check for marks exceeding limits
       if (
         marksData[i][0] > 30 ||
         marksData[i][1] > 30 ||
@@ -86,12 +115,13 @@ export default function MarkSheet() {
       ) {
         isValidMarks = false;
         setIsValid(false); // Set isValid state to false
+
         // Collect details of invalid marks
         invalidMarksDetails.push({
           student: studentList[i].name,
           invalidExams: [
-            marksData[i][0] ? "Mid-1" : null,
-            marksData[i][1] ? "Mid-2" : null,
+            marksData[i][0] > 30 ? "Mid-1" : null,
+            marksData[i][1] > 30 ? "Mid-2" : null,
             marksData[i][2] > 10 ? "Quiz-1" : null,
             marksData[i][3] > 10 ? "Quiz-2" : null,
             marksData[i][4] > 20 ? "Practical" : null,
@@ -100,15 +130,29 @@ export default function MarkSheet() {
         });
       }
     }
-    if (isValidMarks) {
+
+    if (isValidMarks && emptyFieldsDetails.length === 0) {
       setIsValid(true);
       handleSubmit();
     } else {
-      // Display alert message with details of invalid marks
-      let errorMessage = "Invalid marks entered for:\n\n";
-      invalidMarksDetails.forEach((details) => {
-        errorMessage += `Student: ${details.student} \nInvalid Makrs in Exams: ${details.invalidExams.join(", ")}\n\n`;
-      });
+      // Display alert message with details of invalid marks and empty fields
+      let errorMessage = "";
+
+      if (invalidMarksDetails.length > 0) {
+        errorMessage += "Invalid marks entered for:\n\n";
+        invalidMarksDetails.forEach((details) => {
+          errorMessage += `Student: ${details.student} \nInvalid Marks in Exams: ${details.invalidExams.join(", ")}\n\n`;
+        });
+        errorMessage += "\n";
+      }
+
+      if (emptyFieldsDetails.length > 0) {
+        errorMessage += "Empty fields found for:\n\n";
+        emptyFieldsDetails.forEach((details) => {
+          errorMessage += `Student: ${details.student}, Empty Field: ${details.emptyField} , Enter 0 if needed\n`;
+        });
+      }
+
       alert(errorMessage);
     }
   };
@@ -160,8 +204,8 @@ export default function MarkSheet() {
                           />
                         </td>
                       ))}
-                      <td className="text-center font-bold text-lg">
-                         {calculateGrandTotal(studentIndex)}
+                      <td className="text-center text-lg font-bold">
+                        {calculateGrandTotal(studentIndex)}
                       </td>
                     </tr>
                   ))}
