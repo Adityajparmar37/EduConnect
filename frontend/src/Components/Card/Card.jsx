@@ -7,7 +7,7 @@ const Card = ({ bgColor, icon, title, text, link, icon2 }) => {
     <>
       <Link to={link}>
         <div
-          className={`relative flex h-[5rem] w-[25rem] flex-col rounded-md border-l-8 border-${bgColor} bg-white p-5 shadow-lg duration-300 hover:shadow-xl`}
+          className={`relative flex h-[5rem] w-[25rem] flex-col rounded-md border-l-8 border-${bgColor} bg-white p-5 shadow-lg duration-300 hover:shadow-xl hover:bg-blue-50 ease-in-out`}
           style={{ zIndex: 1 }}
         >
           <div>
