@@ -2,7 +2,13 @@ import React from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import Modal from "react-modal";
 
-const CustomModal = ({ isOpen, onRequestClose, children }) => {
+const CustomModal = ({
+  isOpen,
+  onRequestClose,
+  children,
+  width = "30%",
+  height = "20%",
+}) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -19,8 +25,8 @@ const CustomModal = ({ isOpen, onRequestClose, children }) => {
           left: "50%",
           transform: "translate(-50%, -50%)",
           zIndex: 1001,
-          maxWidth: "30%",
-          maxHeight: "20%",
+          maxWidth: width,
+          maxHeight: height,
           overflow: "auto",
         },
       }}

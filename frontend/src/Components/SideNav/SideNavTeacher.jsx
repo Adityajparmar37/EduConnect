@@ -46,6 +46,19 @@ export default function SideNavTeacher() {
             </li>
             <li>
               <Link
+                to="/attendanceReport"
+                className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
+              >
+                <span className="ml-4 inline-flex items-center justify-center text-2xl">
+                  <TbHexagonLetterA />
+                </span>
+                <span className="text-md ml-2 truncate tracking-wide">
+                  Attendance Report
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/marks"
                 className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
               >

@@ -7,7 +7,6 @@ import Card from "../../../Components/Card/Card";
 import SideNavTeacher from "../../../Components/SideNav/SideNavTeacher";
 import HomePageProfile from "../../../Components/Profile/HomePageProfile";
 
-
 export default function TeacherHomePage() {
   document.body.style.overflow = "hidden";
 
@@ -17,7 +16,7 @@ export default function TeacherHomePage() {
         <SideNavTeacher />
       </div>
       <div className="ml-20 flex h-auto w-full px-3 pt-[6rem]">
-        <div className="flex w-1/2 flex-col gap-y-10 mt-10">
+        <div className="mt-10 flex w-1/2 flex-col gap-y-10">
           <Card
             link="/timetable"
             bgColor="darkPrimary"
@@ -26,7 +25,17 @@ export default function TeacherHomePage() {
             title="Attendance"
             text={["Mark student attendance"]}
           />
-
+          <Card
+            link="/attendanceReport"
+            bgColor="darkPrimary"
+            icon={<PiChatsFill />}
+            icon2={<IoArrowForwardSharp />}
+            title="Attendance Report"
+            text={[
+              "Discuss your doubt with teacher",
+              "One to One doubt solving",
+            ]}
+          />
           <Card
             link="/marks"
             bgColor="darkPrimary"

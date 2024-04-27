@@ -73,7 +73,6 @@ router.post(
   })
 );
 
-
 router.get(
   "/viewattendance",
   handler(async (req, res, next) => {
@@ -97,134 +96,85 @@ router.get(
   })
 );
 
-// router.get(
-//   "/downloadAttendanceReport",
-//   handler(async (req, res, next) => {
-//     try {
-//       const teacherId = req.user.id;
-//       const { subjectId } = req.query;
+router.get(
+  "/attendanceReport/:subjectId",
+  handler(async (req, res, next) => {
+    try {
+      const subjectId  = req.params.subjectId;
+      const selectedPercentage =
+        req.query.percentage || 60; // Default to 60% if not provided
+      console.log(
+        subjectId,
+        " ",
+        selectedPercentage
+      );
 
-//       console.log("teacherId => ", teacherId);
-//       console.log("subjectId => ", subjectId);
+      // Find all attendance records for the specified subjectId
+      const attendanceRecords =
+        await Attendance.find({
+          subjectId: subjectId,
+        }).populate("studentId", "name email"); // Populate student details
 
-//       // Find all attendance records for the subject
-//       const subjectAttendance =
-//         await Attendance.find({
-//           subjectId,
-//         }).populate(
-//           "studentId",
-//           "name attendance"
-//         );
+      if (attendanceRecords.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "No attendance records found for this subject.",
+        });
+      }
 
-//       console.log(subjectAttendance);
+      // Calculate attendance percentage for each student
+      const attendancePercentage = {};
+      attendanceRecords.forEach((record) => {
+        if (
+          !attendancePercentage[record.studentId]
+        ) {
+          attendancePercentage[record.studentId] =
+            {
+              totalClasses: 0,
+              attendedClasses: 0,
+            };
+        }
+        attendancePercentage[record.studentId]
+          .totalClasses++;
+        if (record.attendance) {
+          attendancePercentage[record.studentId]
+            .attendedClasses++;
+        }
+      });
 
-//       if (subjectAttendance.length === 0) {
-//         return res.json({
-//           success: true,
-//           message:
-//             "No attendance records found for this subject.",
-//         });
-//       }
+      // Filter out students with attendance percentage less than or equal to the selected percentage
+      const lowAttendanceStudents = [];
+      for (const studentId in attendancePercentage) {
+        const percentage =
+          (attendancePercentage[studentId]
+            .attendedClasses /
+            attendancePercentage[studentId]
+              .totalClasses) *
+          100;
+        if (percentage <= selectedPercentage) {
+          lowAttendanceStudents.push({
+            student: attendanceRecords.find(
+              (record) =>
+                record.studentId.toString() ===
+                studentId.toString()
+            ).studentId,
+            attendancePercentage:
+              percentage.toFixed(2),
+          });
+        }
+      }
 
-//       // Filter students with attendance below 60%
-//       const studentsBelowThreshold =
-//         subjectAttendance.filter(
-//           (attendance) =>
-//             (attendance.attendance /
-//               attendance.subjectId.totalClasses) *
-//               100 <
-//             60
-//         );
-
-//       console.log(studentsBelowThreshold);
-
-//       if (studentsBelowThreshold.length === 0) {
-//         return res.json({
-//           success: true,
-//           message:
-//             "No students found with attendance below 60%.",
-//         });
-//       }
-
-//       // Generate and download report
-//       const reportFilename = `attendance_report_${subjectId}`;
-//       const reportPath = path.join(
-//         __dirname,
-//         "../reports",
-//         `${reportFilename}.pdf`
-//       );
-//       generatePDFReport(
-//         studentsBelowThreshold,
-//         reportPath,
-//         subjectId
-//       );
-
-//       res.download(
-//         reportPath,
-//         `${reportFilename}.pdf`,
-//         (err) => {
-//           if (err) {
-//             console.error(
-//               "Error downloading report:",
-//               err
-//             );
-//             return next(err);
-//           }
-//           // Delete the report file after download
-//           fs.unlinkSync(reportPath);
-//         }
-//       );
-//     } catch (error) {
-//       console.log(error);
-//       next(error);
-//     }
-//   })
-// );
-
-// function generatePDFReport(
-//   students,
-//   filePath,
-//   subjectId
-// ) {
-//   const doc = new pdf();
-//   doc.pipe(fs.createWriteStream(filePath));
-
-//   doc
-//     .font("Helvetica-Bold")
-//     .fontSize(16)
-//     .text(
-//       `Attendance Report - Subject: ${subjectId}`,
-//       { align: "center" }
-//     );
-
-//   students.forEach((attendance) => {
-//     doc
-//       .font("Helvetica")
-//       .fontSize(12)
-//       .text(
-//         `Student Name: ${attendance.studentId.name}`,
-//         { continued: true }
-//       );
-//     doc.text(
-//       `Attendance: ${attendance.attendance}`,
-//       { continued: true }
-//     );
-//     doc.text(
-//       `Total Classes: ${attendance.subjectId.totalClasses}`,
-//       { continued: true }
-//     );
-//     doc.text(
-//       `Attendance Percentage: ${
-//         (attendance.attendance /
-//           attendance.subjectId.totalClasses) *
-//         100
-//       }%`,
-//       { continued: true }
-//     );
-//     doc.moveDown();
-//   });
-
-//   doc.end();
-// }
+      res.json({
+        success: true,
+        lowAttendanceStudents:
+          lowAttendanceStudents,
+      });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  })
+);
 
 module.exports = router;

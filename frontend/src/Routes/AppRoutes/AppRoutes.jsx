@@ -6,8 +6,13 @@ import UnauthorizedMessage from "../../Components/Unauthorized/UnauthorizedMessa
 import AuthRoute from "../AuthRoutes/AuthRoutes";
 import FallbackUI from "../../Components/FallbackUI/FallbackUI";
 
-const TimeTable = lazy ( () => import("../../Components/TimeTable/TimeTable"));
-const CreateTimeTable = lazy(()=> import("../../Pages/Admin/CreateTimeTable/CreateTimeTable"));
+const TimeTable = lazy(() => import("../../Components/TimeTable/TimeTable"));
+const CreateTimeTable = lazy(
+  () => import("../../Pages/Admin/CreateTimeTable/CreateTimeTable"),
+);
+const AttendanceReport = lazy(
+  () => import("../../Pages/Teacher/Attendance/AttendanceReport"),
+);
 const DefaultPage = lazy(() => import("../../Pages/DefaultPage/DefaultPage"));
 const Login = lazy(() => import("../../Pages/Login/Login"));
 const Signup = lazy(() => import("../../Pages/Signup/Signup"));
@@ -76,8 +81,6 @@ const DiscussionForum = lazy(
 export default function AppRoutes() {
   const { user } = useAuth();
 
-  
-
   return (
     <>
       <Toaster position="top-center" toastOptions={{ duration: 2000 }} />
@@ -132,6 +135,10 @@ export default function AppRoutes() {
             <>
               <Route path="/teacher" element={<TeacherHomePage />} />
               <Route path="/attendance/:id" element={<AttendanceList />} />
+              <Route
+                path="/attendanceReport"
+                element={<AttendanceReport />}
+              />
               <Route path="/marks" element={<Marks />} />
               <Route path="/marks/:id" element={<MarkSheet />} />
               <Route path="/discussionForum" element={<DiscussionForum />} />
