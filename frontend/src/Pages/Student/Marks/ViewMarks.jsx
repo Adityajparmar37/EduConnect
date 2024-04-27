@@ -47,23 +47,23 @@ export default function ViewMarks() {
                 <table>
                   <thead className="bg-gray-300">
                     <tr>
-                      <th className="border border-gray-800">Subject</th>
-                      <th className="border border-gray-800">Mid-1</th>
-                      <th className="border border-gray-800">Mid-2</th>
-                      <th className="border border-gray-800">Quiz-1</th>
-                      <th className="border border-gray-800">Quiz-2</th>
-                      <th className="border border-gray-800">Practical</th>
-                      <th className="border border-gray-800">End Semester</th>
+                      <th className="border border-gray-800 p-2 ">Subject</th>
+                      <th className="border border-gray-800 p-2 ">Mid-1</th>
+                      <th className="border border-gray-800 p-2 ">Mid-2</th>
+                      <th className="border border-gray-800 p-2 ">Quiz-1</th>
+                      <th className="border border-gray-800 p-2 ">Quiz-2</th>
+                      <th className="border border-gray-800 p-2 ">Practical</th>
+                      <th className="border border-gray-800 p-2 ">End Semester</th>
                     </tr>
                   </thead>
                   <tbody>
                     {marksData.map((marks, index) => (
                       <tr key={index} className="border border-gray-800">
-                        <td className="border border-gray-800 bg-gray-300 p-2 font-bold">
+                        <td className="border border-gray-800 bg-gray-200 p-2 font-bold text-lg text-center">
                           {marks.SubjectId.subjectName}
                         </td>
                         {marks.Marks.map((mark, idx) => (
-                          <td key={idx} className="border border-gray-800 p-2">
+                          <td key={idx} className="border border-gray-800 p-2 text-lg font-bold text-center">
                             {mark}
                           </td>
                         ))}
