@@ -16,8 +16,9 @@ export default function ViewAttendance() {
   const [endDate, setEndDate] = useState(null);
   const [mysub, setMysub] = useState([]);
   const [sortNewest, setSortNewest] = useState(true); // true for newest, false for oldest
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5); // Adjust as needed
 
-  // console.log(user);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -33,47 +34,39 @@ export default function ViewAttendance() {
     fetchData();
   }, []);
 
-  // Apply filters on myAttendance array
-  const filteredAttendance = myAttendance.filter((atten) => {
-    const date = new Date(atten.createdAt);
-    return (
-      atten.subjectId.subjectName
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) &&
-      (!startDate || date >= startDate) &&
-      (!endDate || date <= endDate)
-    );
-  });
+  useEffect(() => {
+    // Reset current page to 1 whenever filters or sorting change
+    setCurrentPage(1);
+  }, [searchTerm, startDate, endDate, sortNewest]);
 
-  // Sort the filtered attendance based on sortNewest
-  const sortedAttendance = [...filteredAttendance].sort((a, b) => {
-    if (sortNewest) {
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    } else {
-      return new Date(a.createdAt) - new Date(b.createdAt);
-    }
-  });
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = myAttendance
+    .filter((atten) => {
+      const date = new Date(atten.createdAt);
+      return (
+        atten.subjectId.subjectName
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) &&
+        (!startDate || date >= startDate) &&
+        (!endDate || date <= endDate)
+      );
+    })
+    .sort((a, b) => {
+      if (sortNewest) {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      } else {
+        return new Date(a.createdAt) - new Date(b.createdAt);
+      }
+    })
+    .slice(indexOfFirstItem, indexOfLastItem);
 
   // Count total present attendance
-  const totalPresentAttendance = filteredAttendance.filter(
+  const totalPresentAttendance = currentItems.filter(
     (attendance) => attendance.attendance === 1,
   ).length;
 
-  // Calculate percentage of present attendance
-  const totalAttendanceCount = filteredAttendance.length;
-  const presentAttendancePercentage =
-    totalAttendanceCount === 0
-      ? 0
-      : (totalPresentAttendance / totalAttendanceCount) * 100;
-
-  let colorClass;
-  if (presentAttendancePercentage >= 70) {
-    colorClass = "bg-green-500";
-  } else if (presentAttendancePercentage >= 50) {
-    colorClass = "bg-yellow-500";
-  } else {
-    colorClass = "bg-red-500";
-  }
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <>
@@ -157,7 +150,7 @@ export default function ViewAttendance() {
                 </div>
                 <table className="w-full text-left rtl:text-right">
                   {/* Table header */}
-                  <thead className="border-b-4 border-white text-[1rem] font-bold uppercase text-white dark:bg-primary">
+                   <thead className="border-b-4 border-white text-[1rem] font-bold uppercase text-white dark:bg-primary">
                     <tr>
                       <th scope="col" className="p-4">
                         <div className="flex items-center justify-center">
@@ -181,7 +174,7 @@ export default function ViewAttendance() {
                     </tr>
                   </thead>
                   <tbody>
-                    {sortedAttendance.map((atten, index) => (
+                    {currentItems.map((atten, index) => (
                       <TableCardViewAttendance
                         key={index}
                         index={index}
@@ -195,10 +188,27 @@ export default function ViewAttendance() {
                     ))}
                   </tbody>
                 </table>
-                <div
-                  className={`absolute bottom-0 right-0 mb-16 mr-10 rounded-[2rem] p-3 text-2xl font-semibold text-white ${colorClass}`}
-                >
-                  {presentAttendancePercentage.toFixed(1)}%
+                {/* Pagination */}
+                <div className="mt-4 flex justify-center">
+                  <ul className="flex space-x-2">
+                    {Array.from(
+                      { length: Math.ceil(myAttendance.length / itemsPerPage) },
+                      (_, i) => (
+                        <li key={i}>
+                          <button
+                            className={`${
+                              currentPage === i + 1
+                                ? "bg-gray-600 text-white"
+                                : "bg-white text-gray-600"
+                            } rounded-md px-3 py-1`}
+                            onClick={() => paginate(i + 1)}
+                          >
+                            {i + 1}
+                          </button>
+                        </li>
+                      ),
+                    )}
+                  </ul>
                 </div>
               </div>
             </>

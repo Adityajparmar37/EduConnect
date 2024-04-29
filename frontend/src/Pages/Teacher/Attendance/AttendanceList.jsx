@@ -92,23 +92,23 @@ export default function AttendanceList() {
           {studentList && studentList.length > 0 ? (
             <>
               <div className="flex w-full flex-col">
-                <div className="mb-5 text-center text-2xl font-bold">
+                <div className="mb-12 text-center text-2xl font-bold">
                   ✅ Attendance
                 </div>
                 <div className="mb-3 flex justify-between">
                   <div className="flex flex-row gap-5">
                     <div>
-                      <label className="text-center text-xl font-bold">
+                      <label className="text-center text-md font-bold">
                         Date :{" "}
                       </label>
                       <DatePicker
                         selected={selectedDate}
                         onChange={(date) => setSelectedDate(date)}
-                        className="mr-5 rounded-md border border-gray-400 px-2 py-1 text-lg font-semibold"
+                        className="mr-5 rounded-md border border-gray-400 px-2 py-1 text-md font-semibold"
                       />
                     </div>
                     <div>
-                      <label className="text-center text-xl font-bold">
+                      <label className="text-center text-md font-bold">
                         Search :{" "}
                       </label>
                       <input
@@ -116,7 +116,7 @@ export default function AttendanceList() {
                         placeholder="Search by Student Name"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="mb-3 rounded-md border border-gray-400 px-2 py-1 text-lg font-semibold"
+                        className="mb-3 rounded-md border border-gray-400 px-2 py-1 text-md font-semibold"
                       />
                     </div>
                   </div>
