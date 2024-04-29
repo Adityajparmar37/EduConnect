@@ -18,8 +18,7 @@ export default function AttendanceList() {
   const [attendanceToggle, setAttendanceToggle] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date()); // Default to current date
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5); // Adjust as needed
-  const [searchTerm, setSearchTerm] = useState("");
+  const [studentsPerPage] = useState(5); // Adjust as needed
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,26 +58,17 @@ export default function AttendanceList() {
     }
   };
 
-  const handleAttendanceReport = async () => {
-    try {
-      const response = await AttendanceReport(id);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const handleToggleAttendance = () => {
     setAttendanceToggle(!attendanceToggle);
   };
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = studentList
-    .filter((student) =>
-      student.name.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
-    .slice(indexOfFirstItem, indexOfLastItem);
+  // Pagination
+  const indexOfLastStudent = currentPage * studentsPerPage;
+  const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
+  const currentStudents = studentList.slice(
+    indexOfFirstStudent,
+    indexOfLastStudent,
+  );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -92,33 +82,19 @@ export default function AttendanceList() {
           {studentList && studentList.length > 0 ? (
             <>
               <div className="flex w-full flex-col">
-                <div className="mb-12 text-center text-2xl font-bold">
+                <h1 className="mb-5 text-center text-2xl font-bold">
                   ✅ Attendance
-                </div>
+                </h1>
                 <div className="mb-3 flex justify-between">
-                  <div className="flex flex-row gap-5">
-                    <div>
-                      <label className="text-center text-md font-bold">
-                        Date :{" "}
-                      </label>
-                      <DatePicker
-                        selected={selectedDate}
-                        onChange={(date) => setSelectedDate(date)}
-                        className="mr-5 rounded-md border border-gray-400 px-2 py-1 text-md font-semibold"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-center text-md font-bold">
-                        Search :{" "}
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Search by Student Name"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="mb-3 rounded-md border border-gray-400 px-2 py-1 text-md font-semibold"
-                      />
-                    </div>
+                  <div>
+                    <label className="text-center text-xl font-bold">
+                      Date :{" "}
+                    </label>
+                    <DatePicker
+                      selected={selectedDate}
+                      onChange={(date) => setSelectedDate(date)}
+                      className="mr-5 rounded-md border border-gray-400 px-2 py-1 text-lg font-semibold"
+                    />
                   </div>
                   <div>
                     <button
@@ -135,7 +111,6 @@ export default function AttendanceList() {
                     </button>
                   </div>
                 </div>
-
                 <table className="w-full text-left rtl:text-right">
                   <thead className="border-b-4 border-white text-[1rem] font-bold uppercase text-white dark:bg-primary">
                     <tr>
@@ -161,12 +136,12 @@ export default function AttendanceList() {
                     </tr>
                   </thead>
                   <tbody>
-                    {currentItems.map((student, index) => (
+                    {currentStudents.map((student, index) => (
                       <TableCardAttendance
                         subjectId={id}
                         key={student._id}
                         student={student}
-                        index={index}
+                        index={index + indexOfFirstStudent}
                         initialAttendance={
                           attendanceToggle ? "Present" : "Absent"
                         }
@@ -176,6 +151,31 @@ export default function AttendanceList() {
                     ))}
                   </tbody>
                 </table>
+                {/* Pagination */}
+                <div className="mt-4 flex justify-center">
+                  {studentList.length > studentsPerPage && (
+                    <ul className="flex space-x-2">
+                      {[
+                        ...Array(
+                          Math.ceil(studentList.length / studentsPerPage),
+                        ),
+                      ].map((_, index) => (
+                        <li key={index}>
+                          <button
+                            onClick={() => paginate(index + 1)}
+                            className={`${
+                              currentPage === index + 1
+                                ? "border-gray-800 border-2 text-black font-bold"
+                                : " text-gray-800"
+                            } rounded-md px-3 py-1`}
+                          >
+                            {index + 1}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
                 <div className="mr-16 flex justify-end">
                   <button
                     onClick={handleAttendanceSubmit}
@@ -183,28 +183,7 @@ export default function AttendanceList() {
                   >
                     Submit
                   </button>
-                </div>
-                {/* Pagination */}
-                <div className="mt-4 flex justify-center">
-                  <ul className="flex space-x-2">
-                    {Array.from(
-                      { length: Math.ceil(studentList.length / itemsPerPage) },
-                      (_, i) => (
-                        <li key={i}>
-                          <button
-                            className={`${
-                              currentPage === i + 1
-                                ? "bg-gray-600 text-white"
-                                : "bg-white text-gray-600"
-                            } rounded-md px-3 py-1`}
-                            onClick={() => paginate(i + 1)}
-                          >
-                            {i + 1}
-                          </button>
-                        </li>
-                      ),
-                    )}
-                  </ul>
+                  {/* Your existing code for Report button */}
                 </div>
               </div>
             </>
