@@ -12,10 +12,13 @@ export default function UpdateSubject() {
     subjectName: "",
     subjectNumber: "",
     semesterNumber: "",
+    type: "", // New field for subject type
   });
+
   const handleInputChange = (key, value) => {
     setSubjectData((prevData) => ({ ...prevData, [key]: value }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form data:", subjectData);
@@ -43,6 +46,7 @@ export default function UpdateSubject() {
           subjectName: responseSubject.subjectName || "",
           subjectNumber: responseSubject.subjectNumber || "",
           semesterNumber: responseSubject.semesterNumber || "",
+          subjectType: responseSubject.type || "", // Set subject type from API response
         });
       } catch (error) {
         toast.error("Some error occured ! , please try again!");
@@ -51,8 +55,6 @@ export default function UpdateSubject() {
     };
     fetchData();
   }, [id]);
-
-  console.log(subjectData.semesterNumber);
 
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
@@ -130,6 +132,56 @@ export default function UpdateSubject() {
                             </option>
                           ))}
                         </select>
+                      </div>
+                      <div className="mb-4">
+                        <label className="text-blueGray-600 mb-2 block text-xs font-bold uppercase">
+                          Subject Type
+                        </label>
+                        <div>
+                          <input
+                            type="radio"
+                            id="practical"
+                            name="subjectType"
+                            value="Practical"
+                            checked={subjectData.subjectType === "Practical"}
+                            onChange={(e) =>
+                              handleInputChange("subjectType", e.target.value)
+                            }
+                          />
+                          <label htmlFor="practical" className="ml-2">
+                            Practical
+                          </label>
+                        </div>
+                        <div>
+                          <input
+                            type="radio"
+                            id="practical"
+                            name="subjectType"
+                            value="Tutorial"
+                            checked={subjectData.subjectType === "Tutorial"}
+                            onChange={(e) =>
+                              handleInputChange("subjectType", e.target.value)
+                            }
+                          />
+                          <label htmlFor="practical" className="ml-2">
+                            Tutorial
+                          </label>
+                        </div>
+                        <div>
+                          <input
+                            type="radio"
+                            id="theory"
+                            name="subjectType"
+                            value="Theory"
+                            checked={subjectData.subjectType === "Theory"}
+                            onChange={(e) =>
+                              handleInputChange("subjectType", e.target.value)
+                            }
+                          />
+                          <label htmlFor="theory" className="ml-2">
+                            Theory
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </form>
