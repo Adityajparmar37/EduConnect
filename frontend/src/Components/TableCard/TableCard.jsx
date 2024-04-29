@@ -8,12 +8,12 @@ const TableCard = ({
   teacher,
   index,
   DeleteTeacher,
-  allSubject,
+  subjects,
   DeleteSubject,
   Student,
   DeleteStudent,
 }) => {
-  console.log(Student);
+  console.log(teacher);
   return (
     <>
       {teacher && (
@@ -90,44 +90,45 @@ const TableCard = ({
           </td>
         </tr>
       )}
-      {allSubject && (
+      {subjects && (
         <>
-          {allSubject.map((subject, index) => (
-            <tr
-              key={subject._id}
-              className={`text-dark border-b-2 bg-white font-semibold hover:bg-gray-50`}
-            >
+          {console.log(subjects)}
+
+          <tr
+            key={subjects._id}
+            className={`text-dark border-b-2 bg-white font-semibold hover:bg-gray-50`}
+          >
+            <td className={`w-4 p-4`}>
               <td className={`w-4 p-4`}>
-                <div className="flex items-center">
-                  <IoMdArrowDropright />
-                </div>
+                <div className="flex items-center">{index + 1}</div>
               </td>
-              <td
-                className={`whitespace-nowrap px-6 py-4 text-lg font-bold text-darkPrimary`}
-              >
-                {subject.subjectName}
-              </td>
-              <td className={`px-6 py-4 text-lg`}>{subject.subjectNumber}</td>
-              <td className={`px-6 py-4 text-lg`}>{subject.semesterNumber}</td>
-              <td className={`px-6 py-4`}>
-                <div className="flex space-x-5">
-                  {/* Add your actions or links here if needed */}
-                  <Link to={`/updateSubject/${subject._id}`}>
-                    <button
-                      className={`p-2 text-2xl font-semibold duration-200 hover:rounded-full hover:bg-blue-400 hover:text-white dark:text-blue-500`}
-                    >
-                      <TbBookUpload />
-                    </button>
-                  </Link>
+            </td>
+            <td
+              className={`whitespace-nowrap px-6 py-4 text-lg font-bold text-darkPrimary`}
+            >
+              {subjects.subjectName}
+            </td>
+            <td className={`px-6 py-4 text-lg`}>{subjects.subjectNumber}</td>
+            <td className={`px-6 py-4 text-lg`}>{subjects.type}</td>
+            <td className={`px-6 py-4 text-lg`}>{subjects.semesterNumber}</td>
+            <td className={`px-6 py-4`}>
+              <div className="flex space-x-5">
+                {/* Add your actions or links here if needed */}
+                <Link to={`/updateSubject/${subjects._id}`}>
                   <button
-                    className={`p-2 text-2xl font-semibold duration-200 hover:rounded-full hover:bg-red-500 hover:text-white dark:text-red-500`}
+                    className={`p-2 text-2xl font-semibold duration-200 hover:rounded-full hover:bg-blue-400 hover:text-white dark:text-blue-500`}
                   >
-                    <MdDelete onClick={() => DeleteSubject(subject._id)} />
+                    <TbBookUpload />
                   </button>
-                </div>
-              </td>
-            </tr>
-          ))}
+                </Link>
+                <button
+                  className={`p-2 text-2xl font-semibold duration-200 hover:rounded-full hover:bg-red-500 hover:text-white dark:text-red-500`}
+                >
+                  <MdDelete onClick={() => DeleteSubject(subjects._id)} />
+                </button>
+              </div>
+            </td>
+          </tr>
         </>
       )}
     </>

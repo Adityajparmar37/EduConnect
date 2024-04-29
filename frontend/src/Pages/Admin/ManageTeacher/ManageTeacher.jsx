@@ -86,9 +86,11 @@ export default function ManageTeacher() {
       <div className="w-1/6">
         <SideNav />
       </div>
-      <div className="z-10 flex h-auto w-5/6 justify-center px-3 pt-14">
+      <div className="z-10 flex h-auto w-5/6 justify-center px-3 pt-20">
         <div className="w-full">
-          <h1 className="mb-3 text-center text-2xl font-bold">👩🏻‍🏫 Teacher's List</h1>
+          <h1 className="mb-3 text-center text-2xl font-bold">
+            👩🏻‍🏫 Teacher's List
+          </h1>
           <div className="mb-8 flex flex-row items-center gap-5">
             <div className="text-md flex items-center">
               <label className="ml-5 mr-3 font-semibold">Search :</label>
@@ -150,6 +152,7 @@ export default function ManageTeacher() {
                     </tr>
                   </thead>
                   <tbody>
+                    {console.log(currentTeachers)}
                     {currentTeachers.map((teacher, index) => (
                       <TableCard
                         key={teacher._id}
