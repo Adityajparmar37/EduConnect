@@ -29,16 +29,20 @@ router.post(
           await Attendance.findOne({
             subjectId: SubjectId,
             studentId: Student,
-            date: date,
-          });
+          }).sort({ date: -1 });
 
         if (
           existingAttendance &&
           existingAttendance.subjectId.equals(
             SubjectId
-          )
+          ) &&
+          (isTodayDate(date) &&
+            isWithin15Minutes(
+              existingAttendance.date,
+              date
+            ))
         ) {
-          // If existing attendance data found, update it
+          // If existing attendance data found and either it's not for today's date or it's within 15 minutes, update it
           existingAttendance.attendance =
             attendance;
           await existingAttendance.save();
@@ -47,7 +51,7 @@ router.post(
             existingAttendance
           );
         } else {
-          // If no existing attendance data found, save new attendance data
+          // If no existing attendance data found or it's not within 15 minutes, save new attendance data
           const newRecord = new Attendance({
             subjectId: SubjectId,
             studentId: Student,
@@ -72,6 +76,35 @@ router.post(
     }
   })
 );
+
+function isTodayDate(date) {
+  const today = new Date();
+  const givenDate = new Date(date);
+  return (
+    today.getDate() === givenDate.getDate() &&
+    today.getMonth() === givenDate.getMonth() &&
+    today.getFullYear() ===
+      givenDate.getFullYear()
+  );
+}
+
+function isWithin15Minutes(
+  lastAttendanceDate,
+  currentDate
+) {
+  const fifteenMinutesInMillis = 15 * 60 * 1000;
+  const lastAttendanceTime = new Date(
+    lastAttendanceDate
+  ).getTime();
+  const currentTime = new Date(
+    currentDate
+  ).getTime();
+  return (
+    currentTime - lastAttendanceTime <=
+    fifteenMinutesInMillis
+  );
+}
+
 
 router.get(
   "/viewattendance",
