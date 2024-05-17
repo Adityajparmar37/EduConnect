@@ -1,8 +1,7 @@
 import SideNav from "../../../Components/SideNav/SideNav";
 import Card from "../../../Components/Card/Card";
-import { FaChalkboardTeacher } from "react-icons/fa";
-import { PiAddressBook, PiStudentFill } from "react-icons/pi";
-import { LuBookCopy } from "react-icons/lu";
+import { PiAddressBook } from "react-icons/pi";
+import { LiaCalendarWeekSolid } from "react-icons/lia";
 import { IoArrowForwardSharp } from "react-icons/io5";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import { TbBook2 } from "react-icons/tb";
@@ -18,8 +17,16 @@ export default function AdminHomePage() {
       <div className="w-1/6">
         <SideNav />
       </div>
-      <div className="flex h-auto w-full px-3 pt-[3rem] ml-20">
-        <div className="flex flex-col gap-y-10 w-1/2">
+      <div className="ml-20 flex h-auto w-full px-3 pt-[3rem]">
+        <div className="flex w-1/2 flex-col gap-y-6">
+          <Card
+            link="/createTimetable"
+            bgColor="darkPrimary"
+            icon={<LiaCalendarWeekSolid />}
+            icon2={<IoArrowForwardSharp />}
+            title="Create Timetable"
+            text={["Update Subject Details", "Delete Subject Details"]}
+          />
           <Card
             link="/createTeacher"
             bgColor="darkPrimary"
@@ -70,7 +77,7 @@ export default function AdminHomePage() {
             text={["Update Subject Details", "Delete Subject Details"]}
           />
         </div>
-        <div className="w-1/2 flex justify-between">
+        <div className="flex w-1/2 justify-between">
           <HomePageProfile />
         </div>
       </div>

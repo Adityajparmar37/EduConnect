@@ -6,6 +6,7 @@ import { LuBookCopy } from "react-icons/lu";
 import { LuHome } from "react-icons/lu";
 import { MdPersonOutline } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { LiaCalendarWeekSolid } from "react-icons/lia";
 
 export default function SideNav() {
   return (
@@ -29,6 +30,19 @@ export default function SideNav() {
               </span>
               <span className="text-md ml-2 truncate tracking-wide">
                 Dashboard
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/createTimetable"
+              className="relative flex h-11 flex-row items-center border-l-8 border-transparent pr-6 text-white duration-300 hover:border-primary hover:bg-gray-50 hover:text-gray-800 focus:outline-none"
+            >
+              <span className="ml-4 inline-flex items-center justify-center text-2xl">
+                <LiaCalendarWeekSolid />
+              </span>
+              <span className="text-md ml-2 truncate tracking-wide">
+                Timetable
               </span>
             </Link>
           </li>
