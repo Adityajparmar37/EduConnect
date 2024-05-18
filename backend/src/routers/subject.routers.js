@@ -20,14 +20,14 @@ router.post(
         subjectName,
         subjectNumber,
         semesterNumber,
-        type, // Add type to request body
+        type,
       } = req.body;
 
       if (
         !subjectName ||
         !subjectNumber ||
         !semesterNumber ||
-        !type // Ensure type is provided
+        !type
       ) {
         return next(
           errorHandler(
@@ -37,35 +37,34 @@ router.post(
         );
       }
 
-      // Find existing subjects with the same name
-      const existingSubjects = await Subject.find(
-        {
-          $or: [
-            { subjectName },
-            { subjectNumber },
-          ],
-        }
-      );
+      // Find existing subjects with the same name (case-insensitive), number, and type
+      const existingSubject =
+        await Subject.findOne({
+          subjectName: {
+            $regex: new RegExp(
+              `^${subjectName}$`,
+              "i"
+            ),
+          },
+          subjectNumber,
+          type,
+        });
 
-      // Check if any of the existing subjects have different types
-      const hasDifferentType =
-        existingSubjects.some(
-          (subject) => subject.type !== type
-        );
-
-      // If any existing subject has a different type, allow insertion
-      if (hasDifferentType) {
-        console.log(
-          "A subject with the same name or number but different type already exists. Proceeding with insertion..."
+      if (existingSubject) {
+        return next(
+          errorHandler(
+            400,
+            "A subject with the same name, number, and type already exists"
+          )
         );
       }
 
       // Create the new subject
       const subject = new Subject({
-        subjectName: subjectName,
-        subjectNumber: subjectNumber,
-        semesterNumber: semesterNumber,
-        type: type, // Add type to the subject
+        subjectName,
+        subjectNumber,
+        semesterNumber,
+        type,
       });
 
       const savedSubject = await subject.save();
@@ -87,7 +86,7 @@ router.post(
       if (!semester) {
         // Create a new semester if it doesn't exist
         semester = new Semester({
-          semesterNumber: semesterNumber,
+          semesterNumber,
           subjects: [savedSubject._id], // Associate the subject with the semester
         });
       } else {
@@ -104,7 +103,7 @@ router.post(
       });
     } catch (error) {
       console.log(
-        "Error in subject adding or creating ",
+        "Error in subject adding or creating",
         error
       );
       next(error);

@@ -17,7 +17,7 @@ const subjectSchema = mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["Theory", "Practical"], // Specify allowed values for the type field
+      enum: ["Theory", "Practical","Tutorial"], // Specify allowed values for the type field
       default: "Theory", // Default value for type field
       required: true,
     },
