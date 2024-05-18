@@ -46,6 +46,10 @@ router.post(
           existingAttendance.attendance =
             attendance;
           await existingAttendance.save();
+            res.json({
+              success: true,
+              message: "Attendance Updated",
+            });
           console.log(
             "Existing attendance data updated:",
             existingAttendance

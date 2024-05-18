@@ -12,7 +12,7 @@
     const [allStudent, setallStudent] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const [studentsPerPage] = useState(3);
+    const [studentsPerPage] = useState(5);
     const [sortOrder, setSortOrder] = useState(false);
     useEffect(() => {
       const fetchData = async () => {

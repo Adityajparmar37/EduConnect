@@ -41,32 +41,49 @@ export default function ViewAttendance() {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = myAttendance
-    .filter((atten) => {
-      const date = new Date(atten.createdAt);
-      return (
-        atten.subjectId.subjectName
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()) &&
-        (!startDate || date >= startDate) &&
-        (!endDate || date <= endDate)
-      );
-    })
-    .sort((a, b) => {
-      if (sortNewest) {
-        return new Date(b.createdAt) - new Date(a.createdAt);
-      } else {
-        return new Date(a.createdAt) - new Date(b.createdAt);
-      }
-    })
-    .slice(indexOfFirstItem, indexOfLastItem);
+  const filteredAttendance = myAttendance.filter((atten) => {
+    const date = new Date(atten.createdAt);
+    return (
+      atten.subjectId.subjectName
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) &&
+      (!startDate || date >= startDate) &&
+      (!endDate || date <= endDate)
+    );
+  });
 
-  // Count total present attendance
-  const totalPresentAttendance = currentItems.filter(
+  const sortedAttendance = filteredAttendance.sort((a, b) => {
+    if (sortNewest) {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    } else {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    }
+  });
+
+  const currentItems = sortedAttendance.slice(
+    indexOfFirstItem,
+    indexOfLastItem,
+  );
+
+  // Count total present attendance for all filtered items
+  const totalPresentAttendance = filteredAttendance.filter(
     (attendance) => attendance.attendance === 1,
   ).length;
 
+  const attendancePercentage =
+    (totalPresentAttendance / filteredAttendance.length) * 100 || 0;
+
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const getPercentageColor = (percentage) => {
+    if (percentage > 70) {
+      return "bg-green-300";
+    } else if (percentage > 50) {
+      return "bg-yellow-300";
+    } else {
+      return "bg-red-300";
+    }
+  };
 
   return (
     <>
@@ -150,7 +167,7 @@ export default function ViewAttendance() {
                 </div>
                 <table className="w-full text-left rtl:text-right">
                   {/* Table header */}
-                   <thead className="border-b-4 border-white text-[1rem] font-bold uppercase text-white dark:bg-primary">
+                  <thead className="border-b-4 border-white text-[1rem] font-bold uppercase text-white dark:bg-primary">
                     <tr>
                       <th scope="col" className="p-4">
                         <div className="flex items-center justify-center">
@@ -192,7 +209,11 @@ export default function ViewAttendance() {
                 <div className="mt-4 flex justify-center">
                   <ul className="flex space-x-2">
                     {Array.from(
-                      { length: Math.ceil(myAttendance.length / itemsPerPage) },
+                      {
+                        length: Math.ceil(
+                          filteredAttendance.length / itemsPerPage,
+                        ),
+                      },
                       (_, i) => (
                         <li key={i}>
                           <button
@@ -209,6 +230,15 @@ export default function ViewAttendance() {
                       ),
                     )}
                   </ul>
+                </div>
+                <div className="mr-12 mt-4 text-right">
+                  <h2 className="text-xl font-semibold">
+                    <span
+                      className={`${getPercentageColor(attendancePercentage)}  px-2 py-2 font-medium rounded-full `}
+                    >
+                      {attendancePercentage.toFixed(1)}%
+                    </span>
+                  </h2>
                 </div>
               </div>
             </>
