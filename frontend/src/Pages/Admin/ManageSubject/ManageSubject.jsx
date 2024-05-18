@@ -12,14 +12,20 @@ export default function ManageSubject() {
   const [allSubject, setAllSubject] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [subjectsPerPage] = useState(3); // Set the number of subjects per page
+  const [subjectsPerPage] = useState(5); // Set the number of subjects per page
   const [sortOrder, setSortOrder] = useState(true);
+  const [semesterFilter, setSemesterFilter] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const responseAllSubject = await getAllSubject([]);
-        setAllSubject(responseAllSubject.subjects);
+        if (responseAllSubject && responseAllSubject.subjects) {
+          setAllSubject(responseAllSubject.subjects);
+        } else {
+          setAllSubject([]);
+          toast.error("Failed to fetch subjects data");
+        }
       } catch (error) {
         console.log("Get all subject frontend error", error);
         toast.error("Some error occurred, please try again!");
@@ -38,10 +44,14 @@ export default function ManageSubject() {
     }
   });
 
-  // Searching
-  const filteredSubjects = sortedSubjects.filter((subject) =>
-    subject.subjectName.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  // Searching and Filtering
+  const filteredSubjects = sortedSubjects.filter((subject) => {
+    return (
+      subject.subjectName.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (semesterFilter === "" ||
+        subject.semesterNumber.toString() === semesterFilter)
+    );
+  });
 
   // Pagination
   const indexOfLastSubject = currentPage * subjectsPerPage;
@@ -58,6 +68,12 @@ export default function ManageSubject() {
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
     setCurrentPage(1); // Reset pagination when searching
+  };
+
+  // Handle semester filter change
+  const handleSemesterChange = (event) => {
+    setSemesterFilter(event.target.value);
+    setCurrentPage(1); // Reset pagination when filtering
   };
 
   // Function to delete a subject
@@ -119,11 +135,30 @@ export default function ManageSubject() {
                 Old
               </label>
             </div>
+            <div className="text-md flex items-center">
+              <label className="ml-5 mr-3 font-semibold">Semester :</label>
+              <select
+                value={semesterFilter}
+                onChange={handleSemesterChange}
+                className="text-md rounded-md border border-gray-400 p-1 font-semibold"
+              >
+                <option value="">All</option>
+                {[
+                  ...new Set(
+                    allSubject.map((subject) => subject.semesterNumber),
+                  ),
+                ].map((semester) => (
+                  <option key={semester} value={semester}>
+                    {semester}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           {currentSubjects && currentSubjects.length > 0 ? (
             <>
               <div className="flex w-full flex-col">
-                <table className="w-full text-left  rtl:text-right">
+                <table className="w-full text-left rtl:text-right">
                   <thead className="border-b-4 border-white text-[1rem] font-bold uppercase text-white dark:bg-primary">
                     <tr>
                       <th scope="col" className="p-4">
@@ -185,7 +220,7 @@ export default function ManageSubject() {
             </>
           ) : (
             <Link to="/subjectDashboard">
-              <h1 className=" items-center justify-center rounded-md bg-gray-600 p-2 text-lg text-white">
+              <h1 className="items-center justify-center rounded-md bg-gray-600 p-2 text-lg text-white">
                 No Subject Found! Click to go back
               </h1>
             </Link>

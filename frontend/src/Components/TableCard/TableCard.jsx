@@ -9,7 +9,7 @@ const TableCard = ({
   index,
   DeleteTeacher,
   subjects,
-  DeleteSubject,
+  handleDeleteSubject,
   Student,
   DeleteStudent,
 }) => {
@@ -124,7 +124,7 @@ const TableCard = ({
                 <button
                   className={`p-2 text-2xl font-semibold duration-200 hover:rounded-full hover:bg-red-500 hover:text-white dark:text-red-500`}
                 >
-                  <MdDelete onClick={() => DeleteSubject(subjects._id)} />
+                  <MdDelete onClick={() => handleDeleteSubject(subjects._id)} />
                 </button>
               </div>
             </td>
