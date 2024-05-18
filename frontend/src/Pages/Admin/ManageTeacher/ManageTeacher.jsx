@@ -12,7 +12,7 @@ export default function ManageTeacher() {
   const [allTeacher, setAllTeacher] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [teachersPerPage] = useState(3);
+  const [teachersPerPage] = useState(5);
   const [sortOrder, setSortOrder] = useState(true);
 
   useEffect(() => {
