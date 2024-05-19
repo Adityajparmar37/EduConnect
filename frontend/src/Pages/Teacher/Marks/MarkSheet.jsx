@@ -18,7 +18,7 @@ export default function MarkSheet() {
         const response = await SemesterStudent(id);
         setStudentList(response);
         // Initialize marksData array with empty arrays for each student
-        setMarksData(response.map(() => [null, null, null, null, null, null]));
+        setMarksData(response.map(() => ["", "", "", "", "", ""]));
       } catch (error) {
         console.error("Error fetching student data:", error);
       }
@@ -33,7 +33,7 @@ export default function MarkSheet() {
       const formattedMarksData = marksData.map((marks, index) => ({
         subject: id, // Assuming id represents the subject ID
         student: studentList[index]._id, // Assuming studentList contains student objects with _id field
-        marks: marks, // Marks for the current student
+        marks: marks.map((mark) => (mark === "" ? 0 : parseFloat(mark))), // Convert empty strings to 0
       }));
 
       // Send data to backend
@@ -54,8 +54,7 @@ export default function MarkSheet() {
   const handleInputChange = (e, studentIndex, markIndex) => {
     const newValue = e.target.value;
     const newMarksData = [...marksData];
-    newMarksData[studentIndex][markIndex] =
-      newValue === "" ? 0 : parseFloat(newValue);
+    newMarksData[studentIndex][markIndex] = newValue;
     setMarksData(newMarksData);
   };
 
@@ -71,6 +70,7 @@ export default function MarkSheet() {
     const grandTotal = totalMid + quiz1 + quiz2 + practical + endSem;
     return grandTotal.toFixed(2);
   };
+
   // Check marks validation
   const checkMarksValidation = () => {
     let isValidMarks = true;
@@ -82,7 +82,7 @@ export default function MarkSheet() {
 
       // Check for empty fields
       for (let j = 0; j < marksData[i].length; j++) {
-        if (marksData[i][j] === null || marksData[i][j] === "") {
+        if (marksData[i][j] === "") {
           isEmptyField = true;
           emptyFieldsDetails.push({
             student: studentList[i].name,
@@ -149,7 +149,7 @@ export default function MarkSheet() {
       if (emptyFieldsDetails.length > 0) {
         errorMessage += "Empty fields found for:\n\n";
         emptyFieldsDetails.forEach((details) => {
-          errorMessage += `Student: ${details.student}, Empty Field: ${details.emptyField} , Enter 0 if needed\n`;
+          errorMessage += `Student: ${details.student}, Empty Field: ${details.emptyField}, Enter 0 if needed\n`;
         });
       }
 
@@ -174,19 +174,19 @@ export default function MarkSheet() {
               <table>
                 <thead className="bg-gray-300">
                   <tr>
-                    <th className=" border border-gray-800">Student</th>
-                    <th className=" border border-gray-800">Mid-1</th>
-                    <th className=" border border-gray-800">Mid-2</th>
-                    <th className=" border border-gray-800">Quiz-1</th>
-                    <th className=" border border-gray-800 ">Quiz-2</th>
-                    <th className=" border border-gray-800">Practical</th>
-                    <th className=" border border-gray-800">End Semester</th>
-                    <th className=" border border-gray-800">Grand Total</th>
+                    <th className="border border-gray-800">Student</th>
+                    <th className="border border-gray-800">Mid-1</th>
+                    <th className="border border-gray-800">Mid-2</th>
+                    <th className="border border-gray-800">Quiz-1</th>
+                    <th className="border border-gray-800">Quiz-2</th>
+                    <th className="border border-gray-800">Practical</th>
+                    <th className="border border-gray-800">End Semester</th>
+                    <th className="border border-gray-800">Grand Total</th>
                   </tr>
                 </thead>
                 <tbody>
                   {studentList.map((student, studentIndex) => (
-                    <tr key={studentIndex} className="border border-gray-800  ">
+                    <tr key={studentIndex} className="border border-gray-800">
                       <td className="border border-gray-800 bg-gray-300 p-2 font-bold">
                         {student.name}
                       </td>
