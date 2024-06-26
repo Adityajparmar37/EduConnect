@@ -3,7 +3,9 @@
 
 ## 📑 Synopsis 
 
-Elevate education with streamlined communication, attendance, exams, and collaborative discussions—an efficient, secure platform fostering improved teacher-student collaboration 
+- Elevate education with streamlined communication, attendance, exams, and collaborative discussions—an efficient, secure platform fostering improved teacher-student collaboration.
+- The application is optimized with code-splitting techniques using React's `react-lazy` and `Suspense` for lazy loading, along with an `error boundary` fallback UI.
+
 
 ## 📜 Features
 
