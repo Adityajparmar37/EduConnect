@@ -58,7 +58,7 @@ Elevate education with streamlined communication, attendance, exams, and collabo
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/food-ordering-system.git
+   git clone https://github.com/Adityajparmar37/EduConnect.git
    ```
 
 2. Go to backend and run 
