@@ -1,4 +1,4 @@
-## Educonnect : *Connecting Educators and Students Seamlessly !*
+## Educonnect : *Connecting Teacher and Students Seamlessly !*
 
 
 ## 📑 Synopsis 
