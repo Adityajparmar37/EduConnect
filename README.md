@@ -80,7 +80,7 @@
     ```bash
     MONGO_URI = "Your MongoDB Database URI"
 
-    JWT_KEY = "Your secret key"
+    JWT_KEY = Your secret key
 
     KeyCrypt="Encryption key"
 
