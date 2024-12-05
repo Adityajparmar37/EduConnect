@@ -78,6 +78,7 @@
 
 4. Setup .env file 
     ```bash
+    PORT = Port Number ( eg 3500 )
     MONGO_URI = "Your MongoDB Database URI"
 
     JWT_KEY = Your secret key
