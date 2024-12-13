@@ -36,7 +36,10 @@ app.use(mongoSanitize());
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:5175"],
+    origin: [
+      "http://localhost:5175",
+      "https://main.d8lxuggtw74z7.amplifyapp.com/",
+    ],
   })
 );
 
@@ -72,6 +75,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`serving on ${PORT}`);
+server.listen(8080, () => {
+  console.log(`serving on 8080`);
 });

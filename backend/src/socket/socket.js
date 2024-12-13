@@ -22,18 +22,12 @@ const encryptMessage = (message) => {
   );
 
   // Concatenate the IV to the encrypted message
-  return iv
-    .concat(encryptedMessage.ciphertext)
-    .toString(CryptoJS.enc.Hex);
+  return iv.concat(encryptedMessage.ciphertext).toString(CryptoJS.enc.Hex);
 };
 
 const decryptMessage = (encryptedMessage) => {
-  const iv = CryptoJS.enc.Hex.parse(
-    encryptedMessage.substring(0, 32)
-  ); // Extract IV from the encrypted message
-  const ciphertext = CryptoJS.enc.Hex.parse(
-    encryptedMessage.substring(32)
-  );
+  const iv = CryptoJS.enc.Hex.parse(encryptedMessage.substring(0, 32)); // Extract IV from the encrypted message
+  const ciphertext = CryptoJS.enc.Hex.parse(encryptedMessage.substring(32));
 
   const decryptedMessage = CryptoJS.AES.decrypt(
     { ciphertext: ciphertext },
@@ -45,15 +39,16 @@ const decryptMessage = (encryptedMessage) => {
     }
   );
 
-  return decryptedMessage.toString(
-    CryptoJS.enc.Utf8
-  );
+  return decryptedMessage.toString(CryptoJS.enc.Utf8);
 };
 
 module.exports = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:5175",
+      origin: [
+        "http://localhost:5175",
+        "https://main.d8lxuggtw74z7.amplifyapp.com/",
+      ],
       methods: ["GET", "POST"],
       credentials: true,
     },
@@ -64,16 +59,12 @@ module.exports = (server) => {
 
     const createChatRoom = async (subject) => {
       try {
-        const existingChat =
-          await ChatGroup.findOne({
-            SubjectId: subject._id,
-          });
+        const existingChat = await ChatGroup.findOne({
+          SubjectId: subject._id,
+        });
 
         if (existingChat) {
-          console.log(
-            "Chat group already exists for SubjectId:",
-            subject._id
-          );
+          console.log("Chat group already exists for SubjectId:", subject._id);
 
           const oldMessages = await Message.find({
             chatRoom: existingChat._id,
@@ -82,85 +73,56 @@ module.exports = (server) => {
             .lean()
             .exec();
 
-          const decryptedOldMessages =
-            oldMessages.map((msg) => ({
-              ...msg,
-              content: decryptMessage(
-                msg.content
-              ),
-              senderId: msg.sender,
-            }));
+          const decryptedOldMessages = oldMessages.map((msg) => ({
+            ...msg,
+            content: decryptMessage(msg.content),
+            senderId: msg.sender,
+          }));
 
           // console.log(decryptedOldMessages);
-          socket.emit(
-            "old-messages",
-            decryptedOldMessages
-          );
+          socket.emit("old-messages", decryptedOldMessages);
 
           return existingChat._id;
         } else {
-          const newChatGroup =
-            await ChatGroup.create({
-              SubjectName: subject.subjectName,
-              SubjectId: subject._id,
-              // members: Members.map(
-              //   (member) => ({
-              //     userId: member.memberId,
-              //     name: member.memberName,
-              //   })
-              // ),
-            });
+          const newChatGroup = await ChatGroup.create({
+            SubjectName: subject.subjectName,
+            SubjectId: subject._id,
+            // members: Members.map(
+            //   (member) => ({
+            //     userId: member.memberId,
+            //     name: member.memberName,
+            //   })
+            // ),
+          });
 
-          console.log(
-            "Chat saved:",
-            newChatGroup
-          );
+          console.log("Chat saved:", newChatGroup);
 
-          io.emit(
-            "room-created",
-            newChatGroup.SubjectName
-          );
+          io.emit("room-created", newChatGroup.SubjectName);
 
           return newChatGroup._id.toString();
         }
       } catch (error) {
-        console.error(
-          "Error creating or checking chat:",
-          error.message
-        );
+        console.error("Error creating or checking chat:", error.message);
       }
     };
 
     socket.on("CreateRoom", async (subject) => {
-      const roomId = await createChatRoom(
-        subject
-      );
+      const roomId = await createChatRoom(subject);
       console.log("ROOM ID ==> ", roomId);
 
       if (roomId) {
         const roomIdString = roomId.toString();
         socket.join(roomIdString);
-        console.log(
-          `${socket.id} joined the room ${roomIdString}`
-        );
-        io.to(roomIdString).emit(
-          "room-created",
-          roomIdString
-        );
+        console.log(`${socket.id} joined the room ${roomIdString}`);
+        io.to(roomIdString).emit("room-created", roomIdString);
       }
     });
 
     socket.on(
       "newMessage",
-      async (
-        roomIdString,
-        newMessage,
-        studentId,
-        studentName
-      ) => {
+      async (roomIdString, newMessage, studentId, studentName) => {
         try {
-          const encryptedMessage =
-            encryptMessage(newMessage);
+          const encryptedMessage = encryptMessage(newMessage);
 
           const message = await Message.create({
             content: encryptedMessage,
@@ -174,8 +136,7 @@ module.exports = (server) => {
             //   "message ==> ",
             //   encryptedMessage
             // );
-            const decryptedMessage =
-              decryptMessage(encryptedMessage);
+            const decryptedMessage = decryptMessage(encryptedMessage);
 
             const messageData = {
               decryptedMessage,
@@ -183,10 +144,7 @@ module.exports = (server) => {
               senderName: studentName,
             };
 
-            io.to(roomIdString).emit(
-              "received-message",
-              messageData
-            );
+            io.to(roomIdString).emit("received-message", messageData);
             console.log(
               "New Message ==> ",
               decryptedMessage,
@@ -195,17 +153,12 @@ module.exports = (server) => {
             );
           }
         } catch (error) {
-          console.log(
-            "Error in saving message ",
-            error
-          );
+          console.log("Error in saving message ", error);
         }
       }
     );
     socket.on("disconnect", () => {
-      console.log(
-        `User disconnected: ${socket.id}`
-      );
+      console.log(`User disconnected: ${socket.id}`);
     });
   });
 };
