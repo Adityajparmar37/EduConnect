@@ -4,6 +4,7 @@ const handler = require("express-async-handler");
 const authMid = handler(
   async (req, res, next) => {
     const token = req.headers.access_token;
+    console.log(token);
 
     if (!token)
       return res

@@ -26,6 +26,7 @@ export default function ViewAttendance() {
         console.log(getMySubject);
         setMysub(getMySubject.subjects);
         const responseData = await getMyAttendance();
+        console.log(responseData);
         setMyAttendance(responseData);
       } catch (error) {
         console.log(error);
@@ -54,7 +55,7 @@ export default function ViewAttendance() {
 
   const sortedAttendance = filteredAttendance.sort((a, b) => {
     if (sortNewest) {
-      return new Date(b.createdAt) - new Date(a.createdAt);
+      return new Date(b.createdAt) - new Date(a.crmyAttendance?.filteeatedAt);
     } else {
       return new Date(a.createdAt) - new Date(b.createdAt);
     }
